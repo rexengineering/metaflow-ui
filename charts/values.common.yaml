@@ -1,0 +1,24 @@
+services:
+  - name: prism-ui
+    externalPort: '8080'
+    internalPort: '8080'
+
+ingress:
+  enabled: true
+  internet_facing: true
+  authentication:
+    employee: true
+  production-names:
+    release-admin:
+      - prism.internal.rexchange.com
+      - prism.rex.sh
+
+replicaCount: 3
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 80
+  initialDelaySeconds: 0
+  periodSeconds: 5
+  timeoutSeconds: 5
