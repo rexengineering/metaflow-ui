@@ -10,23 +10,26 @@ WORKDIR /buildenv/
 RUN npm ci
 
 
-FROM reqs AS test
-
-CMD true # nothing to test yet
-
-
-FROM reqs as build
+FROM reqs as code
 
 COPY /src/ /buildenv/src/
 COPY /public/ /buildenv/public/
+
+
+FROM code AS test
+
 WORKDIR /buildenv/
-RUN npm run build
-# COPY ./ /buildenv/
-# WORKDIR /buildenv/
-# RUN npm run build
+RUN npm run lint
+RUN CI=true npm run test
 
 
-FROM 355508092300.dkr.ecr.us-west-2.amazonaws.com/rex/rex-static-nginx:0.07 AS container
+FROM code as build
+
+WORKDIR /buildenv/
+RUN CI=true npm run build
+
+
+FROM 355508092300.dkr.ecr.us-west-2.amazonaws.com/rex/rex-static-nginx:b-master AS container
 
 WORKDIR /usr/src/app
 COPY --from=build /buildenv/build/ /var/www/site/
