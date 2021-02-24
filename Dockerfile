@@ -20,7 +20,7 @@ FROM code AS test
 
 WORKDIR /buildenv/
 RUN npm run lint
-RUN CI=true npm run test
+RUN CI=true npm run test:coverage
 
 
 FROM code as build

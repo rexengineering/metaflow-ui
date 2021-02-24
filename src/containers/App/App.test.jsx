@@ -2,8 +2,25 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 
-test("renders learn react link", () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe("<App />", () => {
+  it("should render", () => {
+    const { asFragment } = render(<App />);
+    const initialRender = asFragment();
+
+    expect(initialRender).not.toBeNull();
+  });
+
+  it("should match snapshot", () => {
+    const { asFragment } = render(<App />);
+    const initialRender = asFragment();
+
+    expect(initialRender).toMatchSnapshot();
+  });
+
+  it("should render a learn react link", () => {
+    render(<App />);
+    const linkElement = screen.getByRole("link");
+    expect(linkElement).toBeInTheDocument();
+    expect(linkElement).toHaveTextContent(/learn react/i);
+  });
 });
