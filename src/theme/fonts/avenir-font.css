@@ -1,0 +1,58 @@
+/**
+ * @license
+ * MyFonts Webfont Build ID 3609900, 2018-07-13T17:02:56-0400
+ *
+ * The fonts listed in this notice are subject to the End User License
+ * Agreement(s) entered into by the website owner. All other parties are
+ * explicitly restricted from using the Licensed Webfonts(s).
+ *
+ * You may obtain a valid license at the URLs below.
+ *
+ * Webfont: AvenirLT-BookOblique by Linotype
+ * URL: https://www.myfonts.com/fonts/linotype/avenir/pro-45-book-oblique-115678/
+ *
+ * Webfont: AvenirLT-HeavyOblique by Linotype
+ * URL: https://www.myfonts.com/fonts/linotype/avenir/pro-85-heavy-oblique-115678/
+ *
+ * Webfont: AvenirLT-Book by Linotype
+ * URL: https://www.myfonts.com/fonts/linotype/avenir/pro-45-book-115678/
+ *
+ * Webfont: AvenirLT-Heavy by Linotype
+ * URL: https://www.myfonts.com/fonts/linotype/avenir/pro-85-heavy-115678/
+ *
+ *
+ * License: https://www.myfonts.com/viewlicense?type=web&buildid=3609900
+ * Licensed pageviews: 250,000
+ * Webfonts Copyright: Part of the digitally encoded machine readable outline data for producing the Typefaces provided is copyrighted &#x00A9; 1981 - 2007 Linotype GmbH, www.linotype.com. All rights reserved. This software is the property of Linotype GmbH, and may not be repro
+ *
+ * Â© 2018 MyFonts Inc
+*/
+@import url("//hello.myfonts.net/count/370028");
+@font-face {
+  font-display: fallback;
+  font-family: "Avenir";
+  font-style: italic;
+  font-weight: normal;
+  src: url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_0_unhinted_0.woff2") format("woff2"),url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_0_unhinted_0.woff") format("woff"),url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_0_unhinted_0.ttf") format("truetype");
+}
+@font-face {
+  font-display: fallback;
+  font-family: "Avenir";
+  font-style: italic;
+  font-weight: bold;
+  src: url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_1_unhinted_0.woff2") format("woff2"),url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_1_unhinted_0.woff") format("woff"),url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_1_unhinted_0.ttf") format("truetype");
+}
+@font-face {
+  font-display: fallback;
+  font-family: "Avenir";
+  font-style: normal;
+  font-weight: normal;
+  src: url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_2_unhinted_0.woff2") format("woff2"),url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_2_unhinted_0.woff") format("woff"),url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_2_unhinted_0.ttf") format("truetype");
+}
+@font-face {
+  font-display: fallback;
+  font-family: "Avenir";
+  font-style: normal;
+  font-weight: bold;
+  src: url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_3_unhinted_0.woff2") format("woff2"),url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_3_unhinted_0.woff") format("woff"),url("https://cdn.rexhomes.com/assets/fonts/Avenir/370028_3_unhinted_0.ttf") format("truetype");
+}

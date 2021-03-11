@@ -4,24 +4,34 @@ FROM node:14 as base
 FROM base AS reqs
 
 ARG NPM_TOKEN
-COPY package.json /build/
-COPY package-lock.json /build/
-WORKDIR /build/
+COPY package.json /buildenv/
+COPY package-lock.json /buildenv/
+WORKDIR /buildenv/
 RUN npm ci
 
 
-FROM req AS test
-CMD true # nothing to test yet
+FROM reqs as code
+
+COPY /src/ /buildenv/src/
+COPY /public/ /buildenv/public/
 
 
-FROM regs as build
+FROM code AS test
 
-WORKDIR /build/
-RUN npm run build
+WORKDIR /buildenv/
+RUN npm run lint
+RUN CI=true npm run test:coverage
 
 
-FROM privatebin/nginx-fpm-alpine:latest AS container
-COPY conf.php /src/cfg/conf.php
+FROM code as build
+
+WORKDIR /buildenv/
+RUN CI=true npm run build
+
+
+FROM 355508092300.dkr.ecr.us-west-2.amazonaws.com/rex/rex-static-nginx:b-master AS container
 
 WORKDIR /usr/src/app
-COPY --from=build /build/build/ /var/www/site/
+COPY --from=build /buildenv/build/ /var/www/site/
+# COPY env.js.template services.txt /etc/rex/
+ENV LOG_LEVEL=info

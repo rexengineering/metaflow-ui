@@ -1,7 +1,7 @@
 services:
   - name: prism-ui
-    externalPort: '8080'
-    internalPort: '8080'
+    externalPort: '80'
+    internalPort: '80'
 
 ingress:
   enabled: true
