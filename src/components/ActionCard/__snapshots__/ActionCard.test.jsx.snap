@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ActionCard /> should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiCard-root makeStyles-card-2 MuiPaper-elevation1 MuiPaper-rounded"
+  >
+    <p
+      class="MuiTypography-root MuiTypography-body1"
+    />
+  </div>
+</DocumentFragment>
+`;

@@ -3,32 +3,33 @@
 exports[`<App /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="App"
+    class="makeStyles-app-8"
   >
-    <header
-      class="App-header"
+    <section
+      class="makeStyles-container-13 makeStyles-panel-12"
     >
-      <img
-        alt="logo"
-        class="App-logo"
-        src="logo.svg"
+      <section
+        class="makeStyles-container-13 makeStyles-panel-14 makeStyles-tray-9"
       />
-      <p>
-        Edit 
-        <code>
-          src/App.js
-        </code>
-         and save to reload.
-      </p>
-      <a
-        class="App-link"
-        href="https://reactjs.org"
-        rel="noopener noreferrer"
-        target="_blank"
+      <section
+        class="makeStyles-container-13 makeStyles-panel-14 makeStyles-tray-9"
       >
-        Learn React
-      </a>
-    </header>
+        <p
+          class="MuiTypography-root MuiTypography-body1"
+        >
+          Tray 2
+        </p>
+      </section>
+      <section
+        class="makeStyles-container-13 makeStyles-panel-14 makeStyles-tray3-10"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1"
+        >
+          Tray 3
+        </p>
+      </section>
+    </section>
   </div>
 </DocumentFragment>
 `;

@@ -1,19 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import "./theme/fonts/avenir-font.css";
 import { ThemeProvider } from "@material-ui/core/styles";
-import App from "./containers/App";
+import { Provider } from "react-redux";
 import reportWebVitals from "./reportWebVitals";
 import buildTheme from "./theme";
+import getStore from "./store";
+import App from "./containers/App";
 
 const theme = buildTheme();
-
+const store = getStore({});
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

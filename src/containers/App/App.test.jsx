@@ -1,6 +1,11 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import App from "./App";
+
+jest.mock("react-redux", () => ({
+  useSelector: jest.fn(),
+  useDispatch: () => jest.fn(),
+}));
 
 describe("<App />", () => {
   it("should render", () => {
@@ -15,12 +20,5 @@ describe("<App />", () => {
     const initialRender = asFragment();
 
     expect(initialRender).toMatchSnapshot();
-  });
-
-  it("should render a learn react link", () => {
-    render(<App />);
-    const linkElement = screen.getByRole("link");
-    expect(linkElement).toBeInTheDocument();
-    expect(linkElement).toHaveTextContent(/learn react/i);
   });
 });

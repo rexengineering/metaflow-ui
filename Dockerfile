@@ -6,6 +6,7 @@ FROM base AS reqs
 ARG NPM_TOKEN
 COPY package.json /buildenv/
 COPY package-lock.json /buildenv/
+COPY .npmrc /buildenv/
 WORKDIR /buildenv/
 RUN npm ci
 

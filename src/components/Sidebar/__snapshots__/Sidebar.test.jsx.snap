@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SideBar /> should match snapshot 1`] = `
+<DocumentFragment>
+  <nav
+    class="makeStyles-nav-8"
+  >
+    <img
+      alt="Prism"
+      class="makeStyles-logo-9"
+      src="prism.svg"
+    />
+    <section
+      class="makeStyles-menuItems-10"
+    >
+      <button
+        class="MuiButtonBase-root makeStyles-button-11"
+        tabindex="0"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-tachometer-alt-fastest fa-w-18 makeStyles-icon-12 makeStyles-activeIcon-13"
+          data-icon="tachometer-alt-fastest"
+          data-prefix="fal"
+          focusable="false"
+          role="img"
+          viewBox="0 0 576 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M120 320c0 13.26-10.74 24-24 24s-24-10.74-24-24 10.74-24 24-24 24 10.74 24 24zm168-168c13.26 0 24-10.74 24-24s-10.74-24-24-24-24 10.74-24 24 10.74 24 24 24zm136 56c13.26 0 24-10.74 24-24s-10.74-24-24-24-24 10.74-24 24 10.74 24 24 24zm71.78 109.38c1.47 8.72-4.44 16.95-13.16 18.41l-131.2 21.87C348.53 390.3 321.41 416 288 416c-35.35 0-64-28.65-64-64s28.65-64 64-64c26.09 0 48.44 15.66 58.41 38.05l130.97-21.83c8.53-1.49 16.93 4.44 18.4 13.16zM320 352c0-17.67-14.33-32-32-32s-32 14.33-32 32 14.33 32 32 32 32-14.33 32-32zM152 160c-13.26 0-24 10.74-24 24s10.74 24 24 24 24-10.74 24-24-10.74-24-24-24zm424 160c0 52.8-14.25 102.26-39.06 144.8-5.61 9.62-16.3 15.2-27.44 15.2h-443c-11.14 0-21.83-5.58-27.44-15.2C14.25 422.26 0 372.8 0 320 0 160.94 128.94 32 288 32s288 128.94 288 288zm-32 0c0-141.16-114.84-256-256-256S32 178.84 32 320c0 45.26 12 89.75 34.7 128.68l442.8-.68C532 409.75 544 365.26 544 320z"
+            fill="currentColor"
+          />
+        </svg>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+      <button
+        class="MuiButtonBase-root makeStyles-button-11"
+        tabindex="0"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-address-book fa-w-14 makeStyles-icon-12 makeStyles-activeIcon-13"
+          data-icon="address-book"
+          data-prefix="fal"
+          focusable="false"
+          role="img"
+          viewBox="0 0 448 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M436 160c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-20V64c0-35.3-28.7-64-64-64H64C28.7 0 0 28.7 0 64v384c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64v-32h20c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-20v-64h20c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-20v-64h20zm-52 288c0 17.6-14.4 32-32 32H64c-17.6 0-32-14.4-32-32V64c0-17.6 14.4-32 32-32h288c17.6 0 32 14.4 32 32v384zM208 272c44.2 0 80-35.8 80-80s-35.8-80-80-80-80 35.8-80 80 35.8 80 80 80zm0-128c26.5 0 48 21.5 48 48s-21.5 48-48 48-48-21.5-48-48 21.5-48 48-48zm46.8 144c-19.5 0-24.4 7-46.8 7s-27.3-7-46.8-7c-21.2 0-41.8 9.4-53.8 27.4C100.2 326.1 96 339 96 352.9V392c0 4.4 3.6 8 8 8h16c4.4 0 8-3.6 8-8v-39.1c0-7 2.1-13.8 6-19.6 5.6-8.3 15.8-13.2 27.3-13.2 12.4 0 20.8 7 46.8 7 25.9 0 34.3-7 46.8-7 11.5 0 21.7 5 27.3 13.2 3.9 5.8 6 12.6 6 19.6V392c0 4.4 3.6 8 8 8h16c4.4 0 8-3.6 8-8v-39.1c0-13.9-4.2-26.8-11.4-37.5-12.3-18-32.9-27.4-54-27.4z"
+            fill="currentColor"
+          />
+        </svg>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+      <button
+        class="MuiButtonBase-root makeStyles-button-11 Mui-disabled"
+        disabled=""
+        tabindex="-1"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-acorn fa-w-14 makeStyles-icon-12 makeStyles-inactiveIcon-14"
+          data-icon="acorn"
+          data-prefix="fal"
+          focusable="false"
+          role="img"
+          viewBox="0 0 448 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M352 64H241.12c3.32-14.4 9.75-27.88 19.46-39.28 2.77-3.25 2.81-7.98-.21-11L249.04 2.39c-3.22-3.22-8.62-3.23-11.62.2-15.38 17.51-25.27 38.67-29.1 61.41H96c-53.02 0-96 42.98-96 96v32c0 17.67 14.33 32 32 32v32c0 98.06 55.4 187.7 143.11 231.55L224 512l48.89-24.45C360.6 443.7 416 354.06 416 256v-32c17.67 0 32-14.33 32-32v-32c0-53.02-42.98-96-96-96zm32 192c0 86.49-48.06 164.25-125.42 202.93L224 476.22l-34.58-17.29C112.06 420.25 64 342.49 64 256v-32h320v32zm32-64H32v-32c0-35.29 28.71-64 64-64h256c35.29 0 64 28.71 64 64v32z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+    </section>
+  </nav>
+</DocumentFragment>
+`;
