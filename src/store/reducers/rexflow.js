@@ -82,14 +82,14 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       );
     }
     case rexFlowActionTypes.SAVE_TASK_DATA_FAILURE: {
-      const { taskId, error } = payload;
-      return updateTasksState(state, taskId, "error", error);
+      const { taskId, errors } = payload;
+      return updateTasksState(state, taskId, "errors", errors);
     }
     case rexFlowActionTypes.SET_DEPLOYMENT_ID: {
       const { deployments } = payload;
       return {
         ...state,
-        deployments: [...state.deployments, ...deployments],
+        deployments,
       };
     }
     default:

@@ -1,25 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TaskInput /> should match snapshot 1`] = `
+exports[`<TaskFloatField /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
     class="MuiFormControl-root MuiTextField-root"
   >
-    <label
-      class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-filled MuiFormLabel-filled"
-      data-shrink="true"
-    >
-      Some label
-    </label>
     <div
       class="MuiInputBase-root MuiFilledInput-root MuiFilledInput-underline MuiInputBase-formControl"
     >
       <input
         aria-invalid="false"
         class="MuiInputBase-input MuiFilledInput-input"
-        name="756756"
+        name="field"
         type="text"
-        value="Hello"
+        value=""
       />
     </div>
   </div>

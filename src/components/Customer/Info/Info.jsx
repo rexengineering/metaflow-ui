@@ -122,7 +122,9 @@ function Info({
         >
           {Array.isArray(userTypes) &&
             userTypes.map(({ value, label }) => (
-              <MenuItem value={value}>{label}</MenuItem>
+              <MenuItem key={value} value={value}>
+                {label}
+              </MenuItem>
             ))}
         </Select>
         <Button type="submit" name="submit">

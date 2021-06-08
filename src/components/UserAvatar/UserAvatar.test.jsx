@@ -7,9 +7,9 @@ describe("<UserAvatar />", () => {
   const userName = "Gabriel";
   const renderUserAvatar = (
     userProfilePictureURL = null,
-    onClick = null,
-    onStatusChange = null,
-    disabled = "",
+    onClick = () => {},
+    onStatusChange = () => {},
+    disabled = false,
     onClose
   ) => (
     <UserAvatar
@@ -20,7 +20,6 @@ describe("<UserAvatar />", () => {
       onUserAvatarClick={onClick}
       onStatusSelection={onStatusChange}
       onClose={onClose}
-      menuAnchor={React.createRef()}
     />
   );
 
@@ -68,7 +67,7 @@ describe("<UserAvatar />", () => {
         null,
         handleClick,
         handleStatusChange,
-        undefined,
+        false,
         handleOnClose
       )
     );
@@ -79,7 +78,7 @@ describe("<UserAvatar />", () => {
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-/*
+  /*
  it("should handle click event when disabled properly", () => {
     const handleClick = jest.fn();
     render(renderUserAvatar(null, handleClick, null, "true"));
@@ -88,5 +87,5 @@ describe("<UserAvatar />", () => {
     expect(avatar).toBeInTheDocument();
     fireEvent.click(avatar);
     expect(handleClick).toHaveBeenCalledTimes(0);
-  });*/
+  }); */
 });

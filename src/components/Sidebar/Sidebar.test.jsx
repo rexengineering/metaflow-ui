@@ -45,8 +45,9 @@ describe("<SideBar />", () => {
   it("should handle all click events properly", () => {
     const onMenuItemClicked = jest.fn();
     render(renderSideBar(onMenuItemClicked));
-    const activeButtonsCount = menuItems.filter(({ isActive }) => isActive)
-      .length;
+    const activeButtonsCount = menuItems.filter(
+      ({ isActive }) => isActive
+    ).length;
     const buttons = screen.getAllByRole("button");
     buttons.forEach((button) => {
       fireEvent.click(button);

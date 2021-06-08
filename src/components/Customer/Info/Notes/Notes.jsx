@@ -14,6 +14,7 @@ function Notes({ notes, className, onAddIconClicked, onNoteDeleted }) {
       {Array.isArray(notes) &&
         notes.map((note) => (
           <ActionItem
+            key={note}
             label={note}
             actionType={ActionItemDeleteType}
             onAction={onNoteDeleted}

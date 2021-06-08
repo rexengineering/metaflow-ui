@@ -3,7 +3,7 @@
 exports[`<WorkflowInstantiator /> should match snapshot 1`] = `
 <DocumentFragment>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-startButton-2 MuiButton-containedPrimary"
+    class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
     tabindex="0"
     type="button"
   >

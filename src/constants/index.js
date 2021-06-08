@@ -5,7 +5,3 @@ export const ONLINE = "ONLINE";
 export const ActionItemDeleteType = "ActionDeleteType";
 export const ActionItemCheckType = "ActionCheckType";
 export const ActionItemDisplayOnlyType = "ActionDisplayOnlyType";
-
-export const TaskTypes = {
-  text: "TEXT",
-};

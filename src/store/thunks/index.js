@@ -15,8 +15,8 @@ import {
 import {
   getTasks,
   startWorkflow,
-  finishTask,
   getAvailableDeployments,
+  finishTask,
 } from "../queries";
 import { convertFormToQueryPayload } from "../../utils/tasks";
 import { buildTaskIdentifier } from "../selectors";
@@ -55,11 +55,17 @@ export const getDeploymentId = () => async (dispatch) => {
   const { data } = await apolloClient.query({
     query: getAvailableDeployments,
   });
+
   const {
-    workflows: {
-      available: [{ deployments }],
-    },
+    workflows: { available },
   } = data;
+
+  if (!available || !available?.length) {
+    dispatch(setDeploymentId([]));
+    return;
+  }
+
+  const [{ deployments }] = available;
   dispatch(setDeploymentId(deployments ?? []));
 };
 
@@ -97,15 +103,20 @@ export const completeTask = (formFields, task) => async (dispatch) => {
 
   try {
     dispatch(setSaveTaskDataIsLoading(taskIdentifier, true));
-    await apolloClient.mutate({
+    const result = await apolloClient.mutate({
       mutation: finishTask,
       variables: {
         completeTasksInput: tasksPayload,
       },
     });
-    dispatch(setIsTaskCompleted(taskIdentifier, true));
+    const { status, errors } = result?.data?.workflow?.tasks?.complete;
+    if (status === "FAILURE") {
+      dispatch(saveTaskDataFailure(taskIdentifier, errors));
+    } else {
+      dispatch(setIsTaskCompleted(taskIdentifier, true));
+    }
   } catch (error) {
-    dispatch(saveTaskDataFailure(error));
+    dispatch(saveTaskDataFailure(taskIdentifier, error));
     dispatch(setIsTaskCompleted(taskIdentifier, false));
   }
   dispatch(setSaveTaskDataIsLoading(taskIdentifier, false));

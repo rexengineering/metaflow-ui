@@ -51,3 +51,9 @@ export const selectDeployments = createSelector(
   [rexFlowSelector],
   ({ deployments }) => deployments
 );
+
+export const selectValidationErrors = (task) =>
+  createSelector(
+    [rexFlowSelector],
+    ({ tasksState }) => tasksState[buildTaskIdentifier(task)]?.errors ?? null
+  );

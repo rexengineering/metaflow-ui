@@ -12,6 +12,7 @@ import {
   userTypesShape,
 } from "../../utils/shapes";
 import TabPanel from "../TabPanel";
+import fontAwesomeIcon from "../../utils/propsValidators";
 
 const useCustomerStyles = makeStyles((theme) => ({
   root: {
@@ -122,7 +123,7 @@ Customer.propTypes = {
     PropTypes.shape({
       label: PropTypes.string,
       date: PropTypes.string,
-      icon: PropTypes.node,
+      icon: fontAwesomeIcon,
       color: PropTypes.string,
     })
   ).isRequired,

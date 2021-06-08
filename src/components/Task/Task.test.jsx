@@ -1,9 +1,9 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { TaskTypes } from "../../constants";
 import Task from "./Task";
 import getStore from "../../store";
+import { TEXT } from "../../constants/taskTypes";
 
 describe("<Task />", () => {
   const props = {
@@ -19,7 +19,7 @@ describe("<Task />", () => {
           encrypted: false,
           label: "Name",
           order: 1,
-          type: TaskTypes.text,
+          type: TEXT,
           validators: [
             {
               constraint: "",

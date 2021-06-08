@@ -84,8 +84,11 @@ export const finishTask = gql`
           }
           errors {
             __typename
-            ... on ProblemInterface {
+            ... on ValidationProblem {
               message
+              iid
+              tid
+              dataId
             }
           }
         }

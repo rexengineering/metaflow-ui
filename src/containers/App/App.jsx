@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { makeStyles, Typography } from "@material-ui/core";
+import { Button, makeStyles, Typography } from "@material-ui/core";
 import Pane from "../../components/Pane";
 import Tray from "../../components/Tray";
 import { fetchTasks, getDeploymentId } from "../../store/thunks";
@@ -10,6 +10,7 @@ import {
 } from "../../store/selectors";
 import Workflow from "../../components/Workflow";
 import WorkflowInstantiator from "../../components/WorkflowInstantiator";
+import ActionCard from "../../components/ActionCard";
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   tray: {
-    width: "20%",
+    width: "30%",
   },
   tray3: {
     width: "60%",
@@ -27,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.paper,
     padding: theme.spacing(2),
   },
+  button: {
+    marginTop: theme.spacing(2),
+    display: "block",
+  },
 }));
 
 function App() {
@@ -34,13 +39,22 @@ function App() {
   const activeWorkflows = useSelector(selectActiveWorkflows);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const areDeploymentsUnavailable =
+    Array.isArray(deployments) && !deployments.length;
+  const [isAutomaticState, setIsAutomaticState] = useState(false);
 
   useEffect(() => dispatch(getDeploymentId()), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    const interval = setInterval(() => dispatch(fetchTasks()), 5000);
-    return () => clearInterval(interval);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (isAutomaticState) {
+      const interval = setInterval(() => dispatch(fetchTasks()), 500);
+      return () => clearInterval(interval);
+    }
+    return () => {};
+  }, [isAutomaticState]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (areDeploymentsUnavailable)
+    return <Typography>There are no deployments available</Typography>;
 
   return (
     <div className={classes.app}>
@@ -48,8 +62,31 @@ function App() {
         <Tray className={classes.tray}>
           {Array.isArray(deployments) &&
             deployments.map((deploymentID) => (
-              <WorkflowInstantiator deploymentID={deploymentID} />
+              <WorkflowInstantiator
+                key={deploymentID}
+                deploymentID={deploymentID}
+              />
             ))}
+          <Button
+            color="secondary"
+            type="button"
+            variant="contained"
+            onClick={() => dispatch(fetchTasks())}
+            className={classes.button}
+          >
+            Update state
+          </Button>
+          <Button
+            variant="contained"
+            type="button"
+            onClick={() => setIsAutomaticState(!isAutomaticState)}
+            className={classes.button}
+          >
+            Toggle automatic state
+          </Button>
+          <Typography>
+            Automatic state fetching is {isAutomaticState ? "On" : "Off"}
+          </Typography>
         </Tray>
         <Tray className={classes.tray}>
           <Typography>Tray 2</Typography>
@@ -58,7 +95,12 @@ function App() {
           <Typography>Tray 3</Typography>
           {Array.isArray(activeWorkflows) &&
             activeWorkflows.map((workflowID) => (
-              <Workflow className={classes.workflow} workflowID={workflowID} />
+              <ActionCard className={classes.button} key={workflowID}>
+                <Workflow
+                  className={classes.workflow}
+                  workflowID={workflowID}
+                />
+              </ActionCard>
             ))}
         </Tray>
       </Pane>

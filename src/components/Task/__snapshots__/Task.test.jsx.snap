@@ -3,31 +3,35 @@
 exports[`<Task /> should match snapshot 1`] = `
 <DocumentFragment>
   <form
-    class="makeStyles-form-3"
+    class="makeStyles-form-6"
   >
-    <div
-      class="MuiFormControl-root MuiTextField-root"
+    <section
+      class="makeStyles-field-8"
     >
-      <label
-        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-filled MuiFormLabel-filled"
-        data-shrink="true"
-      >
-        Name
-      </label>
       <div
-        class="MuiInputBase-root MuiFilledInput-root MuiFilledInput-underline MuiInputBase-formControl"
+        class="MuiFormControl-root MuiTextField-root"
       >
-        <input
-          aria-invalid="false"
-          class="MuiInputBase-input MuiFilledInput-input"
-          name="name"
-          type="text"
-          value="Gabriel"
-        />
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-filled MuiFormLabel-filled"
+          data-shrink="true"
+        >
+          Name
+        </label>
+        <div
+          class="MuiInputBase-root MuiFilledInput-root MuiFilledInput-underline MuiInputBase-formControl"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiFilledInput-input"
+            name="name"
+            type="text"
+            value="Gabriel"
+          />
+        </div>
       </div>
-    </div>
+    </section>
     <button
-      class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-submitButton-4 MuiButton-containedSecondary"
+      class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-submitButton-7 MuiButton-containedSecondary"
       tabindex="0"
       type="submit"
     >

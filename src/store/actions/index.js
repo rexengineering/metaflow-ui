@@ -52,9 +52,9 @@ export const setIsTaskCompleted = (taskId, isTaskCompleted) => ({
   payload: { taskId, isTaskCompleted },
 });
 
-export const saveTaskDataFailure = (taskId, error) => ({
+export const saveTaskDataFailure = (taskId, errors) => ({
   type: rexFlowActionTypes.SAVE_TASK_DATA_FAILURE,
-  payload: { taskId, error },
+  payload: { taskId, errors },
 });
 
 export const setDeploymentId = (deployments) => ({

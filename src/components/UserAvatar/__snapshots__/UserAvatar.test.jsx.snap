@@ -16,7 +16,7 @@ exports[`<UserAvatar /> should match snapshot 1`] = `
         G
       </div>
       <span
-        class="MuiBadge-badge MuiBadge-anchorOriginTopRightCircle MuiBadge-dot"
+        class="MuiBadge-badge MuiBadge-anchorOriginTopRightCircle MuiBadge-colorPrimary MuiBadge-dot"
       />
     </span>
     <span

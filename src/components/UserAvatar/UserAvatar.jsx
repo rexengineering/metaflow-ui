@@ -1,5 +1,5 @@
 import React from "react";
-import {Avatar, Badge, ButtonBase, makeStyles, useTheme} from "@material-ui/core";
+import { Avatar, Badge, ButtonBase, makeStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { BUSY, OFFLINE, ONLINE } from "../../constants";
 import UserMenu from "./UserMenu";
@@ -26,11 +26,10 @@ function UserAvatar({
   menuAnchor,
 }) {
   const classes = useStyles();
-  const { palette } = useTheme();
   const statuses = {
-    [ONLINE]: palette.primary.main,
-    [OFFLINE]: palette.background.default,
-    [BUSY]: palette.miscellaneous1?.main,
+    [ONLINE]: "primary",
+    [OFFLINE]: "secondary",
+    [BUSY]: "default",
   };
   const userNameAvatar = username?.charAt(0);
   return (
@@ -61,7 +60,7 @@ function UserAvatar({
 
 UserAvatar.defaultProps = {
   userProfilePhotoURL: "",
-  isDisabled: "",
+  isDisabled: false,
   onUserAvatarClick: null,
   onStatusSelection: null,
   onClose: null,
@@ -72,7 +71,7 @@ UserAvatar.propTypes = {
   currentStatus: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   userProfilePhotoURL: PropTypes.string,
-  isDisabled: PropTypes.string,
+  isDisabled: PropTypes.bool,
   onUserAvatarClick: PropTypes.func,
   onStatusSelection: PropTypes.func,
   onClose: PropTypes.func,

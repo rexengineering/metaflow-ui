@@ -3,16 +3,50 @@
 exports[`<App /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="makeStyles-app-8"
+    class="makeStyles-app-9"
   >
     <section
-      class="makeStyles-container-13 makeStyles-panel-12"
+      class="makeStyles-container-15 makeStyles-panel-14"
     >
       <section
-        class="makeStyles-container-13 makeStyles-panel-14 makeStyles-tray-9"
-      />
+        class="makeStyles-container-15 makeStyles-panel-16 makeStyles-tray-10"
+      >
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-13 MuiButton-containedSecondary"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Update state
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-13"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Toggle automatic state
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <p
+          class="MuiTypography-root MuiTypography-body1"
+        >
+          Automatic state fetching is Off
+        </p>
+      </section>
       <section
-        class="makeStyles-container-13 makeStyles-panel-14 makeStyles-tray-9"
+        class="makeStyles-container-15 makeStyles-panel-16 makeStyles-tray-10"
       >
         <p
           class="MuiTypography-root MuiTypography-body1"
@@ -21,7 +55,7 @@ exports[`<App /> should match snapshot 1`] = `
         </p>
       </section>
       <section
-        class="makeStyles-container-13 makeStyles-panel-14 makeStyles-tray3-10"
+        class="makeStyles-container-15 makeStyles-panel-16 makeStyles-tray3-11"
       >
         <p
           class="MuiTypography-root MuiTypography-body1"

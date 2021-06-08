@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor, screen } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import React from "react";
 import { MockedClientInfo, MockedUserTypes } from "./mockData";
 import MockedManagerInfo from "./AccountManagerInfo/mockData";
@@ -8,14 +8,10 @@ import MockedTagsInfo from "./Tags/mockData";
 import Info from "./Info";
 
 describe("<Info />", () => {
-  const renderInfoComponent = (
-    customerInfo = MockedClientInfo,
-    onInfoSubmit = () => {}
-  ) => {
-    const { name, type, email, phone, mobile } = customerInfo;
+  const renderInfoComponent = (onInfoSubmit = () => {}) => {
     return (
       <Info
-        customerInfo={{ name, type, email, phone, mobile }}
+        customerInfo={MockedClientInfo}
         managerInfo={MockedManagerInfo}
         nextSteps={MockedNextStepsInfo}
         notes={MockedNotesInfo}
@@ -41,7 +37,7 @@ describe("<Info />", () => {
   });
 
   it("should handle data change for form inputs properly", async () => {
-    const { container } = render(renderInfoComponent("", "", "", "", ""));
+    const { container } = render(renderInfoComponent());
     const nameInput = container.querySelector("[name='name']");
     const emailInput = container.querySelector("[name='email']");
     const phoneInput = container.querySelector("[name='phone']");
@@ -64,24 +60,5 @@ describe("<Info />", () => {
     expect(emailInput.value).toBe(MockedClientInfo.email);
     expect(phoneInput.value).toBe(MockedClientInfo.phone);
     expect(mobileInput.value).toBe(MockedClientInfo.mobile);
-  });
-
-  it("should display error messages properly", async () => {
-    const name = "";
-    const type = "";
-    const email = "";
-    const phone = "";
-    const mobile = "";
-    render(renderInfoComponent({ name, type, email, phone, mobile }));
-    const submitButton = screen.getByText("Save");
-    fireEvent.click(submitButton);
-    await waitFor(() => {
-      expect(screen.getByText("name is a required field")).toBeInTheDocument();
-      expect(screen.getByText("phone is a required field")).toBeInTheDocument();
-      expect(screen.getByText("email is a required field")).toBeInTheDocument();
-      expect(
-        screen.getByText("mobile is a required field")
-      ).toBeInTheDocument();
-    });
   });
 });
