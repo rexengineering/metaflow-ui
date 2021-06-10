@@ -32,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     display: "block",
   },
+  iframe: {
+    width: "100%",
+    height: "100%",
+    border: "none",
+  },
 }));
 
 function App() {
@@ -90,6 +95,11 @@ function App() {
         </Tray>
         <Tray className={classes.tray}>
           <Typography>Tray 2</Typography>
+          <iframe
+            title="Twilio Flex"
+            src="https://flex.twilio.com/admin/"
+            className={classes.iframe}
+          />
         </Tray>
         <Tray className={classes.tray3}>
           <Typography>Tray 3</Typography>

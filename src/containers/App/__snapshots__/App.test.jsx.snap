@@ -3,16 +3,16 @@
 exports[`<App /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="makeStyles-app-9"
+    class="makeStyles-app-10"
   >
     <section
-      class="makeStyles-container-15 makeStyles-panel-14"
+      class="makeStyles-container-17 makeStyles-panel-16"
     >
       <section
-        class="makeStyles-container-15 makeStyles-panel-16 makeStyles-tray-10"
+        class="makeStyles-container-17 makeStyles-panel-18 makeStyles-tray-11"
       >
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-13 MuiButton-containedSecondary"
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-14 MuiButton-containedSecondary"
           tabindex="0"
           type="button"
         >
@@ -26,7 +26,7 @@ exports[`<App /> should match snapshot 1`] = `
           />
         </button>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-13"
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-14"
           tabindex="0"
           type="button"
         >
@@ -46,16 +46,21 @@ exports[`<App /> should match snapshot 1`] = `
         </p>
       </section>
       <section
-        class="makeStyles-container-15 makeStyles-panel-16 makeStyles-tray-10"
+        class="makeStyles-container-17 makeStyles-panel-18 makeStyles-tray-11"
       >
         <p
           class="MuiTypography-root MuiTypography-body1"
         >
           Tray 2
         </p>
+        <iframe
+          class="makeStyles-iframe-15"
+          src="https://flex.twilio.com/admin/"
+          title="Twilio Flex"
+        />
       </section>
       <section
-        class="makeStyles-container-15 makeStyles-panel-16 makeStyles-tray3-11"
+        class="makeStyles-container-17 makeStyles-panel-18 makeStyles-tray3-12"
       >
         <p
           class="MuiTypography-root MuiTypography-body1"
