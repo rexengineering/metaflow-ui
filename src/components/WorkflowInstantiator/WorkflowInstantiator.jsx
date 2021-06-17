@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { initWorkflow } from "../../store/thunks";
+import { initWorkflow } from "../../store/thunks/thunks";
 import ActionButton from "../ActionButton";
 import { selectIsWorkflowBeingInitialized } from "../../store/selectors";
 

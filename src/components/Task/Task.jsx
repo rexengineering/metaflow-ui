@@ -15,7 +15,7 @@ import {
   selectIsTaskCompleted,
   selectValidationErrors,
 } from "../../store/selectors";
-import { completeTask } from "../../store/thunks";
+import { completeTask } from "../../store/thunks/thunks";
 import {
   convertTaskFieldsToFormUtils,
   convertValidationErrorsTo,

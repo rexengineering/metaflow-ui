@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, makeStyles, Typography } from "@material-ui/core";
 import Pane from "../../components/Pane";
 import Tray from "../../components/Tray";
-import { fetchTasks, getDeploymentId } from "../../store/thunks";
+import { fetchTasks } from "../../store/thunks/thunks";
+import getDeploymentId from "../../store/thunks/getDeploymentId";
 import {
   selectActiveWorkflows,
   selectDeployments,

@@ -10,14 +10,8 @@ import {
   fetchTasksSuccess,
   setFetchTasksIsLoading,
   fetchTasksFailure,
-  setDeploymentId,
 } from "../actions";
-import {
-  getTasks,
-  startWorkflow,
-  getAvailableDeployments,
-  finishTask,
-} from "../queries";
+import { getTasks, startWorkflow, finishTask } from "../queries";
 import { convertFormToQueryPayload } from "../../utils/tasks";
 import { buildTaskIdentifier } from "../selectors";
 
@@ -26,7 +20,8 @@ const defaultOptions = {
     fetchPolicy: "network-only",
   },
 };
-const apolloClient = new ApolloClient({
+
+export const apolloClient = new ApolloClient({
   uri: "http://localhost:8000/query/",
   cache: new InMemoryCache(),
   defaultOptions,
@@ -49,24 +44,6 @@ export const fetchTasks = () => async (dispatch) => {
     dispatch(fetchTasksFailure(e)); // pending reducer change
   }
   dispatch(setFetchTasksIsLoading(false));
-};
-
-export const getDeploymentId = () => async (dispatch) => {
-  const { data } = await apolloClient.query({
-    query: getAvailableDeployments,
-  });
-
-  const {
-    workflows: { available },
-  } = data;
-
-  if (!available || !available?.length) {
-    dispatch(setDeploymentId([]));
-    return;
-  }
-
-  const [{ deployments }] = available;
-  dispatch(setDeploymentId(deployments ?? []));
 };
 
 export const initWorkflow = (did) => async (dispatch) => {
