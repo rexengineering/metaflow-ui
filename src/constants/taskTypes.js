@@ -6,7 +6,10 @@ import TaskCurrencyField from "../components/fields/TaskCurrencyField";
 import TaskCheckboxField from "../components/fields/TaskCheckboxField";
 import TaskIntegerField from "../components/fields/TaskIntegerField";
 import TaskFloatField from "../components/fields/TaskFloatField";
+import TaskTableField from "../components/fields/TaskTableField";
+import TaskTypographyField from "../components/fields/TaskTypographyField";
 
+// Inputs
 export const TEXT = "TEXT";
 export const PHONE_NUMBER = "PHONE_NUMBER";
 export const PERCENTAGE = "PERCENTAGE";
@@ -14,6 +17,26 @@ export const CURRENCY = "CURRENCY";
 export const BOOLEAN = "BOOLEAN";
 export const INTEGER = "INTEGER";
 export const FLOAT = "FLOAT";
+
+export function isInputType(field) {
+  return [
+    TEXT,
+    PHONE_NUMBER,
+    PERCENTAGE,
+    CURRENCY,
+    BOOLEAN,
+    INTEGER,
+    FLOAT,
+  ].includes(field);
+}
+
+// Info
+export const TABLE = "TABLE";
+export const COPY = "COPY";
+
+export function isInfoType(type) {
+  return [TABLE, COPY].includes(type);
+}
 
 export const componentMapping = {
   TEXT: TaskTextField,
@@ -23,6 +46,8 @@ export const componentMapping = {
   BOOLEAN: TaskCheckboxField,
   INTEGER: TaskIntegerField,
   FLOAT: TaskFloatField,
+  TABLE: TaskTableField,
+  COPY: TaskTypographyField,
 };
 
 export const validationSchemaMapping = {
@@ -43,4 +68,6 @@ export default {
   BOOLEAN,
   INTEGER,
   FLOAT,
+  TABLE,
+  COPY,
 };

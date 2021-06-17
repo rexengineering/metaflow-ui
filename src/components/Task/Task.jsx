@@ -21,6 +21,7 @@ import {
   convertValidationErrorsTo,
 } from "../../utils/tasks";
 import useValidateField from "../../utils/makeValidateField";
+import { isInfoType, isInputType } from "../../constants/taskTypes";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -95,17 +96,30 @@ function Task({ className, task }) {
       {({ handleSubmit }) => (
         <form onSubmit={handleSubmit} className={classes.form}>
           {Array.isArray(data) &&
-            data.map(({ dataId, label, type }) => (
-              <section key={dataId} className={classes.field}>
-                <TaskField
-                  key={dataId}
-                  type={type}
-                  id={dataId}
-                  label={label}
-                  validateFn={validateField}
-                />
-              </section>
-            ))}
+            data.map((field) => {
+              if (isInputType(field?.type)) {
+                const { dataId, label, type } = field;
+                return (
+                  <div key={dataId} className={classes.field}>
+                    <TaskField
+                      type={type}
+                      id={dataId}
+                      label={label}
+                      validateFn={validateField}
+                    />
+                  </div>
+                );
+              }
+              if (isInfoType(field?.type)) {
+                const { data: fieldData, type, variant } = field;
+                return (
+                  <div key={data}>
+                    <TaskField type={type} data={fieldData} variant={variant} />
+                  </div>
+                );
+              }
+              return <></>;
+            })}
           <Button
             className={classes.submitButton}
             type="submit"

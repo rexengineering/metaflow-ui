@@ -52,6 +52,7 @@ export const getTasks = gql`
               type
               constraint
             }
+            variant
           }
         }
       }
