@@ -1,7 +1,7 @@
-FROM node:14 as base
+FROM node:14 as start
 
 
-FROM base AS reqs
+FROM start AS reqs
 
 ARG NPM_TOKEN
 COPY package.json /buildenv/
@@ -11,23 +11,28 @@ WORKDIR /buildenv/
 RUN npm ci
 
 
-FROM reqs as code
+FROM reqs as base
 
 COPY /src/ /buildenv/src/
 COPY /public/ /buildenv/public/
 
 
-FROM code AS test
-
-WORKDIR /buildenv/
-RUN npm run lint
-RUN CI=true npm run test:coverage
-
-
-FROM code as build
+FROM base as build
 
 WORKDIR /buildenv/
 RUN CI=true npm run build
+
+
+FROM base as lint
+
+WORKDIR /buildenv/
+RUN npm run lint
+
+
+FROM base AS test
+
+WORKDIR /buildenv/
+RUN CI=true npm run test:coverage
 
 
 FROM 355508092300.dkr.ecr.us-west-2.amazonaws.com/rex/rex-static-nginx:b-master AS container
