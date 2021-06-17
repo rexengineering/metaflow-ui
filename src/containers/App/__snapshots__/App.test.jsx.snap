@@ -3,16 +3,64 @@
 exports[`<App /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="makeStyles-app-9"
+    class="makeStyles-app-15"
   >
+    <div
+      class="MuiDrawer-root MuiDrawer-docked makeStyles-nav-20"
+      component="nav"
+    >
+      <div
+        class="MuiPaper-root MuiDrawer-paper makeStyles-drawer-21 MuiDrawer-paperAnchorLeft MuiDrawer-paperAnchorDockedLeft MuiPaper-elevation0"
+      >
+        <img
+          alt="Prism"
+          class="makeStyles-logo-22"
+          src="prism.svg"
+        />
+        <ul
+          class="MuiList-root makeStyles-list-23 MuiList-padding"
+        >
+          <div
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiListItem-root MuiListItem-gutters MuiListItem-button"
+            data-testid="menu-item"
+            role="button"
+            tabindex="0"
+          >
+            <div
+              class="MuiListItemIcon-root makeStyles-icon-24"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-comment-alt fa-w-16 makeStyles-activeItem-25"
+                data-icon="comment-alt"
+                data-prefix="fal"
+                focusable="false"
+                role="img"
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 7.1 5.8 12 12 12 2.4 0 4.9-.7 7.1-2.4L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm32 352c0 17.6-14.4 32-32 32H293.3l-8.5 6.4L192 460v-76H64c-17.6 0-32-14.4-32-32V64c0-17.6 14.4-32 32-32h384c17.6 0 32 14.4 32 32v288z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </div>
+        </ul>
+      </div>
+    </div>
     <section
-      class="makeStyles-container-15 makeStyles-panel-14"
+      class="makeStyles-container-27 makeStyles-panel-26"
     >
       <section
-        class="makeStyles-container-15 makeStyles-panel-16 makeStyles-tray-10"
+        class="makeStyles-container-27 makeStyles-panel-28 makeStyles-tray-16"
       >
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-13 MuiButton-containedSecondary"
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-19 MuiButton-containedSecondary"
           tabindex="0"
           type="button"
         >
@@ -26,7 +74,7 @@ exports[`<App /> should match snapshot 1`] = `
           />
         </button>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-13"
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-19"
           tabindex="0"
           type="button"
         >
@@ -46,7 +94,7 @@ exports[`<App /> should match snapshot 1`] = `
         </p>
       </section>
       <section
-        class="makeStyles-container-15 makeStyles-panel-16 makeStyles-tray-10"
+        class="makeStyles-container-27 makeStyles-panel-28 makeStyles-tray-16"
       >
         <p
           class="MuiTypography-root MuiTypography-body1"
@@ -55,7 +103,7 @@ exports[`<App /> should match snapshot 1`] = `
         </p>
       </section>
       <section
-        class="makeStyles-container-15 makeStyles-panel-16 makeStyles-tray3-11"
+        class="makeStyles-container-27 makeStyles-panel-28 makeStyles-tray3-17"
       >
         <p
           class="MuiTypography-root MuiTypography-body1"

@@ -5,18 +5,15 @@ import { faAcorn } from "@fortawesome/pro-light-svg-icons/faAcorn";
 const menuItems = [
   {
     icon: faTachometerAltFastest,
-    isActive: true,
-    key: "XXXXX",
+    id: "XXXXX",
   },
   {
     icon: faAddressBook,
-    isActive: true,
-    key: "YYYYY",
+    id: "YYYYY",
   },
   {
     icon: faAcorn,
-    isActive: false,
-    key: "EEEEEE",
+    id: "EEEEEE",
   },
 ];
 

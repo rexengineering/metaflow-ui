@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import SideBar from "./Sidebar";
-import svgLogo from "../../assets/prism.svg";
+import svgLogo from "../../../public/prism.svg";
 import menuItems from "./mockData";
 
 describe("<SideBar />", () => {
@@ -9,6 +9,7 @@ describe("<SideBar />", () => {
     <SideBar
       onMenuItemClicked={onMenuItemClicked}
       logo={svgLogo}
+      activeMenuItemId={menuItems[0].id}
       menuItems={menuItems}
     />
   );
@@ -45,13 +46,10 @@ describe("<SideBar />", () => {
   it("should handle all click events properly", () => {
     const onMenuItemClicked = jest.fn();
     render(renderSideBar(onMenuItemClicked));
-    const activeButtonsCount = menuItems.filter(
-      ({ isActive }) => isActive
-    ).length;
-    const buttons = screen.getAllByRole("button");
-    buttons.forEach((button) => {
-      fireEvent.click(button);
+    const items = screen.getAllByTestId("menu-item");
+    items.forEach((item) => {
+      fireEvent.click(item);
     });
-    expect(onMenuItemClicked).toHaveBeenCalledTimes(activeButtonsCount);
+    expect(onMenuItemClicked).toHaveBeenCalledTimes(menuItems.length);
   });
 });

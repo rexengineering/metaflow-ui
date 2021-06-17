@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, makeStyles, Typography } from "@material-ui/core";
+import { faCommentAlt } from "@fortawesome/pro-light-svg-icons";
 import Pane from "../../components/Pane";
 import Tray from "../../components/Tray";
 import { fetchTasks } from "../../store/thunks/thunks";
@@ -12,6 +13,7 @@ import {
 import Workflow from "../../components/Workflow";
 import WorkflowInstantiator from "../../components/WorkflowInstantiator";
 import ActionCard from "../../components/ActionCard";
+import SideBar from "../../components/Sidebar";
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -59,6 +61,12 @@ function App() {
 
   return (
     <div className={classes.app}>
+      <SideBar
+        onMenuItemClicked={(item) => console.log("Menu item clicked: ", item)}
+        logo="prism.svg"
+        menuItems={[{ id: "1", isActive: true, icon: faCommentAlt }]}
+        activeMenuItemId="1"
+      />
       <Pane>
         <Tray className={classes.tray}>
           {Array.isArray(deployments) &&
