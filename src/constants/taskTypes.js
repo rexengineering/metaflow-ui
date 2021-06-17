@@ -1,13 +1,4 @@
 import { string, number, boolean } from "yup";
-import TaskTextField from "../components/fields/TaskTextField";
-import TaskPhoneField from "../components/fields/TaskPhoneField";
-import TaskPercentField from "../components/fields/TaskPercentField";
-import TaskCurrencyField from "../components/fields/TaskCurrencyField";
-import TaskCheckboxField from "../components/fields/TaskCheckboxField";
-import TaskIntegerField from "../components/fields/TaskIntegerField";
-import TaskFloatField from "../components/fields/TaskFloatField";
-import TaskTableField from "../components/fields/TaskTableField";
-import TaskTypographyField from "../components/fields/TaskTypographyField";
 
 // Inputs
 export const TEXT = "TEXT";
@@ -38,26 +29,20 @@ export function isInfoType(type) {
   return [TABLE, COPY].includes(type);
 }
 
-export const componentMapping = {
-  TEXT: TaskTextField,
-  PHONE_NUMBER: TaskPhoneField,
-  PERCENTAGE: TaskPercentField,
-  CURRENCY: TaskCurrencyField,
-  BOOLEAN: TaskCheckboxField,
-  INTEGER: TaskIntegerField,
-  FLOAT: TaskFloatField,
-  TABLE: TaskTableField,
-  COPY: TaskTypographyField,
-};
+const numberValidationMessage = "Please enter a number";
 
 export const validationSchemaMapping = {
-  TEXT: string(),
-  PHONE_NUMBER: string().length(10),
-  PERCENTAGE: number(),
-  CURRENCY: number(),
+  TEXT: string("Please enter a value"),
+  PHONE_NUMBER: string("Please enter a value").length(10),
+  PERCENTAGE: number(numberValidationMessage).typeError(
+    numberValidationMessage
+  ),
+  CURRENCY: number(numberValidationMessage).typeError(numberValidationMessage),
   BOOLEAN: boolean(),
-  INTEGER: number().integer(),
-  FLOAT: number(),
+  INTEGER: number(numberValidationMessage)
+    .typeError(numberValidationMessage)
+    .integer(),
+  FLOAT: number(numberValidationMessage).typeError(numberValidationMessage),
 };
 
 export default {

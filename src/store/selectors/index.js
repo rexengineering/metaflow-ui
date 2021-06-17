@@ -57,3 +57,10 @@ export const selectValidationErrors = (task) =>
     [rexFlowSelector],
     ({ tasksState }) => tasksState[buildTaskIdentifier(task)]?.errors ?? null
   );
+
+export const selectExceptionError = (task) =>
+  createSelector(
+    [rexFlowSelector],
+    ({ tasksState }) =>
+      tasksState[buildTaskIdentifier(task)]?.exceptionError ?? null
+  );

@@ -1,31 +1,21 @@
-import React, { useCallback } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { InputAdornment, TextField } from "@material-ui/core";
 import { useField } from "formik";
 import CleaveInput from "../CleaveInput";
 import { currencyOptions } from "../../../constants/cleaveOptions";
+import useFieldHandlers from "../../../utils/useFieldHandlers";
 
 function TaskCurrencyField({ name, validateFn, ...passProps }) {
   const [field, { error, touched }, { setValue, setTouched, setError }] =
     useField(name);
-
-  const onChange = useCallback(
-    (event) => {
-      const value = event?.target?.rawValue;
-      setValue(value);
-      validateFn(name, value, setError);
-    },
-    [name, setError, setValue, validateFn]
-  );
-
-  const onBlur = useCallback(
-    (event) => {
-      const value = event?.target?.rawValue;
-      setTouched(true);
-      validateFn(name, value, setError);
-    },
-    [name, setError, setTouched, validateFn]
-  );
+  const { onChange, onBlur } = useFieldHandlers({
+    setValue,
+    validateFn,
+    name,
+    setError,
+    setTouched,
+  });
 
   return (
     <TextField

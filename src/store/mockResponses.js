@@ -6,9 +6,11 @@ export const error = {
 export const getAvailableDeployments = {
   data: {
     workflows: {
-      available: [{
-        deployments: ["id1", "id2"],
-      }],
+      available: [
+        {
+          deployments: ["id1", "id2"],
+        },
+      ],
     },
   },
 };

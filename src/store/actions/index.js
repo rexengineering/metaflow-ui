@@ -8,6 +8,7 @@ export const rexFlowActionTypes = {
   SAVE_TASK_DATA_IS_LOADING: "SAVE_TASK_DATA_IS_LOADING",
   SAVE_TASK_DATA_SUCCESS: "SAVE_TASK_DATA_SUCCESS",
   SAVE_TASK_DATA_FAILURE: "SAVE_TASK_DATA_FAILURE",
+  SAVE_TASK_DATA_EXCEPTION: "SAVE_TASK_DATA_EXCEPTION",
   IS_TASK_COMPLETED: "IS_TASK_COMPLETED",
   SET_DEPLOYMENT_ID: "SET_DEPLOYMENT_ID",
 };
@@ -55,6 +56,11 @@ export const setIsTaskCompleted = (taskId, isTaskCompleted) => ({
 export const saveTaskDataFailure = (taskId, errors) => ({
   type: rexFlowActionTypes.SAVE_TASK_DATA_FAILURE,
   payload: { taskId, errors },
+});
+
+export const saveTaskDataException = (taskId, errorMessage) => ({
+  type: rexFlowActionTypes.SAVE_TASK_DATA_EXCEPTION,
+  payload: { taskId, errorMessage },
 });
 
 export const setDeploymentId = (deployments) => ({

@@ -10,6 +10,7 @@ import {
   fetchTasksSuccess,
   setFetchTasksIsLoading,
   fetchTasksFailure,
+  saveTaskDataException,
 } from "../actions";
 import { getTasks, startWorkflow, finishTask } from "../queries";
 import { convertFormToQueryPayload } from "../../utils/tasks";
@@ -93,7 +94,9 @@ export const completeTask = (formFields, task) => async (dispatch) => {
       dispatch(setIsTaskCompleted(taskIdentifier, true));
     }
   } catch (error) {
-    dispatch(saveTaskDataFailure(taskIdentifier, error));
+    dispatch(
+      saveTaskDataException(taskIdentifier, "There was an unexpected error.")
+    );
     dispatch(setIsTaskCompleted(taskIdentifier, false));
   }
   dispatch(setSaveTaskDataIsLoading(taskIdentifier, false));

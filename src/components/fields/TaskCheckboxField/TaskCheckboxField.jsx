@@ -23,7 +23,7 @@ function TaskCheckboxField({ name, label, validateFn, ...passProps }) {
 
   const onChange = useCallback(
     (event) => {
-      const value = event?.target?.rawValue;
+      const value = event?.target?.checked;
       setValue(value);
       validateFn(name, value, setError);
     },
@@ -32,7 +32,7 @@ function TaskCheckboxField({ name, label, validateFn, ...passProps }) {
 
   const onBlur = useCallback(
     (event) => {
-      const value = event?.target?.rawValue;
+      const value = event?.target?.checked;
       setTouched(true);
       validateFn(name, value, setError);
     },

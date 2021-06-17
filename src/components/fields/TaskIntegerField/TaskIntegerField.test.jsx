@@ -70,7 +70,7 @@ describe("<TaskIntegerField />", () => {
       expect(validateFn).toHaveBeenNthCalledWith(
         3,
         fieldName,
-        "123",
+        123,
         expect.anything()
       );
     });

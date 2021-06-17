@@ -9,7 +9,7 @@ export const convertFormToQueryPayload = (form) => {
     const isBoolean = typeof data === "boolean";
     return {
       dataId: field,
-      data: isBoolean ? mapBooleanToString(data) : data,
+      data: isBoolean ? mapBooleanToString(data) : data.toString(),
     };
   });
 };
@@ -47,4 +47,9 @@ export const convertValidationErrorsTo = (errors) => {
     }),
     initialValues
   );
+};
+
+export const parseFieldNumberValue = (value) => {
+  const parsedValue = Number.parseFloat(value);
+  return Number.isNaN(parsedValue) ? null : parsedValue;
 };

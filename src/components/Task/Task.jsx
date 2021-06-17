@@ -11,6 +11,7 @@ import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import TaskField from "../fields/TaskField";
 import {
+  selectExceptionError,
   selectIsTaskBeingProcessed,
   selectIsTaskCompleted,
   selectValidationErrors,
@@ -55,6 +56,7 @@ function Task({ className, task }) {
   const formValidationSchema = object().shape(validationSchema);
   const isProcessing = useSelector(selectIsTaskBeingProcessed(task));
   const isCompleted = useSelector(selectIsTaskCompleted(task));
+  const exceptionError = useSelector(selectExceptionError(task));
   const onSubmit = useCallback(
     (fields) => dispatch(completeTask(fields, task)),
     [dispatch, task]
@@ -62,7 +64,9 @@ function Task({ className, task }) {
   const validateField = useValidateField(formValidationSchema);
   const classes = useStyles();
   const errors = useSelector(selectValidationErrors(task));
-  const { initialErrors, initialTouched } = convertValidationErrorsTo(errors);
+  const { initialErrors, initialTouched } = convertValidationErrorsTo(
+    errors ?? []
+  );
 
   useEffect(() => {
     const formUtils = convertTaskFieldsToFormUtils(data);
@@ -92,6 +96,7 @@ function Task({ className, task }) {
       className={className}
       initialErrors={initialErrors}
       initialTouched={initialTouched}
+      validationSchema={formValidationSchema}
     >
       {({ handleSubmit }) => (
         <form onSubmit={handleSubmit} className={classes.form}>
@@ -128,6 +133,11 @@ function Task({ className, task }) {
           >
             Submit
           </Button>
+          {exceptionError && (
+            <Typography variant="body2" color="error">
+              {exceptionError}
+            </Typography>
+          )}
         </form>
       )}
     </Formik>

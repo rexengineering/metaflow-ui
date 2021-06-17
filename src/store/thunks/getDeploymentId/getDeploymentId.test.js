@@ -21,7 +21,7 @@ describe("getDeploymentId", () => {
       actions.forEach((action) => {
         expect(expectedActionTypes).toContain(action.type);
         expect(action.payload).toEqual(
-          getAvailableDeployments.data.workflows.available[0],
+          getAvailableDeployments.data.workflows.available[0]
         );
       });
     });
@@ -60,7 +60,9 @@ describe("getDeploymentId", () => {
   });
 
   it("handle a failed request", () => {
-    query.mockImplementationOnce(() => { throw new TypeError('Network error') });
+    query.mockImplementationOnce(() => {
+      throw new TypeError("Network error");
+    });
     const store = mockStore({});
     const expectedActionTypes = [rexFlowActionTypes.SET_DEPLOYMENT_ID];
 

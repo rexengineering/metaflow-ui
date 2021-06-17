@@ -7,7 +7,7 @@ module.exports = {
     query,
     mutation,
   })),
-  gql: jest.fn(),
+  gql,
   query,
   mutation,
 };

@@ -85,6 +85,10 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       const { taskId, errors } = payload;
       return updateTasksState(state, taskId, "errors", errors);
     }
+    case rexFlowActionTypes.SAVE_TASK_DATA_EXCEPTION: {
+      const { taskId, errorMessage } = payload;
+      return updateTasksState(state, taskId, "exceptionError", errorMessage);
+    }
     case rexFlowActionTypes.SET_DEPLOYMENT_ID: {
       const { deployments } = payload;
       return {

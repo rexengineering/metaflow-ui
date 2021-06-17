@@ -5,7 +5,11 @@ import { DATA_ERROR_MESSAGE } from "./TaskTableField";
 
 const validJson = JSON.stringify({
   heading: ["item1", "item2", "item3"],
-  body: [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+  body: [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+  ],
 });
 
 describe("<TaskTextField />", () => {
