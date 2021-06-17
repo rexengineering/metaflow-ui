@@ -5,7 +5,7 @@ import managerData from "./mockData";
 
 describe("<AccountManagerInfo />", () => {
   const rendersAccountManagerInfoComponent = (
-    onTransferCallClick = () => {}
+    onTransferCallClick = managerData.onTransferCallClick
   ) => {
     return (
       <AccountManagerInfo

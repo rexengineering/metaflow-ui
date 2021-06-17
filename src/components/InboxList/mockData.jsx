@@ -2,7 +2,7 @@ import { faCommentAltLines } from "@fortawesome/pro-light-svg-icons/faCommentAlt
 import { faPhoneAlt } from "@fortawesome/pro-light-svg-icons/faPhoneAlt";
 import { faCommentAlt } from "@fortawesome/pro-regular-svg-icons/faCommentAlt";
 
-export default [
+const data = [
   {
     icon: faCommentAlt,
     color: "#FF685F",
@@ -25,3 +25,5 @@ export default [
     cellphoneNumber: "(310) - 555 - 5555",
   },
 ];
+
+export default data;

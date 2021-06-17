@@ -2,7 +2,7 @@ import React from "react";
 import { ButtonBase, makeStyles, Typography } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import fontAwesomeIcon from "../../../../utils/propsValidators";
+import fontAwesomeIcon from "../../../../utils/fontAwesomePropType";
 
 const useStyles = makeStyles((theme) => ({
   container: {

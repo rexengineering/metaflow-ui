@@ -8,7 +8,7 @@ import {
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import fontAwesomeIcon from "../../utils/propsValidators";
+import fontAwesomeIcon from "../../utils/fontAwesomePropType";
 
 const useStyles = makeStyles((theme) => ({
   listItem: {

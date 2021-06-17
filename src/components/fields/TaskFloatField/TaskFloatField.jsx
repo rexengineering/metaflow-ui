@@ -45,6 +45,7 @@ function TaskFloatField({ name, validateFn, ...passProps }) {
       // Casing makes these separate props but linters don't pick up on this
       // eslint-disable-next-line react/jsx-no-duplicate-props
       inputProps={{
+        "data-testid": "field",
         options: floatOptions,
       }}
     />

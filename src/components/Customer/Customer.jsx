@@ -12,7 +12,7 @@ import {
   userTypesShape,
 } from "../../utils/shapes";
 import TabPanel from "../TabPanel";
-import fontAwesomeIcon from "../../utils/propsValidators";
+import fontAwesomeIcon from "../../utils/fontAwesomePropType";
 
 const useCustomerStyles = makeStyles((theme) => ({
   root: {

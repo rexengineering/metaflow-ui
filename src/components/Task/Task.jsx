@@ -20,7 +20,7 @@ import {
   convertTaskFieldsToFormUtils,
   convertValidationErrorsTo,
 } from "../../utils/tasks";
-import useValidateField from "../../utils/makeValidateField";
+import useValidateField from "../../utils/useValidateField";
 import { isInfoType, isInputType } from "../../constants/taskTypes";
 
 const useStyles = makeStyles((theme) => ({

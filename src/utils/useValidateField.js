@@ -1,5 +1,7 @@
 import { useCallback } from "react";
 
+export const DEFAULT_ERROR_MESSAGE = "This field is invalid.";
+
 function useValidateField(schema) {
   const validateField = useCallback(
     async (name, value, onFinish) => {
@@ -7,7 +9,7 @@ function useValidateField(schema) {
         await schema.validateAt(name, { [name]: value });
         onFinish();
       } catch (error) {
-        onFinish(error?.message ?? "This field is invalid.");
+        onFinish(error?.message || DEFAULT_ERROR_MESSAGE);
       }
     },
     [schema]

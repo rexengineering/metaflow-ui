@@ -10,11 +10,13 @@ import {
   Paper,
 } from "@material-ui/core";
 
+export const DATA_ERROR_MESSAGE = "There was a problem reading the table data.";
+
 function parseTableData(data) {
   try {
     return JSON.parse(data);
   } catch (error) {
-    return { body: [["There was a problem reading the table data."]] };
+    return { body: [[DATA_ERROR_MESSAGE]] };
   }
 }
 
@@ -33,7 +35,7 @@ function TaskTableField({ data }) {
       <Table>
         {Array.isArray(heading) && (
           <TableHead>
-            <TableRow>
+            <TableRow data-testid="table-heading">
               {heading.map((item) => (
                 <TableCell key={item}>{item}</TableCell>
               ))}
@@ -45,9 +47,11 @@ function TaskTableField({ data }) {
             {body.map(
               (row) =>
                 Array.isArray(row) && (
-                  <TableRow key={JSON.stringify(row)}>
+                  <TableRow key={JSON.stringify(row)} data-testid="table-row">
                     {row.map((item) => (
-                      <TableCell key={item}>{item}</TableCell>
+                      <TableCell key={item} data-testid="table-cell">
+                        {item}
+                      </TableCell>
                     ))}
                   </TableRow>
                 )

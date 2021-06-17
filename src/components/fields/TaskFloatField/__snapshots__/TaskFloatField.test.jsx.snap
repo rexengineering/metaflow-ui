@@ -11,6 +11,7 @@ exports[`<TaskFloatField /> should match snapshot 1`] = `
       <input
         aria-invalid="false"
         class="MuiInputBase-input MuiFilledInput-input"
+        data-testid="field"
         name="field"
         type="text"
         value=""

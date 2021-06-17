@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TaskTextField /> should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiTableContainer-root MuiPaper-elevation1 MuiPaper-rounded"
+  >
+    <table
+      class="MuiTable-root"
+    >
+      <thead
+        class="MuiTableHead-root"
+      >
+        <tr
+          class="MuiTableRow-root MuiTableRow-head"
+          data-testid="table-heading"
+        >
+          <th
+            class="MuiTableCell-root MuiTableCell-head"
+            scope="col"
+          >
+            item1
+          </th>
+          <th
+            class="MuiTableCell-root MuiTableCell-head"
+            scope="col"
+          >
+            item2
+          </th>
+          <th
+            class="MuiTableCell-root MuiTableCell-head"
+            scope="col"
+          >
+            item3
+          </th>
+        </tr>
+      </thead>
+      <tbody
+        class="MuiTableBody-root"
+      >
+        <tr
+          class="MuiTableRow-root"
+          data-testid="table-row"
+        >
+          <td
+            class="MuiTableCell-root MuiTableCell-body"
+            data-testid="table-cell"
+          >
+            1
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body"
+            data-testid="table-cell"
+          >
+            2
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body"
+            data-testid="table-cell"
+          >
+            3
+          </td>
+        </tr>
+        <tr
+          class="MuiTableRow-root"
+          data-testid="table-row"
+        >
+          <td
+            class="MuiTableCell-root MuiTableCell-body"
+            data-testid="table-cell"
+          >
+            4
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body"
+            data-testid="table-cell"
+          >
+            5
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body"
+            data-testid="table-cell"
+          >
+            6
+          </td>
+        </tr>
+        <tr
+          class="MuiTableRow-root"
+          data-testid="table-row"
+        >
+          <td
+            class="MuiTableCell-root MuiTableCell-body"
+            data-testid="table-cell"
+          >
+            7
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body"
+            data-testid="table-cell"
+          >
+            8
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body"
+            data-testid="table-cell"
+          >
+            9
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</DocumentFragment>
+`;

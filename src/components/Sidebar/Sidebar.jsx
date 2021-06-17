@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/pro-light-svg-icons";
-import fontAwesomeIcon from "../../utils/propsValidators";
+import fontAwesomeIcon from "../../utils/fontAwesomePropType";
 
 const useStyles = makeStyles((theme) => ({
   nav: {

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
 import { faAccessibleIcon } from "@fortawesome/free-brands-svg-icons";
-import HistoryItem from "./HistoryItem";
+import HistoryItem from ".";
 
 describe("<HistoryItem />", () => {
   const date = "12/20/93";

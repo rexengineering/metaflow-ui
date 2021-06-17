@@ -8,16 +8,17 @@ function ActionButton({ isLoading, ...props }) {
   return isLoading ? <CircularProgress size={50} /> : <Button {...props} />;
 }
 
-ActionButton.defaultProps = {
-  variant: "contained",
-  color: "primary",
-};
-
 ActionButton.propTypes = {
   variant: PropTypes.string,
   color: PropTypes.string,
-  isLoading: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
   children: PropTypes.node.isRequired,
+};
+
+ActionButton.defaultProps = {
+  variant: "contained",
+  color: "primary",
+  isLoading: false,
 };
 
 export default ActionButton;

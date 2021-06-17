@@ -1,1 +1,3 @@
-export default ["Direct Buyer", "RHL"];
+const data = ["Direct Buyer", "RHL"];
+
+export default data;

@@ -3,22 +3,22 @@
 exports[`<App /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="makeStyles-app-15"
+    class="makeStyles-app-23"
   >
     <div
-      class="MuiDrawer-root MuiDrawer-docked makeStyles-nav-20"
+      class="MuiDrawer-root MuiDrawer-docked makeStyles-nav-33"
       component="nav"
     >
       <div
-        class="MuiPaper-root MuiDrawer-paper makeStyles-drawer-21 MuiDrawer-paperAnchorLeft MuiDrawer-paperAnchorDockedLeft MuiPaper-elevation0"
+        class="MuiPaper-root MuiDrawer-paper makeStyles-drawer-34 MuiDrawer-paperAnchorLeft MuiDrawer-paperAnchorDockedLeft MuiPaper-elevation0"
       >
         <img
           alt="Prism"
-          class="makeStyles-logo-22"
+          class="makeStyles-logo-35"
           src="prism.svg"
         />
         <ul
-          class="MuiList-root makeStyles-list-23 MuiList-padding"
+          class="MuiList-root makeStyles-list-36 MuiList-padding"
         >
           <div
             aria-disabled="false"
@@ -28,11 +28,11 @@ exports[`<App /> should match snapshot 1`] = `
             tabindex="0"
           >
             <div
-              class="MuiListItemIcon-root makeStyles-icon-24"
+              class="MuiListItemIcon-root makeStyles-icon-37"
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-comment-alt fa-w-16 makeStyles-activeItem-25"
+                class="svg-inline--fa fa-comment-alt fa-w-16 makeStyles-activeItem-38"
                 data-icon="comment-alt"
                 data-prefix="fal"
                 focusable="false"
@@ -54,62 +54,156 @@ exports[`<App /> should match snapshot 1`] = `
       </div>
     </div>
     <section
-      class="makeStyles-container-27 makeStyles-panel-26"
+      class="makeStyles-container-40 makeStyles-panel-39"
     >
       <section
-        class="makeStyles-container-27 makeStyles-panel-28 makeStyles-tray-16"
+        class="makeStyles-container-40 makeStyles-panel-41 makeStyles-tray1-24"
       >
-        <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-19 MuiButton-containedSecondary"
-          tabindex="0"
-          type="button"
-        >
+        <div>
           <span
-            class="MuiButton-label"
-          >
-            Update state
-          </span>
-          <span
-            class="MuiTouchRipple-root"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+            style="height: 19px;"
           />
-        </button>
-        <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-19"
-          tabindex="0"
-          type="button"
-        >
-          <span
-            class="MuiButton-label"
+          <div
+            class="makeStyles-leadingWrapper-42"
           >
-            Toggle automatic state
-          </span>
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+              style="height: 50px;"
+            />
+          </div>
+          <div
+            class="makeStyles-leadingWrapper-42"
+          >
+            <hr
+              class="MuiDivider-root"
+            />
+          </div>
           <span
-            class="MuiTouchRipple-root"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+            style="height: 19px;"
           />
-        </button>
-        <p
-          class="MuiTypography-root MuiTypography-body1"
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+            style="height: 60px;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+            style="height: 19px;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+            style="height: 60px;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+            style="height: 19px;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+            style="height: 60px;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+            style="height: 19px;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+            style="height: 60px;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+            style="height: 19px;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-44"
+            style="height: 60px;"
+          />
+        </div>
+        <div
+          class="makeStyles-finalWrapper-43"
         >
-          Automatic state fetching is Off
-        </p>
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary Mui-disabled MuiButton-fullWidth Mui-disabled"
+            disabled=""
+            tabindex="-1"
+            type="button"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              Placeholder
+            </span>
+          </button>
+        </div>
       </section>
       <section
-        class="makeStyles-container-27 makeStyles-panel-28 makeStyles-tray-16"
+        class="makeStyles-container-40 makeStyles-panel-41 makeStyles-tray2-25"
       >
-        <p
-          class="MuiTypography-root MuiTypography-body1"
+        <div
+          class="MuiPaper-root makeStyles-paper-29 MuiPaper-elevation1 MuiPaper-rounded"
         >
-          Tray 2
-        </p>
+          <p
+            class="MuiTypography-root MuiTypography-body1"
+          >
+            There are no active workflow instances
+          </p>
+        </div>
       </section>
       <section
-        class="makeStyles-container-27 makeStyles-panel-28 makeStyles-tray3-17"
+        class="makeStyles-container-40 makeStyles-panel-41 makeStyles-tray3-26"
       >
-        <p
-          class="MuiTypography-root MuiTypography-body1"
+        <div
+          class="MuiPaper-root makeStyles-paper-29 MuiPaper-elevation1 MuiPaper-rounded"
         >
-          Tray 3
-        </p>
+          <h5
+            class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter"
+          >
+            Initiate Workflows
+          </h5>
+        </div>
+        <div
+          class="MuiPaper-root makeStyles-paper-29 MuiPaper-elevation1 MuiPaper-rounded"
+        >
+          <h5
+            class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter"
+          >
+            State Helpers
+          </h5>
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-28 MuiButton-containedSecondary"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              Update state
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-28"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              Toggle automatic state
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+          <p
+            class="MuiTypography-root MuiTypography-body1"
+          >
+            Automatic state fetching is On
+          </p>
+        </div>
       </section>
     </section>
   </div>
