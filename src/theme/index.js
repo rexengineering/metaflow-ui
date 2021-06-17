@@ -8,7 +8,6 @@ const buildTheme = () => {
       fontFamily: "Avenir",
     },
     palette: {
-      type: "dark",
       primary: {
         main: "#FF685F",
         light: "#FF8B84",
@@ -38,13 +37,13 @@ const buildTheme = () => {
         800: "#4F4F4F",
       },
       text: {
-        primary: "#FFFFFF",
+        primary: "#4F4F4F",
         secondary: "#828282",
         disabled: "#BDBDBD",
       },
       background: {
-        default: "#333333",
-        paper: "#444444",
+        default: "#F8F8F8",
+        paper: "#FFFFFF",
       },
     },
   });

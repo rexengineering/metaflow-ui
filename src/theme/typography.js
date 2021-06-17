@@ -17,6 +17,7 @@ const getTypographyTheme = (theme) => {
   return {
     h1: {
       ...h1,
+      fontWeight: 700,
       [theme.breakpoints.up("sm")]: {
         fontSize: theme.spacing(6),
       },
@@ -32,6 +33,7 @@ const getTypographyTheme = (theme) => {
     },
     h2: {
       ...h2,
+      fontWeight: 700,
       [theme.breakpoints.up("sm")]: {
         fontSize: theme.spacing(4),
       },
@@ -47,6 +49,7 @@ const getTypographyTheme = (theme) => {
     },
     h3: {
       ...h3,
+      fontWeight: 700,
       [theme.breakpoints.up("sm")]: {
         fontSize: theme.spacing(3),
       },
@@ -62,6 +65,7 @@ const getTypographyTheme = (theme) => {
     },
     h4: {
       ...h4,
+      fontWeight: 700,
       [theme.breakpoints.up("sm")]: {
         fontSize: theme.spacing(2.5),
       },
@@ -77,6 +81,7 @@ const getTypographyTheme = (theme) => {
     },
     h5: {
       ...h5,
+      fontWeight: 700,
       [theme.breakpoints.up("sm")]: {
         fontSize: theme.spacing(2.25),
       },
@@ -92,6 +97,7 @@ const getTypographyTheme = (theme) => {
     },
     h6: {
       ...h6,
+      fontWeight: 700,
       [theme.breakpoints.up("sm")]: {
         fontSize: theme.spacing(2),
       },
@@ -149,7 +155,6 @@ const getTypographyTheme = (theme) => {
       [theme.breakpoints.up("xl")]: {
         fontSize: theme.spacing(2.5),
       },
-      fontWeight: 700,
     },
     body2: {
       ...body2,
@@ -165,7 +170,6 @@ const getTypographyTheme = (theme) => {
       [theme.breakpoints.up("xl")]: {
         fontSize: theme.spacing(2.25),
       },
-      fontWeight: 700,
     },
     caption: {
       ...caption,
@@ -181,10 +185,10 @@ const getTypographyTheme = (theme) => {
       [theme.breakpoints.up("xl")]: {
         fontSize: theme.spacing(2),
       },
-      fontWeight: 700,
     },
     button: {
       ...button,
+      letterSpacing: theme.spacing(0.15625),
       [theme.breakpoints.up("sm")]: {
         fontSize: theme.spacing(1.5),
       },
@@ -197,7 +201,6 @@ const getTypographyTheme = (theme) => {
       [theme.breakpoints.up("xl")]: {
         fontSize: theme.spacing(2),
       },
-      letterSpacing: "1.25px",
     },
     overline: {
       ...overline,
@@ -213,7 +216,6 @@ const getTypographyTheme = (theme) => {
       [theme.breakpoints.up("xl")]: {
         fontSize: theme.spacing(1.75),
       },
-      fontWeight: 700,
     },
   };
 };
