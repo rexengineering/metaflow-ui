@@ -6,6 +6,7 @@ import Panel from "../Panel";
 const useStyles = makeStyles((theme) => ({
   panel: {
     background: theme.palette.common.white,
+    color: theme.palette.text.secondary,
     display: "flex",
   },
 }));

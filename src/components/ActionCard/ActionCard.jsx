@@ -6,7 +6,7 @@ import clsx from "clsx";
 const useStyles = makeStyles((theme) => ({
   card: {
     display: "block",
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
   },
 }));

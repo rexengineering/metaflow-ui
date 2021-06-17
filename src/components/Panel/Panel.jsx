@@ -3,9 +3,10 @@ import { makeStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
+    background: theme.palette.background.default,
   },
 }));
 

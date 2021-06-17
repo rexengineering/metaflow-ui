@@ -11,7 +11,7 @@ function Workflow({ workflowID, className }) {
   return (
     <section>
       {Array.isArray(data) && data.length && (
-        <Typography variant="body2">{workflowID}</Typography>
+        <Typography variant="h6">{workflowID}</Typography>
       )}
       <Task className={className} task={task} />
     </section>

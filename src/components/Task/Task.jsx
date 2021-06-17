@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   submitButton: {
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(2, 0),
   },
   field: {
     display: "inline-grid",
