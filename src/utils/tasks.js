@@ -48,8 +48,3 @@ export const convertValidationErrorsTo = (errors) => {
     initialValues
   );
 };
-
-export const parseFieldNumberValue = (value) => {
-  const parsedValue = Number.parseFloat(value);
-  return Number.isNaN(parsedValue) ? null : parsedValue;
-};

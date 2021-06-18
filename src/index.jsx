@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./theme/fonts/avenir-font.css";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
+import "./theme/fonts/avenir-font.css";
 import reportWebVitals from "./reportWebVitals";
 import buildTheme from "./theme";
 import getStore from "./store";

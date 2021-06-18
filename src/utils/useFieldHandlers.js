@@ -1,5 +1,9 @@
 import { useCallback } from "react";
-import { parseFieldNumberValue } from "./tasks";
+
+function parseFieldNumberValue(value) {
+  const parsedValue = Number.parseFloat(value);
+  return Number.isNaN(parsedValue) ? null : parsedValue;
+}
 
 function useFieldHandlers({
   setValue,
