@@ -1,3 +1,2 @@
 # services required for UI to work
-rex-app
-site-static
+prism-api

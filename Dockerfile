@@ -39,5 +39,5 @@ FROM 355508092300.dkr.ecr.us-west-2.amazonaws.com/rex/rex-static-nginx:b-master 
 
 WORKDIR /usr/src/app
 COPY --from=build /buildenv/build/ /var/www/site/
-# COPY env.js.template services.txt /etc/rex/
+COPY env.js.template services.txt /etc/rex/
 ENV LOG_LEVEL=info
