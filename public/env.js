@@ -6,4 +6,7 @@
   window.REX.OKTA.ISSUER = "https://rexhomes.okta.com/oauth2/default";
   window.REX.OKTA.OKTA_TESTING_DISABLEHTTPSCHECK = true;
   window.REX.OKTA.REDIRECT_URI = `${window.location.origin}/login/callback`;
+
+  window.REX.SERVICES = window.REX.SERVICES || {};
+  window.REX.SERVICES.PRISM_API = "http://localhost:8000/query/";
 }(this));

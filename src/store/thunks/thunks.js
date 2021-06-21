@@ -15,6 +15,7 @@ import {
 import { getTasks, startWorkflow, finishTask } from "../queries";
 import { convertFormToQueryPayload } from "../../utils/tasks";
 import { buildTaskIdentifier } from "../selectors";
+import ENV from "../../utils/env";
 
 const defaultOptions = {
   query: {
@@ -23,7 +24,7 @@ const defaultOptions = {
 };
 
 export const apolloClient = new ApolloClient({
-  uri: "http://localhost:8000/query/",
+  uri: `${ENV.SERVICES.PRISM_API}`,
   cache: new InMemoryCache(),
   defaultOptions,
 });
