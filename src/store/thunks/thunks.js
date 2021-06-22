@@ -24,7 +24,7 @@ const defaultOptions = {
 };
 
 export const apolloClient = new ApolloClient({
-  uri: `${ENV.SERVICES.PRISM_API}`,
+  uri: `${ENV?.SERVICES?.PRISM_API}`,
   cache: new InMemoryCache(),
   defaultOptions,
 });
