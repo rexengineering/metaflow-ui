@@ -2,7 +2,7 @@ import React from "react";
 // import React, { useEffect, useState } from "react";
 // import { useDispatch } from "react-redux";
 import { CssBaseline, makeStyles } from "@material-ui/core";
-import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import { OktaAuth, toRelativeUrl } from "@okta/okta-auth-js";
 import { Security, SecureRoute, LoginCallback } from "@okta/okta-react";
 // import { fetchTasks } from "../../store/thunks/thunks";
@@ -27,7 +27,7 @@ function App() {
 
   const history = useHistory();
   const restoreOriginalUri = async (okta, originalUri) => {
-    history.replace(toRelativeUrl(originalUri, window.location.origin));
+    history.replace(toRelativeUrl(originalUri ?? "", window.location.origin));
   };
 
   // useEffect(() => dispatch(getDeploymentId()), []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -57,18 +57,16 @@ function App() {
 
   return (
     <div className={classes.app}>
-      <BrowserRouter>
-        <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
-          <CssBaseline />
-          There is stuff here.
-          <OktaJunk />
-          <Switch>
-            <Route exact path="/" component={() => <div>Home</div>} />
-            <Route path="/login/callback" component={LoginCallback} />
-            <SecureRoute path="/home" component={Main} />
-          </Switch>
-        </Security>
-      </BrowserRouter>
+      <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+        <CssBaseline />
+        There is stuff here.
+        <OktaJunk />
+        <Switch>
+          <Route exact path="/" component={() => <div>Home</div>} />
+          <Route path="/login/callback" component={LoginCallback} />
+          <SecureRoute path="/home" component={Main} />
+        </Switch>
+      </Security>
     </div>
   );
 }

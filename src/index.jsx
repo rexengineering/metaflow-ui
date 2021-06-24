@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import "./theme/fonts/avenir-font.css";
 import reportWebVitals from "./reportWebVitals";
 import buildTheme from "./theme";
@@ -14,7 +15,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
