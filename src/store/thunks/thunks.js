@@ -1,4 +1,5 @@
-import { ApolloClient } from "@apollo/client";
+import { ApolloClient, createHttpLink } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import {
   initWorkflowLoading,
@@ -16,6 +17,7 @@ import { getTasks, startWorkflow, finishTask } from "../queries";
 import { convertFormToQueryPayload } from "../../utils/tasks";
 import { buildTaskIdentifier } from "../selectors";
 import ENV from "../../utils/env";
+import { store } from "../../index";
 
 const defaultOptions = {
   query: {
@@ -23,8 +25,23 @@ const defaultOptions = {
   },
 };
 
+const httpLink = createHttpLink({
+  uri: `${ENV?.SERVICES?.PRISM_API}/graphql`,
+});
+
+const authLink = setContext((_, { headers }) => {
+  const { accessToken, idToken } = store.getState().okta;
+  return {
+    headers: {
+      ...headers,
+      authorization: accessToken ?? "",
+      "x-id-token": idToken ?? "",
+    },
+  };
+});
+
 export const apolloClient = new ApolloClient({
-  uri: `${ENV?.SERVICES?.PRISM_API}`,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
   defaultOptions,
 });
@@ -43,6 +60,7 @@ export const fetchTasks = () => async (dispatch) => {
       dispatch(fetchTasksSuccess(task, iid));
     });
   } catch (e) {
+    console.log(e);
     dispatch(fetchTasksFailure(e)); // pending reducer change
   }
   dispatch(setFetchTasksIsLoading(false));

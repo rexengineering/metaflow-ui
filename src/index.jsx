@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
-import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 import "./theme/fonts/avenir-font.css";
 import reportWebVitals from "./reportWebVitals";
 import buildTheme from "./theme";
@@ -10,7 +10,9 @@ import getStore from "./store";
 import App from "./containers/App";
 
 const theme = buildTheme();
-const store = getStore({});
+
+// eslint-disable-next-line import/prefer-default-export
+export const store = getStore({});
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

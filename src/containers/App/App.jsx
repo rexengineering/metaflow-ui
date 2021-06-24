@@ -2,7 +2,7 @@ import React from "react";
 // import React, { useEffect, useState } from "react";
 // import { useDispatch } from "react-redux";
 import { CssBaseline, makeStyles } from "@material-ui/core";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Link, Route, Switch, useHistory } from "react-router-dom";
 import { OktaAuth, toRelativeUrl } from "@okta/okta-auth-js";
 import { Security, SecureRoute, LoginCallback } from "@okta/okta-react";
 // import { fetchTasks } from "../../store/thunks/thunks";
@@ -61,8 +61,8 @@ function App() {
         <CssBaseline />
         There is stuff here.
         <OktaJunk />
+        <Link to="/home">Home</Link>
         <Switch>
-          <Route exact path="/" component={() => <div>Home</div>} />
           <Route path="/login/callback" component={LoginCallback} />
           <SecureRoute path="/home" component={Main} />
         </Switch>
