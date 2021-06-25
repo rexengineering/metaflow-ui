@@ -17,7 +17,7 @@ import { getTasks, startWorkflow, finishTask } from "../queries";
 import { convertFormToQueryPayload } from "../../utils/tasks";
 import { buildTaskIdentifier } from "../selectors";
 import ENV from "../../utils/env";
-import { store } from "../../index";
+import store from "../store";
 
 const defaultOptions = {
   query: {
@@ -60,7 +60,6 @@ export const fetchTasks = () => async (dispatch) => {
       dispatch(fetchTasksSuccess(task, iid));
     });
   } catch (e) {
-    console.log(e);
     dispatch(fetchTasksFailure(e)); // pending reducer change
   }
   dispatch(setFetchTasksIsLoading(false));

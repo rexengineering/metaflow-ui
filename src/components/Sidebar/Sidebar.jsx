@@ -11,24 +11,7 @@ import clsx from "clsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/pro-light-svg-icons";
 import fontAwesomeIcon from "../../utils/fontAwesomePropType";
-
-const useStyles = makeStyles((theme) => ({
-  nav: {
-    width: theme.spacing(6.125),
-  },
-  drawer: {
-    backgroundColor: "#333333",
-  },
-  logo: {
-    display: "block",
-    margin: theme.spacing(0, "auto"),
-    padding: theme.spacing(2, 0),
-    width: theme.spacing(3),
-  },
-  list: {
-    marginTop: theme.spacing(10),
-  },
-}));
+import UserAuthentication from "../../containers/UserAuthentication";
 
 const useMenuItemStyles = makeStyles((theme) => ({
   icon: {
@@ -68,8 +51,27 @@ MenuItem.defaultProps = {
   isActive: false,
 };
 
+const useSidebarStyles = makeStyles((theme) => ({
+  nav: {
+    width: theme.spacing(6.125),
+  },
+  drawer: {
+    backgroundColor: "#333333",
+    justifyContent: "space-between",
+  },
+  logo: {
+    display: "block",
+    margin: theme.spacing(0, "auto"),
+    padding: theme.spacing(2, 0),
+    width: theme.spacing(3),
+  },
+  list: {
+    marginTop: theme.spacing(10),
+  },
+}));
+
 function SideBar({ logo, menuItems, onMenuItemClicked, activeMenuItemId }) {
-  const classes = useStyles();
+  const classes = useSidebarStyles();
 
   return (
     <Drawer
@@ -94,6 +96,7 @@ function SideBar({ logo, menuItems, onMenuItemClicked, activeMenuItemId }) {
             );
           })}
       </List>
+      <UserAuthentication />
     </Drawer>
   );
 }

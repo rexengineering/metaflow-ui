@@ -1,11 +1,12 @@
 import React from "react";
+import { faCommentAlt } from "@fortawesome/pro-light-svg-icons";
 import { CssBaseline, makeStyles } from "@material-ui/core";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { OktaAuth, toRelativeUrl } from "@okta/okta-auth-js";
 import { Security, SecureRoute, LoginCallback } from "@okta/okta-react";
 import config from "../../constants/oktaConfig";
 import Main from "../Main/Main";
-import UserAuthentication from "../UserAuthentication/UserAuthentication";
+import SideBar from "../../components/Sidebar";
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -27,8 +28,12 @@ function App() {
     <div className={classes.app}>
       <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
         <CssBaseline />
-        There is stuff here.
-        <UserAuthentication />
+        <SideBar
+          onMenuItemClicked={(item) => console.log("Menu item clicked: ", item)}
+          logo="prism.svg"
+          menuItems={[{ id: "1", isActive: true, icon: faCommentAlt }]}
+          activeMenuItemId="1"
+        />
         <Switch>
           <Route path="/login/callback" component={LoginCallback} />
           <SecureRoute path="/" component={Main} />

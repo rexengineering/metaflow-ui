@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "@material-ui/core";
+import { IconButton, makeStyles, Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { useOktaAuth } from "@okta/okta-react";
 import { useDispatch } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignInAlt, faSignOutAlt } from "@fortawesome/pro-light-svg-icons";
 import { setAccessToken, setIdToken } from "../../store/actions/oktaActions";
 
+const useStyles = makeStyles((theme) => ({
+  iconButton: {
+    color: theme.palette.grey[700],
+  },
+}));
+
 function UserAuthentication() {
+  const classes = useStyles();
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const { authState, oktaAuth } = useOktaAuth();
@@ -39,11 +48,27 @@ function UserAuthentication() {
   return (
     <div>
       {authState?.isAuthenticated ? (
-        <Button onClick={logout}>Logout</Button>
+        <IconButton
+          onClick={logout}
+          className={classes.iconButton}
+          aria-label="Log out"
+          title="Log out"
+        >
+          <FontAwesomeIcon icon={faSignOutAlt} />
+        </IconButton>
       ) : (
-        <Button onClick={login}>Login</Button>
+        <IconButton
+          onClick={login}
+          className={classes.iconButton}
+          aria-label="Log in"
+          title="Log in"
+        >
+          <FontAwesomeIcon icon={faSignInAlt} />
+        </IconButton>
       )}
-      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+      <Snackbar open={!!errorMessage} autoHideDuration={6000}>
+        <Alert severity="success">{errorMessage}</Alert>
+      </Snackbar>
     </div>
   );
 }

@@ -6,13 +6,11 @@ import { Provider } from "react-redux";
 import "./theme/fonts/avenir-font.css";
 import reportWebVitals from "./reportWebVitals";
 import buildTheme from "./theme";
-import getStore from "./store";
+import store from "./store";
 import App from "./containers/App";
 
 const theme = buildTheme();
 
-// eslint-disable-next-line import/prefer-default-export
-export const store = getStore({});
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
