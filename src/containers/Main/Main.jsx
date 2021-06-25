@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { faCommentAlt } from "@fortawesome/pro-light-svg-icons";
 import { Button, makeStyles, Paper, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import {
   selectActiveWorkflows,
   selectDeployments,
 } from "../../store/selectors";
+import getDeploymentId from "../../store/thunks/getDeploymentId";
 
 const useStyles = makeStyles((theme) => ({
   tray1: {
@@ -67,6 +68,17 @@ function Main() {
   const areDeploymentsAvailable =
     Array.isArray(deployments) && !!deployments.length;
   const dispatch = useDispatch();
+  const [isAutomaticState, setIsAutomaticState] = useState(true);
+
+  useEffect(() => dispatch(getDeploymentId()), []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (isAutomaticState) {
+      const interval = setInterval(() => dispatch(fetchTasks()), 500);
+      return () => clearInterval(interval);
+    }
+    return () => {};
+  }, [isAutomaticState]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -141,14 +153,15 @@ function Main() {
             <Button
               variant="contained"
               type="button"
-              onClick={() => {} /* setIsAutomaticState(!isAutomaticState) */}
+              onClick={() =>
+                setIsAutomaticState((currentState) => !currentState)
+              }
               className={classes.button}
             >
               Toggle automatic state
             </Button>
             <Typography>
-              Automatic state fetching is{" "}
-              {/* isAutomaticState ? "On" : "Off" */}
+              Automatic state fetching is {isAutomaticState ? "On" : "Off"}
             </Typography>
           </Paper>
         </Tray>

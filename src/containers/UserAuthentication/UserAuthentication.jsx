@@ -1,26 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Alert } from "@material-ui/lab";
 import { useOktaAuth } from "@okta/okta-react";
 import { useDispatch } from "react-redux";
 import { setAccessToken, setIdToken } from "../../store/actions/oktaActions";
 
-function OktaJunk() {
+function UserAuthentication() {
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const { authState, oktaAuth } = useOktaAuth();
   const login = async () => {
+    setErrorMessage("");
     try {
       await oktaAuth.signInWithRedirect();
-    } catch (err) {
-      console.log("Okta error: ", err);
+    } catch (error) {
+      console.log(error);
+      setErrorMessage("There was an error signing you in.");
     }
   };
 
   const logout = async () => {
+    setErrorMessage("");
     try {
       await oktaAuth.signOut();
-    } catch (err) {
-      console.log("Okta error: ", err);
+    } catch (error) {
+      console.log(error);
+      setErrorMessage("There was an error signing you out.");
     }
   };
 
@@ -33,13 +38,14 @@ function OktaJunk() {
 
   return (
     <div>
-      {authState?.isAuthenticated && <Button onClick={logout}>Logout</Button>}
-      {!authState?.isPending && !authState?.isAuthenticated && (
+      {authState?.isAuthenticated ? (
+        <Button onClick={logout}>Logout</Button>
+      ) : (
         <Button onClick={login}>Login</Button>
       )}
-      {authState?.isAuthenticated && <Link to="/home" />}
+      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
     </div>
   );
 }
 
-export default OktaJunk;
+export default UserAuthentication;
