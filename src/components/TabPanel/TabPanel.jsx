@@ -15,7 +15,7 @@ TabPanel.defaultProps = {
 };
 
 TabPanel.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired,
   value: PropTypes.string.isRequired,
   index: PropTypes.string.isRequired,
   className: PropTypes.string,

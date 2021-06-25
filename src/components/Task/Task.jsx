@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Task({ className, task }) {
+function Task({ submitButtonText, className, task }) {
   const { data } = task;
   const dispatch = useDispatch();
   const { formikInitialValues, validationSchema } =
@@ -131,7 +131,7 @@ function Task({ className, task }) {
             variant="contained"
             color="secondary"
           >
-            Submit
+            {submitButtonText}
           </Button>
           {exceptionError && (
             <Typography variant="body2" color="error">
@@ -146,10 +146,12 @@ function Task({ className, task }) {
 
 Task.defaultProps = {
   className: "",
+  submitButtonText: "Submit",
   task: {},
 };
 
 Task.propTypes = {
+  submitButtonText: PropTypes.string,
   className: PropTypes.string,
   task: PropTypes.shape({
     data: PropTypes.arrayOf(

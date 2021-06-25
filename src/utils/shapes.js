@@ -28,3 +28,13 @@ export const userTypesShape = PropTypes.arrayOf(
     label: PropTypes.string.isRequired,
   })
 );
+
+export const talkTrackItemShape = {
+  identifier: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  speech: PropTypes.string.isRequired,
+  actions: PropTypes.arrayOf(PropTypes.string),
+  onInquirySelected: PropTypes.func,
+  onSkip: PropTypes.func.isRequired,
+  active: PropTypes.bool,
+};
