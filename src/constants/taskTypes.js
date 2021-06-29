@@ -45,7 +45,7 @@ export const validationSchemaMapping = {
   FLOAT: number(numberValidationMessage).typeError(numberValidationMessage),
 };
 
-export default {
+const taskTypes = {
   TEXT,
   PHONE_NUMBER,
   PERCENTAGE,
@@ -56,3 +56,5 @@ export default {
   TABLE,
   COPY,
 };
+
+export default taskTypes;
