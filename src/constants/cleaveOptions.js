@@ -26,10 +26,12 @@ export const floatOptions = {
   numeralDecimalScale: 4,
 };
 
-export default {
+const cleaveOptions = {
   phoneNumberOptions,
   currencyOptions,
   percentOptions,
   integerOptions,
   floatOptions,
 };
+
+export default cleaveOptions;

@@ -7,6 +7,7 @@ ARG NPM_TOKEN
 COPY package.json /buildenv/
 COPY package-lock.json /buildenv/
 COPY .npmrc /buildenv/
+COPY .eslintrc /buildenv/
 WORKDIR /buildenv/
 RUN npm ci
 
