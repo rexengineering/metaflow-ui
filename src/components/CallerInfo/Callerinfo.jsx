@@ -1,7 +1,14 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import { Box, Divider, makeStyles, Typography } from "@material-ui/core";
 import Task from "../Task";
+import WorkflowInstantiator from "../WorkflowInstantiator";
+import Workflow from "../Workflow";
+import {initWorkflow} from "../../store/thunks/thunks";
+import getDeploymentId from "../../store/thunks/getDeploymentId";
+import {useDispatch, useSelector} from "react-redux";
+import {calculateWorkFlowNameFromDeploymentID} from "../../utils/tasks";
+import {selectWorkflowID} from "../../store/selectors/rexflow";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,8 +28,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CallerInfo({ callerName }) {
+function CallerInfo({ callerName, deploymentID }) {
+  const dispatch = useDispatch();
   const classes = useStyles();
+  const [workflowName, setWorkflowName] = useState(null);
+  const workflowID = useSelector(selectWorkflowID(workflowName));
+
+  useEffect(() => {
+      if (!deploymentID) return;
+      setWorkflowName(calculateWorkFlowNameFromDeploymentID(deploymentID));
+  }, [deploymentID, setWorkflowName]);
+
   return (
     <Box className={classes.container}>
       <Typography className={classes.subtitle} variant="body2">
@@ -32,13 +48,14 @@ function CallerInfo({ callerName }) {
         {callerName}
       </Typography>
       <Divider className={classes.divider} />
-      <Task submitButtonText="End Task" task={{}} />
+      <Workflow workflowID={workflowID} />
     </Box>
   );
 }
 
 CallerInfo.propTypes = {
   callerName: PropTypes.string.isRequired,
+  deploymentID: PropTypes.string.isRequired,
 };
 
 export default CallerInfo;

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TalkTrackItem({ title, speech, actions, onInquirySelected, onSkip }) {
+function TalkTrackItem({ identifier, title, speech, actions, onActionSelected, onSkip }) {
   const classes = useStyles();
   return (
     <Paper elevation={0} className={classes.paper}>
@@ -41,20 +41,20 @@ function TalkTrackItem({ title, speech, actions, onInquirySelected, onSkip }) {
             Select button based on customer inquiry
           </Typography>
           <section className={classes.actions}>
-            {actions.map((action) => (
+            {actions.map(({label, talktrack_id}) => (
               <Chip
-                key={action}
+                key={talktrack_id}
                 className={classes.action}
                 variant="outlined"
-                onClick={() => onInquirySelected(action)}
+                onClick={() => onActionSelected(talktrack_id)}
                 size="small"
-                label={action}
+                label={label}
               />
             ))}
           </section>
         </section>
       ) : null}
-      <Button type="button" onClick={onSkip}>
+      <Button type="button" onClick={() => onSkip(identifier)}>
         Skip
       </Button>
     </Paper>
@@ -63,7 +63,7 @@ function TalkTrackItem({ title, speech, actions, onInquirySelected, onSkip }) {
 
 TalkTrackItem.defaultProps = {
   actions: [],
-  onInquirySelected: () => {},
+  onActionSelected: () => {},
   active: false,
 };
 

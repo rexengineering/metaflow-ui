@@ -10,17 +10,52 @@ import {
 } from "@material-ui/core";
 import Pane from "../../components/Pane";
 import Tray from "../../components/Tray";
-import { fetchTasks } from "../../store/thunks/thunks";
+import {
+  fetchActiveTalkTracks,
+  fetchTasks,
+  initTalkTrack,
+  initWorkflow,
+  setTalkTrackActive
+} from "../../store/thunks/thunks";
 import getDeploymentId from "../../store/thunks/getDeploymentId";
 import {
   selectActiveWorkflows,
   selectDeployments,
-} from "../../store/selectors";
+} from "../../store/selectors/rexflow";
 import Workflow from "../../components/Workflow";
 import WorkflowInstantiator from "../../components/WorkflowInstantiator";
 import ActionCard from "../../components/ActionCard";
 import SideBar from "../../components/Sidebar";
 import PrettySkeleton from "./PrettySkeleton";
+import TalkTrack from "../../components/TalkTracks/TalkTrack";
+import {selectTalkTracks} from "../../store/selectors/talktracks";
+import {mapTalkTracks, getActiveTalkTrackID, getActiveTalkTrackWorkflow} from "../../utils/talkTracks";
+import Notes from "../../components/Notes";
+import CallerInfo from "../../components/CallerInfo/Callerinfo";
+import InformationForm from "../../components/InformationToCollect/InformationForm";
+
+const talkTrack = [
+  {
+    identifier: "as345",
+    title: "Intro",
+    speech:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda aut est ipsum minus molestiae nesciunt obcaecati quo quos, repudiandae sed tempora voluptatem. Accusantium consequuntur dicta error obcaecati perspiciatis quisquam recusandae?",
+    actions: ["Selling", "Buying", "Things", "IoT"],
+    onInquirySelected: () => {},
+    onSkip: () => {},
+    active: true,
+  },
+  {
+    identifier: "56htr4g5",
+    title: "Conclude",
+    speech:
+        "Conclusion, consectetur adipisicing elit. Assumenda aut est ipsum minus molestiae nesciunt obcaecati quo quos, repudiandae sed tempora voluptatem. Accusantium consequuntur dicta error obcaecati perspiciatis quisquam recusandae?",
+    actions: [],
+    onInquirySelected: () => {},
+    onSkip: () => {},
+    active: false,
+  },
+];
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -69,18 +104,49 @@ const useStyles = makeStyles((theme) => ({
   deploymentTitle: {
     marginBottom: theme.spacing(1),
   },
+  talkTracks: {
+    marginTop: theme.spacing(2),
+    paddingBottom: theme.spacing(5),
+  },
 }));
 
 function App() {
   const deployments = useSelector(selectDeployments);
   const activeWorkflows = useSelector(selectActiveWorkflows);
+  const talkTracks = mapTalkTracks(useSelector(selectTalkTracks));
+  const [activeTalkTrackID, setActiveTalkTrackID] = useState(getActiveTalkTrackID(talkTracks));
   const dispatch = useDispatch();
   const classes = useStyles();
   const areDeploymentsUnavailable =
     Array.isArray(deployments) && !deployments.length;
-  const [isAutomaticState, setIsAutomaticState] = useState(true);
+  const isAutomaticState = false;
+  const handleTalkTrackSkip = (talkTrackID) => {};
+  const currentTalkTrackWorkflow = getActiveTalkTrackWorkflow(talkTracks, activeTalkTrackID);
+  const handleTabChange = (talkTrackUUID) => dispatch(setTalkTrackActive(talkTrackUUID));
+  const handleTalkTrackAction = (talkTrackID) => {
+    const talkTrack = talkTracks.find(({ talktrack_id }) => talktrack_id === talkTrackID);
+    if (talkTrack)
+      return;
+    dispatch(initTalkTrack(talkTrackID))
+  };
+  const rootTalkTrack = "intro-123";
+  const deploymentID = "callworkflow-2f8501bf";
+  const [shouldDispatchRootTalkTrack, setShouldDispatchRootTalkTrack] = useState(true);
 
   useEffect(() => dispatch(getDeploymentId()), []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if ( Array.isArray(talkTracks) && !talkTracks.length && shouldDispatchRootTalkTrack){
+      dispatch(initTalkTrack(rootTalkTrack));
+      setShouldDispatchRootTalkTrack(false);
+    }
+  }, [talkTracks, setShouldDispatchRootTalkTrack]);
+
+  useEffect(() => {
+    setActiveTalkTrackID(getActiveTalkTrackID(talkTracks));
+  }, [talkTracks, setActiveTalkTrackID]);
+
+  useEffect(() => dispatch(fetchActiveTalkTracks()), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (isAutomaticState) {
@@ -88,7 +154,14 @@ function App() {
       return () => clearInterval(interval);
     }
     return () => {};
-  }, [isAutomaticState]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!dispatch || !deploymentID || !Array.isArray(activeWorkflows)) return;
+    const workflow = activeWorkflows.find((workflowItem) => workflowItem.includes(deploymentID));
+    if (workflow) return;
+    dispatch(initWorkflow(deploymentID));
+  }, [deploymentID, dispatch, activeWorkflows]);
 
   if (areDeploymentsUnavailable)
     return <Typography>There are no deployments available</Typography>;
@@ -104,78 +177,19 @@ function App() {
       />
       <Pane>
         <Tray className={classes.tray1}>
-          <PrettySkeleton />
+          <CallerInfo callerName="John Doe" deploymentID={deploymentID} />
         </Tray>
         <Tray className={classes.tray2}>
-          {(!Array.isArray(activeWorkflows) || !activeWorkflows.length) && (
-            <Paper className={classes.paper}>
-              <Typography>There are no active workflow instances</Typography>
-            </Paper>
-          )}
-          {Array.isArray(activeWorkflows) &&
-            activeWorkflows.map((workflowID) => (
-              <ActionCard className={classes.button} key={workflowID}>
-                <Workflow
-                  className={classes.workflow}
-                  workflowID={workflowID}
-                />
-              </ActionCard>
-            ))}
+            <TalkTrack onTabChange={handleTabChange}
+                       onActionSelected={handleTalkTrackAction}
+                       onSkip={handleTalkTrackSkip}
+                       activeTalkTrackID={activeTalkTrackID}
+                       className={classes.talkTracks}
+                       talkTrackItems={talkTracks} />
         </Tray>
         <Tray className={classes.tray3}>
-          <Paper className={classes.paper}>
-            <Typography
-              variant="h5"
-              align="center"
-              className={classes.leadingWrapper}
-            >
-              Initiate Workflows
-            </Typography>
-            {areDeploymentsUnavailable && (
-              <Typography>There are no workflows available</Typography>
-            )}
-            {Array.isArray(deployments) &&
-              deployments.map((deploymentID) => (
-                <div key={deploymentID} className={classes.deployment}>
-                  <Typography
-                    variant="body2"
-                    className={classes.deploymentTitle}
-                  >
-                    {deploymentID}
-                  </Typography>
-                  <WorkflowInstantiator deploymentID={deploymentID} />
-                </div>
-              ))}
-          </Paper>
-          <Paper className={classes.paper}>
-            <Typography
-              variant="h5"
-              align="center"
-              className={classes.leadingWrapper}
-            >
-              State Helpers
-            </Typography>
-            <Button
-              color="secondary"
-              type="button"
-              variant="contained"
-              onClick={() => dispatch(fetchTasks())}
-              className={classes.button}
-            >
-              Update state
-            </Button>
-            <Button
-              variant="contained"
-              type="button"
-              onClick={() => setIsAutomaticState(!isAutomaticState)}
-              className={classes.button}
-            >
-              Toggle automatic state
-            </Button>
-            <Typography>
-              Automatic state fetching is {isAutomaticState ? "On" : "Off"}
-            </Typography>
-          </Paper>
+          <Notes />
+          <InformationForm workflowID={currentTalkTrackWorkflow} />
         </Tray>
       </Pane>
     </div>

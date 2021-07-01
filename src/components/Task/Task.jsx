@@ -15,7 +15,7 @@ import {
   selectIsTaskBeingProcessed,
   selectIsTaskCompleted,
   selectValidationErrors,
-} from "../../store/selectors";
+} from "../../store/selectors/rexflow";
 import { completeTask } from "../../store/thunks/thunks";
 import {
   convertTaskFieldsToFormUtils,

@@ -1,6 +1,6 @@
 import { apolloClient } from "../thunks";
-import { setDeploymentId } from "../../actions";
-import { getAvailableDeployments } from "../../queries";
+import { setDeploymentId } from "../../actions/rexflow";
+import { getAvailableDeployments } from "../../queries/rexflow";
 
 const getDeploymentId = () => async (dispatch) => {
   try {

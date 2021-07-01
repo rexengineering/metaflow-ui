@@ -2,7 +2,7 @@ import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import { query } from "@apollo/client";
 import getDeploymentId from ".";
-import { rexFlowActionTypes } from "../../actions";
+import { rexFlowActionTypes } from "../../actions/rexflow";
 import { error, getAvailableDeployments } from "../../mockResponses";
 
 const middleware = [thunk];

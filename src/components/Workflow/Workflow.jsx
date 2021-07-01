@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Typography } from "@material-ui/core";
 import Task from "../Task";
-import { selectTask } from "../../store/selectors";
+import { selectTask } from "../../store/selectors/rexflow";
 
 function Workflow({ workflowID, className }) {
   const task = useSelector(selectTask(workflowID));
@@ -18,8 +18,12 @@ function Workflow({ workflowID, className }) {
   );
 }
 
+Workflow.defaultProps = {
+  className: "",
+}
+
 Workflow.propTypes = {
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
   workflowID: PropTypes.string.isRequired,
 };
 

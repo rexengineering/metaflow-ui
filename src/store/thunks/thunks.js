@@ -11,10 +11,12 @@ import {
   setFetchTasksIsLoading,
   fetchTasksFailure,
   saveTaskDataException,
-} from "../actions";
-import { getTasks, startWorkflow, finishTask } from "../queries";
+} from "../actions/rexflow";
+import { getTasks, startWorkflow, finishTask } from "../queries/rexflow";
 import { convertFormToQueryPayload } from "../../utils/tasks";
-import { buildTaskIdentifier } from "../selectors";
+import { buildTaskIdentifier } from "../selectors/rexflow";
+import {activateTalkTrack, getActiveTalkTracks, startTalkTrack} from "../queries/talktracks";
+import {setTalkTracks} from "../actions/talktracks";
 
 const defaultOptions = {
   query: {
@@ -101,3 +103,36 @@ export const completeTask = (formFields, task) => async (dispatch) => {
   }
   dispatch(setSaveTaskDataIsLoading(taskIdentifier, false));
 };
+
+export const fetchActiveTalkTracks = () => async (dispatch) => {
+  const { data } = await apolloClient.query({
+    query: getActiveTalkTracks
+  });
+  const { talktracks } = data;
+  dispatch(setTalkTracks(talktracks.active));
+}
+
+export const initTalkTrack = (talkTrackId) => async (dispatch) => {
+  const { data } = await apolloClient.mutate({
+    mutation: startTalkTrack,
+    variables: {
+      startTalkTrackInput: {
+        talktrack_id: talkTrackId
+      }
+    }
+  });
+
+  dispatch(fetchActiveTalkTracks());
+}
+
+export const setTalkTrackActive = (talkTrackUUID) => async (dispatch) => {
+  const { data } = await apolloClient.mutate({
+    mutation: activateTalkTrack,
+    variables: {
+      activateTalkTrackInput: {
+        talktrack_uuid: talkTrackUUID
+      }
+    }
+  });
+  dispatch(fetchActiveTalkTracks());
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
   IconButton,
   makeStyles,
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
-    width: "30%",
+    width: "50%",
     flexGrow: 1,
   },
   tabsPanel: {
@@ -47,14 +47,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TalkTrack({ talkTrackItems }) {
+function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected, onTabChange, className }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState("as345");
+  const [value, setValue] = React.useState(activeTalkTrackID);
   const handleChange = (event, newValue) => {
+    onTabChange(newValue);
     setValue(newValue);
   };
+
+  useEffect(() => {
+    setValue(activeTalkTrackID);
+  }, [activeTalkTrackID, setValue])
+
   return (
-    <ActionCard className={classes.paper}>
+    <ActionCard className={clsx(classes.paper, className)}>
       <section className={classes.header}>
         <Typography variant="h4">Talk track</Typography>
         <IconButton className={classes.addButton}>
@@ -73,7 +79,6 @@ function TalkTrack({ talkTrackItems }) {
             talkTrackItems.map(({ identifier, title }) => (
               <Tab
                 key={identifier}
-                className={clsx(identifier === value && classes.activeTab)}
                 label={title}
                 value={identifier}
               />
@@ -87,8 +92,6 @@ function TalkTrack({ talkTrackItems }) {
                 title,
                 speech,
                 actions,
-                onSkip,
-                onInquirySelected,
                 active,
               }) => (
                 <TabPanel
@@ -102,7 +105,7 @@ function TalkTrack({ talkTrackItems }) {
                     actions={actions}
                     onSkip={onSkip}
                     identifier={identifier}
-                    onInquirySelected={onInquirySelected}
+                    onActionSelected={onActionSelected}
                     active={active}
                   />
                 </TabPanel>
@@ -113,9 +116,19 @@ function TalkTrack({ talkTrackItems }) {
     </ActionCard>
   );
 }
+
+TalkTrack.defaultProps = {
+  className: "",
+}
+
 TalkTrack.propTypes = {
   talkTrackItems: PropTypes.arrayOf(PropTypes.shape(talkTrackItemShape))
     .isRequired,
+  className: PropTypes.string,
+  activeTalkTrackID: PropTypes.string.isRequired,
+  onSkip: PropTypes.func.isRequired,
+  onActionSelected: PropTypes.func.isRequired,
+  onTabChange: PropTypes.func.isRequired,
 };
 
 export default TalkTrack;

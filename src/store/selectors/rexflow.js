@@ -26,6 +26,14 @@ export const selectActiveWorkflows = createSelector(
   ({ activeWorkflows }) => activeWorkflows
 );
 
+export const selectWorkflowID = (workflowName) => createSelector(
+    [selectActiveWorkflows],
+    (activeWorkflows) => {
+      if (!Array.isArray(activeWorkflows)) return null;
+      return activeWorkflows.find((activeWorkflow) => activeWorkflow.includes(workflowName));
+    }
+);
+
 export const selectIsTaskBeingProcessed = (task) =>
   createSelector(
     [rexFlowSelector],

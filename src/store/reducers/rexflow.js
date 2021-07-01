@@ -1,9 +1,9 @@
-import { rexFlowActionTypes } from "../actions";
+import { rexFlowActionTypes } from "../actions/rexflow";
 
 const INITIAL_STATE = {
   isWorkflowBeingInitialized: {},
   isLoadingFetchTasks: false,
-  activeWorkflows: [],
+  activeWorkflows: null,
   tasks: null,
   error: null,
   tasksState: {},
