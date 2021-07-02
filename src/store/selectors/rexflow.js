@@ -29,7 +29,7 @@ export const selectActiveWorkflows = createSelector(
 export const selectWorkflowID = (workflowName) => createSelector(
     [selectActiveWorkflows],
     (activeWorkflows) => {
-      if (!Array.isArray(activeWorkflows)) return null;
+      if (!Array.isArray(activeWorkflows)) return "";
       return activeWorkflows.find((activeWorkflow) => activeWorkflow.includes(workflowName));
     }
 );

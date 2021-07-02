@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TalkTrack /> should match snapshot 1`] = `
+exports[`<TalkTrackItem /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
     class="MuiPaper-root makeStyles-paper-6 MuiPaper-elevation0 MuiPaper-rounded"

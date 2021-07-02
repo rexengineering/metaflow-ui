@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { faCommentAlt } from "@fortawesome/pro-light-svg-icons";
 import {
   CssBaseline,
-  Button,
   makeStyles,
   Typography,
-  Paper,
 } from "@material-ui/core";
 import Pane from "../../components/Pane";
 import Tray from "../../components/Tray";
@@ -22,40 +20,13 @@ import {
   selectActiveWorkflows,
   selectDeployments,
 } from "../../store/selectors/rexflow";
-import Workflow from "../../components/Workflow";
-import WorkflowInstantiator from "../../components/WorkflowInstantiator";
-import ActionCard from "../../components/ActionCard";
 import SideBar from "../../components/Sidebar";
-import PrettySkeleton from "./PrettySkeleton";
 import TalkTrack from "../../components/TalkTracks/TalkTrack";
 import {selectTalkTracks} from "../../store/selectors/talktracks";
 import {mapTalkTracks, getActiveTalkTrackID, getActiveTalkTrackWorkflow} from "../../utils/talkTracks";
 import Notes from "../../components/Notes";
 import CallerInfo from "../../components/CallerInfo/Callerinfo";
 import InformationForm from "../../components/InformationToCollect/InformationForm";
-
-const talkTrack = [
-  {
-    identifier: "as345",
-    title: "Intro",
-    speech:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda aut est ipsum minus molestiae nesciunt obcaecati quo quos, repudiandae sed tempora voluptatem. Accusantium consequuntur dicta error obcaecati perspiciatis quisquam recusandae?",
-    actions: ["Selling", "Buying", "Things", "IoT"],
-    onInquirySelected: () => {},
-    onSkip: () => {},
-    active: true,
-  },
-  {
-    identifier: "56htr4g5",
-    title: "Conclude",
-    speech:
-        "Conclusion, consectetur adipisicing elit. Assumenda aut est ipsum minus molestiae nesciunt obcaecati quo quos, repudiandae sed tempora voluptatem. Accusantium consequuntur dicta error obcaecati perspiciatis quisquam recusandae?",
-    actions: [],
-    onInquirySelected: () => {},
-    onSkip: () => {},
-    active: false,
-  },
-];
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -120,7 +91,9 @@ function App() {
   const areDeploymentsUnavailable =
     Array.isArray(deployments) && !deployments.length;
   const isAutomaticState = false;
-  const handleTalkTrackSkip = (talkTrackID) => {};
+  const handleTalkTrackSkip = (talkTrackID) => {
+    console.log(talkTrackID);
+  };
   const currentTalkTrackWorkflow = getActiveTalkTrackWorkflow(talkTracks, activeTalkTrackID);
   const handleTabChange = (talkTrackUUID) => dispatch(setTalkTrackActive(talkTrackUUID));
   const handleTalkTrackAction = (talkTrackID) => {
@@ -140,7 +113,7 @@ function App() {
       dispatch(initTalkTrack(rootTalkTrack));
       setShouldDispatchRootTalkTrack(false);
     }
-  }, [talkTracks, setShouldDispatchRootTalkTrack]);
+  }, [talkTracks, setShouldDispatchRootTalkTrack, dispatch, shouldDispatchRootTalkTrack]);
 
   useEffect(() => {
     setActiveTalkTrackID(getActiveTalkTrackID(talkTracks));

@@ -113,7 +113,7 @@ export const fetchActiveTalkTracks = () => async (dispatch) => {
 }
 
 export const initTalkTrack = (talkTrackId) => async (dispatch) => {
-  const { data } = await apolloClient.mutate({
+  await apolloClient.mutate({
     mutation: startTalkTrack,
     variables: {
       startTalkTrackInput: {
@@ -126,7 +126,7 @@ export const initTalkTrack = (talkTrackId) => async (dispatch) => {
 }
 
 export const setTalkTrackActive = (talkTrackUUID) => async (dispatch) => {
-  const { data } = await apolloClient.mutate({
+  await apolloClient.mutate({
     mutation: activateTalkTrack,
     variables: {
       activateTalkTrackInput: {

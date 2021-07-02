@@ -1,12 +1,8 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import { Box, Divider, makeStyles, Typography } from "@material-ui/core";
-import Task from "../Task";
-import WorkflowInstantiator from "../WorkflowInstantiator";
 import Workflow from "../Workflow";
-import {initWorkflow} from "../../store/thunks/thunks";
-import getDeploymentId from "../../store/thunks/getDeploymentId";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {calculateWorkFlowNameFromDeploymentID} from "../../utils/tasks";
 import {selectWorkflowID} from "../../store/selectors/rexflow";
 
@@ -29,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CallerInfo({ callerName, deploymentID }) {
-  const dispatch = useDispatch();
   const classes = useStyles();
   const [workflowName, setWorkflowName] = useState(null);
   const workflowID = useSelector(selectWorkflowID(workflowName));

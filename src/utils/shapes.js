@@ -33,8 +33,11 @@ export const talkTrackItemShape = {
   identifier: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   speech: PropTypes.string.isRequired,
-  actions: PropTypes.arrayOf(PropTypes.string),
+  actions: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    talktrack_id: PropTypes.string,
+  })),
   onActionSelected: PropTypes.func,
-  onSkip: PropTypes.func.isRequired,
+  onSkip: PropTypes.func,
   active: PropTypes.bool,
 };
