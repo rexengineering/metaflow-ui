@@ -1,11 +1,17 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import Tags from "./Tags";
 import tagsItems from "./mockData";
 
 describe("<TagsInfo />", () => {
-  const renderTagsComponent = () => {
-    return <Tags tagsItems={tagsItems} />;
+  const renderTagsComponent = (onClick = undefined, tags = tagsItems) => {
+    return (
+      <Tags
+        tagsItems={tags}
+        onAddTagsButtonClicked={onClick}
+        className="name"
+      />
+    );
   };
 
   it("should render", () => {
@@ -28,5 +34,14 @@ describe("<TagsInfo />", () => {
       const tagNode = screen.getByText(tag);
       expect(tagNode).toBeInTheDocument();
     });
+  });
+
+  it("should trigger the passed onClick function when clicked", () => {
+    const onClick = jest.fn();
+    render(renderTagsComponent(onClick));
+    const element = screen.getByRole("button");
+    fireEvent.click(element);
+
+    expect(onClick).toHaveBeenCalled();
   });
 });

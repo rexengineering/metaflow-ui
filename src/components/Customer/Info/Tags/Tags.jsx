@@ -14,6 +14,7 @@ function Tags({ tagsItems, className, onAddTagsButtonClicked }) {
       {Array.isArray(tagsItems) &&
         tagsItems.map((item) => (
           <ActionItem
+            data-testid="action-item"
             key={item}
             label={item}
             actionType={ActionItemDisplayOnlyType}
@@ -23,15 +24,14 @@ function Tags({ tagsItems, className, onAddTagsButtonClicked }) {
   );
 }
 
-Tags.defaultProps = {
-  className: "",
-  onAddTagsButtonClicked: () => {},
-};
-
 Tags.propTypes = {
   tagsItems: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onAddTagsButtonClicked: PropTypes.func.isRequired,
   className: PropTypes.string,
-  onAddTagsButtonClicked: PropTypes.func,
+};
+
+Tags.defaultProps = {
+  className: "",
 };
 
 export default Tags;

@@ -61,6 +61,8 @@ function Customer({
   notes,
   userTypes,
   tags,
+  onInfoSubmit,
+  onHistoryItemSelected,
 }) {
   const styles = useCustomerStyles();
   const [activeTabId, setActiveTabId] = useState("info");
@@ -90,7 +92,7 @@ function Customer({
             nextSteps={nextSteps}
             notes={notes}
             tags={tags}
-            onSubmit={() => {}}
+            onSubmit={onInfoSubmit}
             userTypes={userTypes}
           />
         </TabPanel>
@@ -100,7 +102,7 @@ function Customer({
           index="history"
         >
           <History
-            onHistoryItemSelected={() => {}}
+            onHistoryItemSelected={onHistoryItemSelected}
             historyItems={customerHistory}
             months={months}
           />
@@ -127,6 +129,8 @@ Customer.propTypes = {
       color: PropTypes.string,
     })
   ).isRequired,
+  onInfoSubmit: PropTypes.func.isRequired,
+  onHistoryItemSelected: PropTypes.func.isRequired,
 };
 
 export default Customer;

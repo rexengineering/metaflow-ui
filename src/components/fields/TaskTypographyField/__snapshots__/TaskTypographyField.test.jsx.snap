@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TaskTypographyField /> should match snapshot 1`] = `
+<DocumentFragment>
+  <p
+    class="MuiTypography-root MuiTypography-body1"
+  >
+    sometext
+  </p>
+</DocumentFragment>
+`;

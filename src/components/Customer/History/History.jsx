@@ -40,7 +40,10 @@ function History({ historyItems, months, onHistoryItemSelected }) {
             >
               <Typography variant="body2">{month}</Typography>
             </AccordionSummary>
-            <AccordionDetails className={classes.historyItems}>
+            <AccordionDetails
+              className={classes.historyItems}
+              data-testid="item"
+            >
               {Array.isArray(historyItems) &&
                 historyItems.map((historyItem) => {
                   const { date, color, label, icon } = historyItem;

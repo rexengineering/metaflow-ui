@@ -7,13 +7,11 @@ import { selectTask } from "../../store/selectors";
 
 function Workflow({ workflowID, className }) {
   const task = useSelector(selectTask(workflowID));
-  const { data } = task;
+
   return (
     <section>
-      {Array.isArray(data) && data.length && (
-        <Typography variant="h6">{workflowID}</Typography>
-      )}
-      <Task className={className} task={task} />
+      <Typography variant="h6">{workflowID}</Typography>
+      {task && <Task className={className} task={task} />}
     </section>
   );
 }

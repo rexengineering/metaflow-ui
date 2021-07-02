@@ -67,12 +67,6 @@ function ActionItem({ actionType, label, onAction, isChecked, className }) {
   );
 }
 
-ActionItem.defaultProps = {
-  onAction: () => {},
-  isChecked: false,
-  className: "",
-};
-
 ActionItem.propTypes = {
   actionType: PropTypes.oneOf([
     ActionItemCheckType,
@@ -80,9 +74,14 @@ ActionItem.propTypes = {
     ActionItemDisplayOnlyType,
   ]).isRequired,
   label: PropTypes.string.isRequired,
-  onAction: PropTypes.func,
+  onAction: PropTypes.func.isRequired,
   isChecked: PropTypes.bool,
   className: PropTypes.string,
+};
+
+ActionItem.defaultProps = {
+  isChecked: false,
+  className: "",
 };
 
 export default ActionItem;

@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 function InfoSection({ title, onAddIconClicked, children, className }) {
   const classes = useStyles();
+
   return (
     <section className={className}>
       <div className={classes.header}>

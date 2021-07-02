@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import History from "./History";
 import { CustomerHistory, Months } from "./mockData";
@@ -33,5 +33,20 @@ describe("<History />", () => {
     Months.forEach((month) =>
       expect(screen.getByText(month)).toBeInTheDocument()
     );
+  });
+
+  it("should fire the passed function when clicked", () => {
+    const onClick = jest.fn();
+    render(renderHistoryComponent(onClick));
+
+    const buttons = screen
+      .getAllByTestId("item")
+      .map((element) => element.querySelector("button"));
+
+    buttons.forEach((button) => {
+      onClick.mockClear();
+      fireEvent.click(button);
+      expect(onClick).toHaveBeenCalledTimes(1);
+    });
   });
 });

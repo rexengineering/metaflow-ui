@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Formik } from "formik";
 import React from "react";
 import TaskCheckboxField from ".";
@@ -36,5 +36,49 @@ describe("<TaskCheckboxField />", () => {
 
     const child = screen.getByText(label);
     expect(child).toBeInTheDocument();
+  });
+
+  it("should validate on blur", async () => {
+    const validateFn = jest.fn();
+    const fieldName = "field";
+    render(
+      <Formik initialValues={{ [fieldName]: "" }}>
+        <TaskCheckboxField
+          name={fieldName}
+          label="myLabel"
+          validateFn={validateFn}
+        />
+      </Formik>
+    );
+    const input = screen.getByRole("checkbox");
+
+    fireEvent.focusOut(input);
+
+    await waitFor(() => {
+      expect(validateFn).toBeCalledTimes(1);
+      expect(validateFn).toBeCalledWith(fieldName, false, expect.anything());
+    });
+  });
+
+  it("should validate on change", async () => {
+    const validateFn = jest.fn();
+    const fieldName = "field";
+    render(
+      <Formik initialValues={{ [fieldName]: "" }}>
+        <TaskCheckboxField
+          name={fieldName}
+          label="myLabel"
+          validateFn={validateFn}
+        />
+      </Formik>
+    );
+    const input = screen.getByRole("checkbox");
+
+    fireEvent.click(input);
+
+    await waitFor(() => {
+      expect(validateFn).toBeCalledTimes(1);
+      expect(validateFn).toBeCalledWith(fieldName, true, expect.anything());
+    });
   });
 });

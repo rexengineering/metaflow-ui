@@ -3,6 +3,11 @@
 exports[`<Workflow /> should match snapshot 1`] = `
 <DocumentFragment>
   <section>
+    <h6
+      class="MuiTypography-root MuiTypography-h6"
+    >
+      456456
+    </h6>
     <section
       class="makeStyles-inProgressContainer-9"
     >
