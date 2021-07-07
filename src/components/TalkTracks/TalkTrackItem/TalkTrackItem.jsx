@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Chip, makeStyles, Paper, Typography } from "@material-ui/core";
 import { talkTrackItemShape } from "../../../utils/shapes";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -24,10 +25,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TalkTrackItem({ identifier, title, speech, actions, onActionSelected, onSkip }) {
+function TalkTrackItem({ identifier, title, speech, actions, onActionSelected, onSkip, className }) {
   const classes = useStyles();
   return (
-    <Paper elevation={0} className={classes.paper}>
+    <Paper elevation={0} className={clsx(classes.paper, className)}>
       <Typography color="primary" className={classes.title} variant="body1">
         {title}
       </Typography>
@@ -65,6 +66,7 @@ TalkTrackItem.defaultProps = {
   actions: [],
   onActionSelected: () => {},
   active: false,
+  className: "",
 };
 
 TalkTrackItem.propTypes = talkTrackItemShape;

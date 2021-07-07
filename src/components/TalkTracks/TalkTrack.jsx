@@ -1,5 +1,6 @@
 import React, {useEffect} from "react";
 import {
+  Button,
   IconButton,
   makeStyles,
   Tab,
@@ -24,10 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
   addButton: {
     position: "absolute",
-    top: -5,
+    top: 0,
     right: 0,
-    background: theme.palette.grey["800"],
-    color: theme.palette.common.white,
+    color: theme.palette.common.black,
   },
   talkTracks: {
     marginTop: theme.spacing(5),
@@ -45,6 +45,17 @@ const useStyles = makeStyles((theme) => ({
   tabsIndicator: {
     backgroundColor: theme.palette.primary.main,
   },
+  stepsContainer: {
+    maxHeight: theme.spacing(70),
+    padding: theme.spacing(0, 2),
+    overflowY: "scroll",
+  },
+  talkTrackStep: {
+    marginBottom: theme.spacing(3),
+  },
+  title: {
+    marginTop: theme.spacing(1),
+  }
 }));
 
 function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected, onTabChange, className }) {
@@ -62,8 +73,8 @@ function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected
   return (
     <ActionCard className={clsx(classes.paper, className)}>
       <section className={classes.header}>
-        <Typography variant="h4">Talk track</Typography>
-        <IconButton className={classes.addButton}>
+        <Typography variant="h4" className={classes.title}>Talk track</Typography>
+        <IconButton type="button" color="default"  className={classes.addButton}>
           <FontAwesomeIcon icon={faPlus} />
         </IconButton>
       </section>
@@ -89,25 +100,30 @@ function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected
             talkTrackItems.map(
               ({
                 identifier,
-                title,
-                speech,
-                actions,
-                active,
+                steps,
               }) => (
                 <TabPanel
                   key={identifier}
                   index={`${value}`}
                   value={identifier}
                 >
-                  <TalkTrackItem
-                    title={title}
-                    speech={speech}
-                    actions={actions}
-                    onSkip={onSkip}
-                    identifier={identifier}
-                    onActionSelected={onActionSelected}
-                    active={active}
-                  />
+                  <section className={classes.stepsContainer}>
+                    {
+                      steps.map(({identifier, title, speech, actions, active}) => (
+                          <TalkTrackItem
+                              key={identifier}
+                              title={title}
+                              speech={speech}
+                              actions={actions}
+                              onSkip={onSkip}
+                              identifier={identifier}
+                              onActionSelected={onActionSelected}
+                              active={active}
+                              className={classes.talkTrackStep}
+                          />
+                      ))
+                    }
+                  </section>
                 </TabPanel>
               )
             )}
