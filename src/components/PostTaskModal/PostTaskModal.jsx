@@ -22,12 +22,13 @@ function PostTaskModal({ onClose, handleClose, workflowID, open }){
 
 PostTaskModal.defaultProps = {
    onClose: () => {},
-    handleClose: () => {},
+   handleClose: () => {},
+   workflowID: "",
 }
 
 PostTaskModal.propTypes = {
     onClose: PropTypes.func,
-    workflowID: PropTypes.string.isRequired,
+    workflowID: PropTypes.string,
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func,
 }

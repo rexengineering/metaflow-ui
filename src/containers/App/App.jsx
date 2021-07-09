@@ -12,7 +12,7 @@ import {
   fetchActiveTalkTracks,
   fetchTasks,
   initTalkTrack,
-  initWorkflow,
+  initWorkflow, setActiveStep,
   setTalkTrackActive
 } from "../../store/thunks/thunks";
 import getDeploymentId from "../../store/thunks/getDeploymentId";
@@ -89,24 +89,36 @@ function App() {
   const [activeTalkTrackID, setActiveTalkTrackID] = useState(getActiveTalkTrackID(talkTracks));
   const dispatch = useDispatch();
   const classes = useStyles();
+  const searchTalkTrackByIdentifier = (talkTrackIdentifier) => talkTracks.find(({ talktrackId }) => talktrackId === talkTrackIdentifier);
   const areDeploymentsUnavailable =
     Array.isArray(deployments) && !deployments.length;
-  const isAutomaticState = false;
-  const handleTalkTrackSkip = (talkTrackID) => {
-    console.log(talkTrackID);
+  const isAutomaticState = true;
+  const handleTalkTrackContinue = ({stepIdentifier, talkTrackIdentifier}) => {
+    const talktrack = talkTracks.find(({ identifier }) => identifier === talkTrackIdentifier);
+    if (!talktrack)
+      return;
+
+    const {steps} = talktrack;
+    const currentStep = steps.findIndex(({ order }) => order === parseInt(stepIdentifier));
+    const nextTalkTrackStep = steps[currentStep + 1];
+    if (!nextTalkTrackStep)
+      return;
+    const {order} = nextTalkTrackStep;
+    dispatch(setActiveStep(talkTrackIdentifier, order));
   };
   const currentTalkTrackWorkflow = getActiveTalkTrackWorkflow(talkTracks, activeTalkTrackID);
   const handleTabChange = (talkTrackUUID) => dispatch(setTalkTrackActive(talkTrackUUID));
-  const handleTalkTrackAction = (talkTrackID) => {
-    const talkTrack = talkTracks.find(({ talktrack_id }) => talktrack_id === talkTrackID);
+  const handleTalkTrackAction = (talkTrackIdentifier) => {
+    const talkTrack = searchTalkTrackByIdentifier(talkTrackIdentifier);
     if (talkTrack)
       return;
-    dispatch(initTalkTrack(talkTrackID))
+    dispatch(initTalkTrack(talkTrackIdentifier))
   };
+
   const rootTalkTrack = "intro-123";
   const deploymentID = "callworkflow-2f8501bf";
   const [shouldDispatchRootTalkTrack, setShouldDispatchRootTalkTrack] = useState(true);
-  const [showPostTaskModal, setShowPostTaskModal] = useState(true);
+  const [showPostTaskModal, setShowPostTaskModal] = useState(false);
   const handleCloseShowPostTaskModal = () => setShowPostTaskModal(false);
 
   useEffect(() => dispatch(getDeploymentId()), []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -158,10 +170,12 @@ function App() {
         <Tray className={classes.tray2}>
             <TalkTrack onTabChange={handleTabChange}
                        onActionSelected={handleTalkTrackAction}
-                       onSkip={handleTalkTrackSkip}
+                       onSkip={handleTalkTrackContinue}
                        activeTalkTrackID={activeTalkTrackID}
                        className={classes.talkTracks}
-                       talkTrackItems={talkTracks} />
+                       talkTrackItems={talkTracks}
+                       onContinue={handleTalkTrackContinue}
+            />
         </Tray>
         <Tray className={classes.tray3}>
           <PostTaskModal open={showPostTaskModal} handleClose={handleCloseShowPostTaskModal} workflowID={currentTalkTrackWorkflow} />

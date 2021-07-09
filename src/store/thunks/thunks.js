@@ -15,7 +15,12 @@ import {
 import { getTasks, startWorkflow, finishTask } from "../queries/rexflow";
 import { convertFormToQueryPayload } from "../../utils/tasks";
 import { buildTaskIdentifier } from "../selectors/rexflow";
-import {activateTalkTrack, getActiveTalkTracks, startTalkTrack} from "../queries/talktracks";
+import {
+  activateTalkTrack,
+  getActiveTalkTracks,
+  setCurrentActiveTalkTrackStep,
+  startTalkTrack
+} from "../queries/talktracks";
 import {setTalkTracks} from "../actions/talktracks";
 
 const defaultOptions = {
@@ -105,79 +110,11 @@ export const completeTask = (formFields, task) => async (dispatch) => {
 };
 
 export const fetchActiveTalkTracks = () => async (dispatch) => {
-  // const { data } = await apolloClient.query({
-  //   query: getActiveTalkTracks
-  // });
-
-  const tt = [
-    {
-      "id": "test-123",
-      "status": "ACTIVE",
-      "order": 0,
-      "talktrack_id": "test-123",
-      "title": "Demo Talktrack",
-      "steps": [
-        {
-          "step_id": "step-123",
-          "title": "Step 1",
-          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pretium sem et nibh feugiat venenatis. Proin consectetur tempus urna, eu interdum massa consequat vitae. Vivamus a orci in purus elementum scelerisque ut eu magna. Nullam suscipit mollis dolor, sed interdum turpis sagittis vel. Nunc ultricies quam nec libero blandit faucibus. Sed turpis risus, tincidunt a vehicula sit amet, pellentesque eu neque. Nulla vel vulputate lectus, et rhoncus lacus.",
-          "actions": [
-            {
-              "label": "Intro",
-              "talktrack_id": "intro-123"
-            }
-          ]
-        },
-        {
-          "step_id": "step-456",
-          "title": "Step 2",
-          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pretium sem et nibh feugiat venenatis. Proin consectetur tempus urna, eu interdum massa consequat vitae. Vivamus a orci in purus elementum scelerisque ut eu magna. Nullam suscipit mollis dolor, sed interdum turpis sagittis vel. Nunc ultricies quam nec libero blandit faucibus. Sed turpis risus, tincidunt a vehicula sit amet, pellentesque eu neque. Nulla vel vulputate lectus, et rhoncus lacus.",
-          "workflow_name": "capture_email",
-          "actions": [
-            {
-              "label": "Intro",
-              "talktrack_id": "intro-123"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "test-1rfedfv23",
-      "status": "NOACTIVE",
-      "order": 1,
-      "talktrack_id": "test-46844",
-      "title": "2 Talktrack",
-      "steps": [
-        {
-          "step_id": "step-1234trr",
-          "title": "Step 1",
-          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pretium sem et nibh feugiat venenatis. Proin consectetur tempus urna, eu interdum massa consequat vitae. Vivamus a orci in purus elementum scelerisque ut eu magna. Nullam suscipit mollis dolor, sed interdum turpis sagittis vel. Nunc ultricies quam nec libero blandit faucibus. Sed turpis risus, tincidunt a vehicula sit amet, pellentesque eu neque. Nulla vel vulputate lectus, et rhoncus lacus.",
-          "actions": [
-            {
-              "label": "Intro",
-              "talktrack_id": "intro-1treteg23"
-            }
-          ]
-        },
-        {
-          "step_id": "step54t65tr-456",
-          "title": "Step 2",
-          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pretium sem et nibh feugiat venenatis. Proin consectetur tempus urna, eu interdum massa consequat vitae. Vivamus a orci in purus elementum scelerisque ut eu magna. Nullam suscipit mollis dolor, sed interdum turpis sagittis vel. Nunc ultricies quam nec libero blandit faucibus. Sed turpis risus, tincidunt a vehicula sit amet, pellentesque eu neque. Nulla vel vulputate lectus, et rhoncus lacus.",
-          "workflow_name": "capture_email",
-          "actions": [
-            {
-              "label": "Intro",
-              "talktrack_id": "intro-123"
-            }
-          ]
-        }
-      ]
-    }
-  ];
-
-  // const { talktracks } = data;
-  dispatch(setTalkTracks(tt));
+   const { data } = await apolloClient.query({
+     query: getActiveTalkTracks
+  });
+  const { talktracks } = data;
+  dispatch(setTalkTracks(talktracks.active));
 
 }
 
@@ -186,11 +123,10 @@ export const initTalkTrack = (talkTrackId) => async (dispatch) => {
     mutation: startTalkTrack,
     variables: {
       startTalkTrackInput: {
-        talktrack_id: talkTrackId
+        talktrackId: talkTrackId
       }
     }
   });
-
   dispatch(fetchActiveTalkTracks());
 }
 
@@ -199,7 +135,20 @@ export const setTalkTrackActive = (talkTrackUUID) => async (dispatch) => {
     mutation: activateTalkTrack,
     variables: {
       activateTalkTrackInput: {
-        talktrack_uuid: talkTrackUUID
+        talktrackUUID: talkTrackUUID
+      }
+    }
+  });
+  dispatch(fetchActiveTalkTracks());
+}
+
+export const setActiveStep = (talktrackUUID, stepNumber) => async (dispatch) => {
+  await apolloClient.mutate({
+    mutation: setCurrentActiveTalkTrackStep,
+    variables: {
+      changeStepTalkTrackInput: {
+        talktrackUUID,
+        stepNumber,
       }
     }
   });

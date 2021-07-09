@@ -23,9 +23,15 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "uppercase",
     lineHeight: 1,
   },
+  buttons: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: theme.spacing(2),
+  },
 }));
 
-function TalkTrackItem({ identifier, title, speech, actions, onActionSelected, onSkip, className }) {
+function TalkTrackItem({ identifier, title, speech, actions, onActionSelected, onSkip, onContinue, className }) {
   const classes = useStyles();
   return (
     <Paper elevation={0} className={clsx(classes.paper, className)}>
@@ -42,12 +48,12 @@ function TalkTrackItem({ identifier, title, speech, actions, onActionSelected, o
             Select button based on customer inquiry
           </Typography>
           <section className={classes.actions}>
-            {actions.map(({label, talktrack_id}) => (
+            {actions.map(({label, talktrackId}) => (
               <Chip
-                key={talktrack_id}
+                key={`${label}-${talktrackId}`}
                 className={classes.action}
                 variant="outlined"
-                onClick={() => onActionSelected(talktrack_id)}
+                onClick={() => onActionSelected(talktrackId)}
                 size="small"
                 label={label}
               />
@@ -55,9 +61,14 @@ function TalkTrackItem({ identifier, title, speech, actions, onActionSelected, o
           </section>
         </section>
       ) : null}
-      <Button type="button" onClick={() => onSkip(identifier)}>
-        Skip
-      </Button>
+      <section className={classes.buttons}>
+        <Button type="button" onClick={() => onSkip(identifier)}>
+          Skip
+        </Button>
+        <Button type="button" onClick={() => onContinue(identifier)}>
+          Continue
+        </Button>
+      </section>
     </Paper>
   );
 }
@@ -65,6 +76,7 @@ function TalkTrackItem({ identifier, title, speech, actions, onActionSelected, o
 TalkTrackItem.defaultProps = {
   actions: [],
   onActionSelected: () => {},
+  onContinue: () => {},
   active: false,
   className: "",
 };

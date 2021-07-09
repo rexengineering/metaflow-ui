@@ -5,19 +5,25 @@ export const getActiveTalkTracks = gql`
         talktracks {
             active {
                 id
-                session_id
-                status
+                sessionId
                 order
-                workflow {
+                status
+                currentStep
+                workflows {
                     iid
                 }
                 details {
-                    talktrack_id
-                    text
+                    talktrackId
                     title
-                    actions {
-                        label
-                        talktrack_id
+                    steps {
+                        title
+                        text
+                        order
+                        workflowName
+                        actions {
+                            label
+                            talktrackId
+                        }
                     }
                 }
             }
@@ -28,21 +34,25 @@ export const getActiveTalkTracks = gql`
 export const startTalkTrack = gql`
     mutation StartTalkTrack($startTalkTrackInput: StartTalkTrackInput!) {
         talktrack {
-            start (input: $startTalkTrackInput) {
+            start(input: $startTalkTrackInput) {
                 status
                 talktracks {
                     id
-                    session_id
+                    sessionId
+                    order
                     status
-                    workflow {
+                    workflows {
                         iid
                     }
                     details {
-                        talktrack_id
-                        text
-                        actions {
-                            label
-                            talktrack_id
+                        talktrackId
+                        title
+                        steps {
+                            text
+                            actions {
+                                label
+                                talktrackId
+                            }
                         }
                     }
                 }
@@ -60,21 +70,62 @@ export const startTalkTrack = gql`
 export const activateTalkTrack = gql`
     mutation ActivateTalkTrack($activateTalkTrackInput: ActivateTalkTrackInput!) {
         talktrack {
-            activate (input: $activateTalkTrackInput) {
+            activate(input: $activateTalkTrackInput) {
                 status
                 talktrack {
                     id
-                    session_id
+                    sessionId
+                    order
                     status
-                    workflow {
+                    workflows {
                         iid
                     }
                     details {
-                        talktrack_id
-                        text
-                        actions {
-                            label
-                            talktrack_id
+                        talktrackId
+                        title
+                        steps {
+                            text
+                            actions {
+                                label
+                                talktrackId
+                            }
+                        }
+                    }
+                }
+                errors {
+                    __typename
+                    ... on ProblemInterface {
+                        message
+                    }
+                }
+            }
+        }
+    }
+`;
+
+export const setCurrentActiveTalkTrackStep = gql`
+    mutation ChangeTalkTrackStep($changeStepTalkTrackInput: ChangeStepTalkTrackInput!) {
+        talktrack {
+            changeStep (input: $changeStepTalkTrackInput){
+                status
+                status
+                talktrack {
+                    id
+                    sessionId
+                    order
+                    status
+                    workflows {
+                        iid
+                    }
+                    details {
+                        talktrackId
+                        title
+                        steps {
+                            text
+                            actions {
+                                label
+                                talktrackId
+                            }
                         }
                     }
                 }

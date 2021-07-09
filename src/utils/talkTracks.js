@@ -3,30 +3,30 @@ export function mapTalkTracks(talkTracks){
     if (!Array.isArray(talkTracks))
         return null;
 
-    const mappedTalkTracks = talkTracks.map(({id, status, title, talktrack_id, order, workflow, steps: rawSteps}) => {
+    const mappedTalkTracks = talkTracks.map((talktrack) => {
+        const {id, status, details: {title, talktrackId, steps: rawSteps}, order, currentStep} = talktrack;
         const activeStatus = "ACTIVE";
         const steps = Array.isArray(rawSteps)
-            ? rawSteps.map(({step_id, text, actions, title, status}) => ({
-                identifier: step_id,
+            ? rawSteps.map(({text, actions, title, workflowName, order}) => ({
                 speech: text,
                 actions,
                 title,
-                active: status === activeStatus
+                workflowName,
+                order,
             }))
             : [];
-        const iid = workflow?.iid ?? null;
 
         return {
             identifier: id,
             title,
             active: status === activeStatus,
-            workflow: iid,
             order,
-            talktrack_id,
-            steps
+            talktrackId,
+            steps,
+            currentStep,
         }
 
-    })
+    });
 
     return mappedTalkTracks.sort((talkTrackA, talkTrackB) => {
         const {order: orderA} = talkTrackA;

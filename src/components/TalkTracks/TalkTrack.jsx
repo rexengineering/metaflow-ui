@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import {
-  Button,
   IconButton,
   makeStyles,
   Tab,
@@ -10,7 +9,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/pro-solid-svg-icons/faPlus";
 import PropTypes from "prop-types";
-import clsx from "clsx";
 import { talkTrackItemShape } from "../../utils/shapes";
 import ActionCard from "../ActionCard";
 import TalkTrackItem from "./TalkTrackItem";
@@ -45,20 +43,12 @@ const useStyles = makeStyles((theme) => ({
   tabsIndicator: {
     backgroundColor: theme.palette.primary.main,
   },
-  stepsContainer: {
-    maxHeight: theme.spacing(70),
-    padding: theme.spacing(0, 2),
-    overflowY: "scroll",
-  },
-  talkTrackStep: {
-    marginBottom: theme.spacing(3),
-  },
   title: {
     marginTop: theme.spacing(1),
   }
 }));
 
-function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected, onTabChange, className }) {
+function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected, onTabChange, onContinue, className }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(activeTalkTrackID);
   const handleChange = (event, newValue) => {
@@ -71,7 +61,7 @@ function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected
   }, [activeTalkTrackID, setValue])
 
   return (
-    <ActionCard className={clsx(classes.paper, className)}>
+    <ActionCard className={className}>
       <section className={classes.header}>
         <Typography variant="h4" className={classes.title}>Talk track</Typography>
         <IconButton type="button" color="default"  className={classes.addButton}>
@@ -101,29 +91,32 @@ function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected
               ({
                 identifier,
                 steps,
+                currentStep
               }) => (
                 <TabPanel
                   key={identifier}
                   index={`${value}`}
                   value={identifier}
                 >
-                  <section className={classes.stepsContainer}>
-                    {
-                      steps.map(({identifier, title, speech, actions, active}) => (
-                          <TalkTrackItem
-                              key={identifier}
-                              title={title}
-                              speech={speech}
-                              actions={actions}
-                              onSkip={onSkip}
-                              identifier={identifier}
-                              onActionSelected={onActionSelected}
-                              active={active}
-                              className={classes.talkTrackStep}
-                          />
-                      ))
-                    }
-                  </section>
+                  {
+                    steps.map(({order, title, speech, actions, active}) =>
+                      order === currentStep
+                      ? (
+                            <TalkTrackItem
+                                currentStep={currentStep}
+                                key={order}
+                                title={title}
+                                speech={speech}
+                                actions={actions}
+                                onSkip={(stepIdentifier) => onSkip({stepIdentifier, talkTrackIdentifier: identifier})}
+                                identifier={`${order}`}
+                                onActionSelected={onActionSelected}
+                                active={active}
+                                onContinue={(stepIdentifier) => onContinue({stepIdentifier, talkTrackIdentifier: identifier})}
+                            />
+                          )
+                      : null)
+                  }
                 </TabPanel>
               )
             )}
@@ -144,6 +137,7 @@ TalkTrack.propTypes = {
   activeTalkTrackID: PropTypes.string.isRequired,
   onSkip: PropTypes.func.isRequired,
   onActionSelected: PropTypes.func.isRequired,
+  onContinue: PropTypes.func.isRequired,
   onTabChange: PropTypes.func.isRequired,
 };
 
