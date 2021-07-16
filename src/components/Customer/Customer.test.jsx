@@ -9,7 +9,7 @@ import Notes from "./Info/Notes/mockData";
 import Tags from "./Info/Tags/mockData";
 
 describe("<Customer />", () => {
-  const renderCustomerComponent = (onTabsChange) => (
+  const renderCustomerComponent = (onTabsChange, onHistoryItemSelected = () => {}, onInfoSubmit = () => {}, ) => (
     <Customer
       months={Months}
       customerHistory={CustomerHistory}
@@ -20,6 +20,8 @@ describe("<Customer />", () => {
       notes={Notes}
       tags={Tags}
       onTabsChange={onTabsChange}
+      onHistoryItemSelected={onHistoryItemSelected}
+      onInfoSubmit={onInfoSubmit}
     />
   );
 

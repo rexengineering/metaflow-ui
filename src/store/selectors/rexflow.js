@@ -64,3 +64,11 @@ export const selectExceptionError = (task) =>
     ({ tasksState }) =>
       tasksState[buildTaskIdentifier(task)]?.exceptionError ?? null
   );
+
+export const selectWorkflowID = (workflowName) => createSelector(
+    [selectActiveWorkflows],
+    (activeWorkflows) => {
+      if (!Array.isArray(activeWorkflows)) return "";
+      return activeWorkflows.find((activeWorkflow) => activeWorkflow.includes(workflowName));
+    }
+);
