@@ -30,6 +30,13 @@ exports[`<Task /> should match snapshot 1`] = `
         </div>
       </div>
     </div>
+    <div>
+      <p
+        class="MuiTypography-root MuiTypography-body1"
+      >
+        some copy
+      </p>
+    </div>
     <button
       class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-submitButton-7 MuiButton-containedSecondary"
       tabindex="0"

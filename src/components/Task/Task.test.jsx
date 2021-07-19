@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import Task from "./Task";
 import getStore from "../../store";
-import { TEXT } from "../../constants/taskTypes";
+import { TEXT, COPY } from "../../constants/taskTypes";
 
 describe("<Task />", () => {
   const props = {
@@ -26,6 +26,14 @@ describe("<Task />", () => {
               type: "",
             },
           ],
+        },
+        {
+          data: "some copy",
+          dataId: "copy",
+          encrypted: false,
+          label: "Name",
+          order: 2,
+          type: COPY,
         },
       ],
     },
@@ -54,5 +62,11 @@ describe("<Task />", () => {
     render(renderTask());
     const buttonNode = screen.getByText("Submit");
     expect(buttonNode).toBeInTheDocument();
+  });
+
+  it("should render copy text", () => {
+    render(renderTask());
+    const copyNode = screen.getByText("some copy");
+    expect(copyNode).toBeInTheDocument();
   });
 });

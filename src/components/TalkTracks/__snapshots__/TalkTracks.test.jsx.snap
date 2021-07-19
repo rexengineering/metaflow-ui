@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TalkTracks /> should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiCard-root MuiPaper-elevation1 MuiPaper-rounded"
+  >
+    <div
+      class="MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-content"
+      >
+        <span
+          class="MuiTypography-root MuiCardHeader-title MuiTypography-h5 MuiTypography-displayBlock"
+        >
+          Talk Tracks
+        </span>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1"
+      >
+        There are no active talk tracks.
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<TalkTracks /> should render a header action if passed 1`] = `
+<button
+  class="MuiButtonBase-root MuiButton-root MuiButton-text"
+  data-testid="header-action"
+  tabindex="0"
+  type="button"
+>
+  <span
+    class="MuiButton-label"
+  >
+    Action
+  </span>
+  <span
+    class="MuiTouchRipple-root"
+  />
+</button>
+`;
