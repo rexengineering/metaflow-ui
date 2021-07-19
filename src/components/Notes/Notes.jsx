@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import {
   Typography,
   Button,
@@ -28,13 +29,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Notes() {
+function Notes({ onNotesNumberChangeCB }) {
   const [notes, setNotes] = useState([]);
   const classes = useStyles();
   const initialValues = { newNote: "" };
   const validationSchema = yupObject({
     newNote: validationSchemaMapping[TEXT],
   });
+
+  useEffect(() => {
+    if (onNotesNumberChangeCB) {
+      onNotesNumberChangeCB(notes?.length);
+    }
+  }, [onNotesNumberChangeCB, notes]);
 
   const onTextAreaKeyDown = useCallback((event, handleSubmit) => {
     if (event?.keyCode === 13 && !event?.shiftKey) {
@@ -113,5 +120,13 @@ function Notes() {
     </>
   );
 }
+
+Notes.propTypes = {
+  onNotesNumberChangeCB: PropTypes.func,
+};
+
+Notes.defaultProps = {
+  onNotesNumberChangeCB: undefined,
+};
 
 export default Notes;
