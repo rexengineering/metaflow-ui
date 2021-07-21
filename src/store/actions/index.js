@@ -23,14 +23,14 @@ export const initWorkflowFailure = (error) => ({
   payload: { error },
 });
 
-export const initWorkflowLoading = (isLoading) => ({
+export const initWorkflowLoading = (isLoading, instanceID, deploymentID) => ({
   type: rexFlowActionTypes.INIT_WORKFLOW_IS_LOADING,
-  payload: { isLoading },
+  payload: { isLoading, deploymentID, instanceID },
 });
 
-export const fetchTasksSuccess = (task, workflowId) => ({
+export const fetchTasksSuccess = (task, workflowId, instanceID) => ({
   type: rexFlowActionTypes.FETCH_TASKS_SUCCESS,
-  payload: { task, workflowId },
+  payload: { task, workflowId, instanceID },
 });
 
 export const fetchTasksFailure = (error) => ({
@@ -38,29 +38,29 @@ export const fetchTasksFailure = (error) => ({
   payload: { error },
 });
 
-export const setFetchTasksIsLoading = (isLoading) => ({
+export const setFetchTasksIsLoading = (isLoading, instanceID) => ({
   type: rexFlowActionTypes.FETCH_TASKS_IS_LOADING,
-  payload: { isLoading },
+  payload: { isLoading, instanceID },
 });
 
-export const setSaveTaskDataIsLoading = (taskId, isLoading) => ({
+export const setSaveTaskDataIsLoading = (taskId, isLoading, instanceID) => ({
   type: rexFlowActionTypes.SAVE_TASK_DATA_IS_LOADING,
-  payload: { taskId, isLoading },
+  payload: { taskId, isLoading, instanceID },
 });
 
-export const setIsTaskCompleted = (taskId, isTaskCompleted) => ({
+export const setIsTaskCompleted = (taskId, isTaskCompleted, instanceID) => ({
   type: rexFlowActionTypes.IS_TASK_COMPLETED,
-  payload: { taskId, isTaskCompleted },
+  payload: { taskId, isTaskCompleted, instanceID },
 });
 
-export const saveTaskDataFailure = (taskId, errors) => ({
+export const saveTaskDataFailure = (taskId, errors, instanceID) => ({
   type: rexFlowActionTypes.SAVE_TASK_DATA_FAILURE,
-  payload: { taskId, errors },
+  payload: { taskId, errors, instanceID },
 });
 
-export const saveTaskDataException = (taskId, errorMessage) => ({
+export const saveTaskDataException = (taskId, errorMessage, instanceID) => ({
   type: rexFlowActionTypes.SAVE_TASK_DATA_EXCEPTION,
-  payload: { taskId, errorMessage },
+  payload: { taskId, errorMessage, instanceID },
 });
 
 export const setDeploymentId = (deployments) => ({

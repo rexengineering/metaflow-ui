@@ -77,6 +77,7 @@ function App() {
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [activePaneId, setActivePaneId] = useState(TEMP_PANES[0]?.id);
   const [numberOfNotes, setNumberOfNotes] = useState(0);
+  const instanceID = "instance-test";
 
   const toggleNotes = useCallback(() => setIsNotesOpen((currentIsNotesOpen) => !currentIsNotesOpen), [])
 
@@ -84,7 +85,7 @@ function App() {
 
   useEffect(() => {
     if (isAutomaticState) {
-      const interval = setInterval(() => dispatch(fetchTasks()), 500);
+      const interval = setInterval(() => dispatch(fetchTasks(instanceID)), 500);
       return () => clearInterval(interval);
     }
     return () => {};
@@ -126,6 +127,7 @@ function App() {
             deployments={deployments}
             setIsAutomaticState={setIsAutomaticState}
             isAutomaticState={isAutomaticState}
+            instanceID={instanceID}
           />
         </Drawer>
       </section>

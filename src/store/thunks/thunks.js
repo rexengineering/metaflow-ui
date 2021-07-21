@@ -28,9 +28,9 @@ export const apolloClient = new ApolloClient({
   defaultOptions,
 });
 
-export const fetchTasks = () => async (dispatch) => {
+export const fetchTasks = (instanceID) => async (dispatch) => {
   try {
-    dispatch(setFetchTasksIsLoading(true));
+    dispatch(setFetchTasksIsLoading(true, instanceID));
     const { data } = await apolloClient.query({
       query: getTasks,
     });
@@ -39,17 +39,17 @@ export const fetchTasks = () => async (dispatch) => {
     dispatch(initWorkflowSuccessful(workflowIDs));
     workflows.forEach(({ iid, tasks }) => {
       const task = tasks[0];
-      dispatch(fetchTasksSuccess(task, iid));
+      dispatch(fetchTasksSuccess(task, iid, instanceID));
     });
   } catch (e) {
-    dispatch(fetchTasksFailure(e)); // pending reducer change
+    dispatch(fetchTasksFailure({error: e})); // pending reducer change
   }
-  dispatch(setFetchTasksIsLoading(false));
+  dispatch(setFetchTasksIsLoading(false, instanceID));
 };
 
-export const initWorkflow = (did) => async (dispatch) => {
+export const initWorkflow = (did, instanceID) => async (dispatch) => {
   try {
-    dispatch(initWorkflowLoading(true));
+    dispatch(initWorkflowLoading(true, instanceID, did));
     const response = await apolloClient.mutate({
       mutation: startWorkflow,
       variables: {
@@ -60,12 +60,12 @@ export const initWorkflow = (did) => async (dispatch) => {
     });
     dispatch(initWorkflowSuccessful(response.data.workflow.start.iid));
   } catch (e) {
-    dispatch(initWorkflowFailure(e));
+    dispatch(initWorkflowFailure({error: e}));
   }
-  dispatch(initWorkflowLoading(false));
+  dispatch(initWorkflowLoading(false, instanceID, did));
 };
 
-export const completeTask = (formFields, task) => async (dispatch) => {
+export const completeTask = (formFields, task, instanceID) => async (dispatch) => {
   const data = convertFormToQueryPayload(formFields);
   const { tid, iid } = task;
   const taskIdentifier = buildTaskIdentifier(task);
@@ -80,7 +80,7 @@ export const completeTask = (formFields, task) => async (dispatch) => {
   };
 
   try {
-    dispatch(setSaveTaskDataIsLoading(taskIdentifier, true));
+    dispatch(setSaveTaskDataIsLoading(taskIdentifier, true, instanceID));
     const result = await apolloClient.mutate({
       mutation: finishTask,
       variables: {
@@ -89,15 +89,15 @@ export const completeTask = (formFields, task) => async (dispatch) => {
     });
     const { status, errors } = result?.data?.workflow?.tasks?.complete;
     if (status === "FAILURE") {
-      dispatch(saveTaskDataFailure(taskIdentifier, errors));
+      dispatch(saveTaskDataFailure(taskIdentifier, errors, instanceID));
     } else {
-      dispatch(setIsTaskCompleted(taskIdentifier, true));
+      dispatch(setIsTaskCompleted(taskIdentifier, true, instanceID));
     }
   } catch (error) {
     dispatch(
-      saveTaskDataException(taskIdentifier, "There was an unexpected error.")
+      saveTaskDataException(taskIdentifier, "There was an unexpected error.", instanceID)
     );
-    dispatch(setIsTaskCompleted(taskIdentifier, false));
+    dispatch(setIsTaskCompleted(taskIdentifier, false, instanceID));
   }
-  dispatch(setSaveTaskDataIsLoading(taskIdentifier, false));
+  dispatch(setSaveTaskDataIsLoading(taskIdentifier, false, instanceID));
 };

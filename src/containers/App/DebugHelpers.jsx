@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DebugHelpers({ deployments, isAutomaticState, setIsAutomaticState }) {
+function DebugHelpers({ deployments, isAutomaticState, setIsAutomaticState, instanceID }) {
   const classes = useStyles();
   const isDeploymentsAvailable = Array.isArray(deployments) && !!deployments.length;
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ function DebugHelpers({ deployments, isAutomaticState, setIsAutomaticState }) {
             >
               {deploymentID}
             </Typography>
-            <WorkflowInstantiator deploymentID={deploymentID} />
+            <WorkflowInstantiator deploymentID={deploymentID} instanceID={instanceID} />
           </div>
         ))}
       <Typography variant="h5" align="center">

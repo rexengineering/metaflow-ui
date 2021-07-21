@@ -5,12 +5,12 @@ import { initWorkflow } from "../../store/thunks/thunks";
 import ActionButton from "../ActionButton";
 import { selectIsWorkflowBeingInitialized } from "../../store/selectors";
 
-function WorkflowInstantiator({ deploymentID }) {
+function WorkflowInstantiator({ deploymentID, instanceID }) {
   const isWorkflowBeingInitialized = useSelector(
-    selectIsWorkflowBeingInitialized(deploymentID)
+    selectIsWorkflowBeingInitialized(deploymentID, instanceID)
   );
   const dispatch = useDispatch();
-  const handleStartWorkflow = () => dispatch(initWorkflow(deploymentID));
+  const handleStartWorkflow = () => dispatch(initWorkflow(deploymentID, instanceID));
 
   return (
     <ActionButton
@@ -24,6 +24,7 @@ function WorkflowInstantiator({ deploymentID }) {
 
 WorkflowInstantiator.propTypes = {
   deploymentID: PropTypes.string.isRequired,
+  instanceID: PropTypes.string.isRequired,
 };
 
 export default WorkflowInstantiator;

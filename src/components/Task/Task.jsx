@@ -47,23 +47,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Task({ className, task }) {
+function Task({ className, task, instanceID }) {
   const { data } = task;
   const dispatch = useDispatch();
   const { formikInitialValues, validationSchema } =
     convertTaskFieldsToFormUtils(data);
   const [initialValues, setInitialValues] = useState(formikInitialValues ?? {});
   const formValidationSchema = object().shape(validationSchema);
-  const isProcessing = useSelector(selectIsTaskBeingProcessed(task));
-  const isCompleted = useSelector(selectIsTaskCompleted(task));
-  const exceptionError = useSelector(selectExceptionError(task));
+  const isProcessing = useSelector(selectIsTaskBeingProcessed(task, instanceID));
+  const isCompleted = useSelector(selectIsTaskCompleted(task, instanceID));
+  const exceptionError = useSelector(selectExceptionError(task, instanceID));
   const onSubmit = useCallback(
-    (fields) => dispatch(completeTask(fields, task)),
+    (fields) => dispatch(completeTask(fields, task, instanceID)),
     [dispatch, task]
   );
   const validateField = useValidateField(formValidationSchema);
   const classes = useStyles();
-  const errors = useSelector(selectValidationErrors(task));
+  const errors = useSelector(selectValidationErrors(task, instanceID));
   const { initialErrors, initialTouched } = convertValidationErrorsTo(
     errors ?? []
   );
@@ -151,6 +151,7 @@ Task.defaultProps = {
 
 Task.propTypes = {
   className: PropTypes.string,
+  instanceID: PropTypes.string.isRequired,
   task: PropTypes.shape({
     data: PropTypes.arrayOf(
       PropTypes.shape({

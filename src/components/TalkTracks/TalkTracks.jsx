@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TalkTracks({ talkTrackWorkflows, headerAction }) {
+function TalkTracks({ talkTrackWorkflows, headerAction, instanceID }) {
   const classes = useStyles();
 
   return (
@@ -29,6 +29,7 @@ function TalkTracks({ talkTrackWorkflows, headerAction }) {
               key={workflowID}
               className={classes.workflow}
               workflowID={workflowID}
+              instanceID={instanceID}
             />
         ))}
       </CardContent>
@@ -39,6 +40,7 @@ function TalkTracks({ talkTrackWorkflows, headerAction }) {
 TalkTracks.propTypes = {
   talkTrackWorkflows: PropTypes.arrayOf(PropTypes.string).isRequired,
   headerAction: PropTypes.node,
+  instanceID: PropTypes.string.isRequired,
 };
 
 TalkTracks.defaultProps = {

@@ -9,14 +9,20 @@ export const buildTaskIdentifier = ({ iid, tid }) => {
 
 const rexFlowSelector = (state) => state.rexFlow;
 
-export const selectTasks = createSelector(
-  [rexFlowSelector],
-  ({ tasks }) => tasks
+const instanceSelector = (instanceID) => createSelector(
+    [rexFlowSelector],
+    ({instances}) => instances[instanceID] ?? {}
 );
 
-export const selectIsWorkflowBeingInitialized = (deploymentID) =>
+export const selectTasks = (instanceID) =>
+    createSelector(
+  [instanceSelector(instanceID)],
+  ({ tasks }) => tasks
+    );
+
+export const selectIsWorkflowBeingInitialized = (deploymentID, instanceID) =>
   createSelector(
-    [rexFlowSelector],
+    [instanceSelector(instanceID)],
     ({ isWorkflowBeingInitialized }) =>
       isWorkflowBeingInitialized[deploymentID] ?? false
   );
@@ -26,41 +32,40 @@ export const selectActiveWorkflows = createSelector(
   ({ activeWorkflows }) => activeWorkflows
 );
 
-export const selectIsTaskBeingProcessed = (task) =>
+export const selectIsTaskBeingProcessed = (task, instanceID) =>
   createSelector(
-    [rexFlowSelector],
+    [instanceSelector(instanceID)],
     ({ tasksState }) =>
       tasksState[buildTaskIdentifier(task)]?.isLoading ?? false
   );
 
-export const selectIsTaskCompleted = (task) =>
+export const selectIsTaskCompleted = (task, instanceID) =>
   createSelector(
-    [rexFlowSelector],
+    [instanceSelector(instanceID)],
     ({ tasksState }) =>
       tasksState[buildTaskIdentifier(task)]?.isTaskCompleted ?? false
   );
 
-export const selectTask = (workflowID) => {
-  return createSelector(selectTasks, (tasks) => {
-    if (!tasks) return {};
-    return tasks[workflowID] ?? {};
-  });
-};
+export const selectTask = (workflowID, instanceID) =>
+    createSelector(selectTasks(instanceID), (tasks) => {
+      if (!tasks) return {};
+      return tasks[workflowID] ?? {};
+    });
 
 export const selectDeployments = createSelector(
   [rexFlowSelector],
   ({ deployments }) => deployments
 );
 
-export const selectValidationErrors = (task) =>
+export const selectValidationErrors = (task, instanceID) =>
   createSelector(
-    [rexFlowSelector],
+    [instanceSelector(instanceID)],
     ({ tasksState }) => tasksState[buildTaskIdentifier(task)]?.errors ?? null
   );
 
-export const selectExceptionError = (task) =>
+export const selectExceptionError = (task, instanceID) =>
   createSelector(
-    [rexFlowSelector],
+    [instanceSelector(instanceID)],
     ({ tasksState }) =>
       tasksState[buildTaskIdentifier(task)]?.exceptionError ?? null
   );
