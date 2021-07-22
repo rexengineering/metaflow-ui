@@ -58,9 +58,9 @@ export const initWorkflow = (did) => async (dispatch) => {
         },
       },
     });
-    dispatch(initWorkflowSuccessful(response.data.workflow.start.iid));
+    dispatch(initWorkflowSuccessful(response?.data?.workflow?.start?.iid));
   } catch (e) {
-    dispatch(initWorkflowFailure(e));
+    dispatch(initWorkflowFailure({error: e}));
   }
   dispatch(initWorkflowLoading(false));
 };
