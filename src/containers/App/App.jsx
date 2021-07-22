@@ -10,7 +10,7 @@ import {
   Badge,
 } from "@material-ui/core";
 import clsx from "clsx";
-import { fetchTasks } from "../../store/thunks/thunks";
+import {fetchTasks, initWorkflow} from "../../store/thunks/thunks";
 import getDeploymentId from "../../store/thunks/getDeploymentId";
 import {
   selectActiveWorkflows,
@@ -18,7 +18,7 @@ import {
 } from "../../store/selectors";
 import SideBar from "../../components/Sidebar";
 import Notes from "../../components/Notes";
-import TalkTracks from "../../components/TalkTracks";
+import TalkTracksWrapper from "../../components/TalkTracks";
 import PrettySkeleton from "./PrettySkeleton";
 import DebugHelpers from "./DebugHelpers";
 
@@ -70,7 +70,9 @@ const TEMP_PANES = [{ id: "1", icon: faCommentAlt }];
 
 function App() {
   const deployments = useSelector(selectDeployments);
+  const [callWorkflow, buyingWorkflow] = deployments;
   const activeWorkflows = useSelector(selectActiveWorkflows);
+  const [firstWorkflow] = activeWorkflows ?? [];
   const dispatch = useDispatch();
   const classes = useStyles();
   const [isAutomaticState, setIsAutomaticState] = useState(true);
@@ -90,6 +92,15 @@ function App() {
     return () => {};
   }, [isAutomaticState, dispatch]);
 
+  useEffect(() => {
+    if (buyingWorkflow && activeWorkflows){
+      const activeWorkflow = activeWorkflows.find((currentActiveWorkflow) => currentActiveWorkflow.includes(buyingWorkflow));
+      if (activeWorkflow)
+        return;
+      dispatch(initWorkflow(buyingWorkflow));
+    }
+  }, [buyingWorkflow, activeWorkflows]);
+
   return (
     <div className={classes.app}>
       <CssBaseline />
@@ -104,7 +115,7 @@ function App() {
           <PrettySkeleton />
         </section>
         <section className={clsx(classes.tray, classes.tray2, { [classes.contentShift]: isNotesOpen })} data-testid="tray2">
-          <TalkTracks
+          <TalkTracksWrapper
             talkTrackWorkflows={activeWorkflows}
             headerAction={(
             <IconButton color="secondary" onClick={toggleNotes} data-testid="drawer-toggle-button">
@@ -112,6 +123,7 @@ function App() {
                 <FontAwesomeIcon icon={faFileAlt} />
               </Badge>
             </IconButton>)}
+            activeTalkTrackID={firstWorkflow}
           />
         </section>
         <Drawer

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {
   Card, CardContent, CardHeader, makeStyles, Typography,
 } from "@material-ui/core";
-import Workflow from "../Workflow";
+import TalkTrack from "./TalkTrack/TalkTrack";
 
 const useStyles = makeStyles((theme) => ({
   workflow: {
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TalkTracks({ talkTrackWorkflows, headerAction }) {
+function TalkTracksWrapper({ talkTrackWorkflows, headerAction, onContinue, onSkip, activeTalkTrackID, onActionSelected, onTabChange}) {
   const classes = useStyles();
 
   return (
@@ -24,25 +24,28 @@ function TalkTracks({ talkTrackWorkflows, headerAction }) {
           <Typography>There are no active talk tracks.</Typography>
         )}
         {Array.isArray(talkTrackWorkflows) &&
-          talkTrackWorkflows.map((workflowID) => (
-            <Workflow
-              key={workflowID}
-              className={classes.workflow}
-              workflowID={workflowID}
-            />
-        ))}
+          (<TalkTrack
+              onContinue={onContinue}
+              onSkip={onSkip}
+              talkTrackItems={talkTrackWorkflows}
+              activeTalkTrackID={activeTalkTrackID}
+              onActionSelected={onActionSelected}
+              onTabChange={onTabChange}
+              />
+            )
+        }
       </CardContent>
     </Card>
   );
 }
 
-TalkTracks.propTypes = {
+TalkTracksWrapper.propTypes = {
   talkTrackWorkflows: PropTypes.arrayOf(PropTypes.string).isRequired,
   headerAction: PropTypes.node,
 };
 
-TalkTracks.defaultProps = {
+TalkTracksWrapper.defaultProps = {
   headerAction: undefined,
 };
 
-export default TalkTracks;
+export default TalkTracksWrapper;

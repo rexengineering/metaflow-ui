@@ -3,7 +3,7 @@ import { rexFlowActionTypes } from "../actions";
 const INITIAL_STATE = {
   isWorkflowBeingInitialized: {},
   isLoadingFetchTasks: false,
-  activeWorkflows: [],
+  activeWorkflows: null,
   tasks: null,
   error: null,
   tasksState: {},
@@ -25,6 +25,24 @@ const updateTasksState = (state, taskId, propKey, propValue) => {
   };
 };
 
+const setActiveWorkflows = (activeWorkflows, payload) => {
+  const { workflows } = payload;
+
+  if(!Array.isArray(activeWorkflows))
+    return workflows;
+
+  const newWorkflows = workflows.filter((currentWorkflow) => activeWorkflows.indexOf(currentWorkflow) < 0);
+
+  if(!newWorkflows.length)
+    return activeWorkflows;
+
+  return [
+    ...activeWorkflows,
+    ...newWorkflows
+  ];
+
+}
+
 const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
     case rexFlowActionTypes.INIT_WORKFLOW_IS_LOADING: {
@@ -38,12 +56,10 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       };
     }
     case rexFlowActionTypes.INIT_WORKFLOW_SUCCESSFUL: {
-      const { workflows } = payload;
+      const { activeWorkflows } = state;
       return {
         ...state,
-        activeWorkflows: Array.isArray(workflows)
-          ? workflows
-          : [...state.activeWorkflows, workflows],
+        activeWorkflows: setActiveWorkflows(activeWorkflows, payload)
       };
     }
     case rexFlowActionTypes.INIT_WORKFLOW_FAILURE:

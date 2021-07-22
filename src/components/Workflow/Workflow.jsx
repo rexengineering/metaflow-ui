@@ -17,7 +17,11 @@ function Workflow({ workflowID, className }) {
 }
 
 Workflow.propTypes = {
-  className: PropTypes.string.isRequired,
+  className: "",
+};
+
+Workflow.propTypes = {
+  className: PropTypes.string,
   workflowID: PropTypes.string.isRequired,
 };
 
