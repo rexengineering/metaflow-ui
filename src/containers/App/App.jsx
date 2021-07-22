@@ -75,7 +75,7 @@ function App() {
   const [firstWorkflow] = activeWorkflows ?? [];
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [isAutomaticState, setIsAutomaticState] = useState(true);
+  const [isAutomaticState, setIsAutomaticState] = useState(false);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [activePaneId, setActivePaneId] = useState(TEMP_PANES[0]?.id);
   const [numberOfNotes, setNumberOfNotes] = useState(0);
@@ -101,8 +101,6 @@ function App() {
     }
   }, [buyingWorkflow, activeWorkflows]);
 
-
-  /*
   useEffect(() => {
     if (deployments && activeWorkflows){
       deployments.forEach((deployment) => {
@@ -113,7 +111,7 @@ function App() {
       });
     }
   }, [deployments, activeWorkflows, dispatch]);
-  */
+
 
   return (
     <div className={classes.app}>
@@ -126,7 +124,7 @@ function App() {
       />
       <section className={classes.pane}>
         <section className={clsx(classes.tray, classes.tray1)}>
-          <PrettySkeleton />
+
         </section>
         <section className={clsx(classes.tray, classes.tray2, { [classes.contentShift]: isNotesOpen })} data-testid="tray2">
           <TalkTracksWrapper

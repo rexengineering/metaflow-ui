@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     clear: "both",
   },
   field: {
-    display: "inline-grid",
+    display: "block",
     marginTop: theme.spacing(2),
   },
   inProgressContainer: {
@@ -105,7 +105,6 @@ function Task({ className, task, submitButtonText }) {
         <form onSubmit={handleSubmit} className={classes.form}>
           {Array.isArray(data) &&
             data.map((field) => {
-              debugger
               if (isInputType(field?.type)) {
                 const { dataId, label, type } = field;
                 return (
