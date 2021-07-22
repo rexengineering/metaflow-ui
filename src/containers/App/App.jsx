@@ -101,6 +101,20 @@ function App() {
     }
   }, [buyingWorkflow, activeWorkflows]);
 
+
+  /*
+  useEffect(() => {
+    if (deployments && activeWorkflows){
+      deployments.forEach((deployment) => {
+        const activeWorkflow = activeWorkflows.find((currentActiveWorkflow) => currentActiveWorkflow.includes(deployment));
+        if (activeWorkflow)
+          return;
+        dispatch(initWorkflow(deployment));
+      });
+    }
+  }, [deployments, activeWorkflows, dispatch]);
+  */
+
   return (
     <div className={classes.app}>
       <CssBaseline />
@@ -116,6 +130,7 @@ function App() {
         </section>
         <section className={clsx(classes.tray, classes.tray2, { [classes.contentShift]: isNotesOpen })} data-testid="tray2">
           <TalkTracksWrapper
+            onTabChange={() => {}}
             talkTrackWorkflows={activeWorkflows}
             headerAction={(
             <IconButton color="secondary" onClick={toggleNotes} data-testid="drawer-toggle-button">

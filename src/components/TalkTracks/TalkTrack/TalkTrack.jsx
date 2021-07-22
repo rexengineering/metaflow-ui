@@ -93,7 +93,7 @@ function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected
                         index={`${value}`}
                         value={workflowID}
                     >
-                      <Workflow workflowID={workflowID} />
+                      <Workflow submitButtonText="continue" workflowID={workflowID} />
                     </TabPanel>
                 )
             )}

@@ -26,12 +26,12 @@ import { isInfoType, isInputType } from "../../constants/taskTypes";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    display: "flex",
-    flexDirection: "column",
     padding: theme.spacing(1),
   },
   submitButton: {
-    margin: theme.spacing(2, 0),
+    margin: theme.spacing(8, 0, 2),
+    display: "block",
+    clear: "both",
   },
   field: {
     display: "inline-grid",
@@ -45,9 +45,12 @@ const useStyles = makeStyles((theme) => ({
   inProgressMessage: {
     marginLeft: theme.spacing(1),
   },
+  infoField: {
+    marginTop: theme.spacing(1),
+  },
 }));
 
-function Task({ className, task }) {
+function Task({ className, task, submitButtonText }) {
   const { data } = task;
   const dispatch = useDispatch();
   const { formikInitialValues, validationSchema } =
@@ -102,6 +105,7 @@ function Task({ className, task }) {
         <form onSubmit={handleSubmit} className={classes.form}>
           {Array.isArray(data) &&
             data.map((field) => {
+              debugger
               if (isInputType(field?.type)) {
                 const { dataId, label, type } = field;
                 return (
@@ -116,10 +120,10 @@ function Task({ className, task }) {
                 );
               }
               if (isInfoType(field?.type)) {
-                const { data: fieldData, type, variant } = field;
+                const { data: fieldData, type, variant, dataId, label } = field;
                 return (
-                  <div key={data}>
-                    <TaskField type={type} data={fieldData} variant={variant} />
+                  <div className={classes.infoField} key={fieldData}>
+                    <TaskField id={dataId} type={type} label={label} data={fieldData} variant={variant} />
                   </div>
                 );
               }
@@ -131,7 +135,7 @@ function Task({ className, task }) {
             variant="contained"
             color="secondary"
           >
-            Submit
+            {submitButtonText}
           </Button>
           {exceptionError && (
             <Typography variant="body2" color="error">
@@ -146,11 +150,13 @@ function Task({ className, task }) {
 
 Task.defaultProps = {
   className: "",
+  submitButtonText: "Submit",
   task: {},
 };
 
 Task.propTypes = {
   className: PropTypes.string,
+  submitButtonText: PropTypes.string,
   task: PropTypes.shape({
     data: PropTypes.arrayOf(
       PropTypes.shape({
