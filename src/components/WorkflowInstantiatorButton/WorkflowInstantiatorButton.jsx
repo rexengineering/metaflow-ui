@@ -15,6 +15,8 @@ function WorkflowInstantiatorButton({onClick, deploymentID, label, ...props}){
     const classes = useStyles();
     const dispatch = useDispatch();
     const initializeWorkflow = () => {
+        if (!deploymentID)
+            return
         dispatch(initWorkflow(deploymentID));
         onClick();
     }

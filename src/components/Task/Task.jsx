@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(8, 0, 2),
     display: "block",
     clear: "both",
+    color: theme.palette.primary.contrastText,
   },
   field: {
     display: "block",
@@ -132,7 +133,7 @@ function Task({ className, task, submitButtonText }) {
             className={classes.submitButton}
             type="submit"
             variant="contained"
-            color="secondary"
+            color="primary"
           >
             {submitButtonText}
           </Button>
