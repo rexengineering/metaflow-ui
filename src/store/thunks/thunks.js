@@ -10,9 +10,9 @@ import {
   fetchTasksSuccess,
   setFetchTasksIsLoading,
   fetchTasksFailure,
-  saveTaskDataException,
+  saveTaskDataException, setIsATalkTrackBeingFetched,
 } from "../actions";
-import { getTasks, startWorkflow, finishTask } from "../queries";
+import {getTasks, startWorkflow, finishTask, initWorkflowByName} from "../queries";
 import { convertFormToQueryPayload } from "../../utils/tasks";
 import { buildTaskIdentifier } from "../selectors/rexflow";
 
@@ -35,19 +35,25 @@ export const fetchTasks = () => async (dispatch) => {
       query: getTasks,
     });
     const workflows = data.workflows.active;
-    const workflowIDs = workflows.map(({ iid }) => iid);
-    dispatch(initWorkflowSuccessful(workflowIDs));
+    const mappedWorkflows = workflows.map(({ iid, metadata }) => {
+      const isTalkTrack = metadata.find( ({key, value}) => key === "type" && value === "talktrack");
+      return {
+        iid,
+        isTalkTrack: !!isTalkTrack
+      }
+    });
+    dispatch(initWorkflowSuccessful(mappedWorkflows));
     workflows.forEach(({ iid, tasks }) => {
       const task = tasks[0];
       dispatch(fetchTasksSuccess(task, iid));
     });
-  } catch (e) {
-    dispatch(fetchTasksFailure(e)); // pending reducer change
+  } catch (error) {
+    dispatch(fetchTasksFailure({error})); // pending reducer change
   }
   dispatch(setFetchTasksIsLoading(false));
 };
 
-export const initWorkflow = (did) => async (dispatch) => {
+export const initWorkflow = (did, isTalkTrack) => async (dispatch) => {
   try {
     dispatch(initWorkflowLoading(true));
     const response = await apolloClient.mutate({
@@ -58,7 +64,8 @@ export const initWorkflow = (did) => async (dispatch) => {
         },
       },
     });
-    dispatch(initWorkflowSuccessful(response?.data?.workflow?.start?.iid));
+    const iid = response?.data?.workflow?.start?.iid;
+    dispatch(initWorkflowSuccessful({iid, isTalkTrack}));
   } catch (e) {
     dispatch(initWorkflowFailure({error: e}));
   }
@@ -101,3 +108,20 @@ export const completeTask = (formFields, task) => async (dispatch) => {
   }
   dispatch(setSaveTaskDataIsLoading(taskIdentifier, false));
 };
+
+
+export const startWorkflowByName = (workflowName) => async (dispatch) => {
+  dispatch( setIsATalkTrackBeingFetched(true) );
+  try {
+    const mutation = initWorkflowByName(workflowName);
+    const result = await apolloClient.mutate({ mutation });
+    const iid = result?.data?.workflow?.startByName?.workflow?.iid;
+    if (!iid){
+      throw new Error("Unable to init workflow");
+    }
+    dispatch(initWorkflowSuccessful([{iid, isTalkTrack: true}]));
+  }catch (error){
+    dispatch(initWorkflowFailure({error}));
+  }
+  dispatch( setIsATalkTrackBeingFetched(false) );
+}

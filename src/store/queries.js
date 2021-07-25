@@ -37,6 +37,10 @@ export const getTasks = gql`
     workflows {
       active {
         iid
+        metadata {
+          key
+          value
+        }
         tasks {
           iid
           tid
@@ -92,6 +96,20 @@ export const finishTask = gql`
               dataId
             }
           }
+        }
+      }
+    }
+  }
+`;
+
+export const initWorkflowByName = (workflowName) => gql`
+  mutation StartByName {
+    workflow {
+      startByName (input: {name: "${workflowName}" }) {
+        status
+        did
+        workflow {
+          iid
         }
       }
     }

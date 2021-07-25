@@ -14,13 +14,15 @@ import {fetchTasks, initWorkflow} from "../../store/thunks/thunks";
 import getDeploymentId from "../../store/thunks/getDeploymentId";
 import {
   selectActiveWorkflows,
-  selectDeployments,
-} from "../../store/selectors";
+  selectDeployments, selectIsATalkTrackBeingFetched, selectIsFlexTaskActive,
+} from "../../store/selectors/rexflow";
 import SideBar from "../../components/Sidebar";
 import Notes from "../../components/Notes";
 import TalkTracksWrapper from "../../components/TalkTracks";
-import PrettySkeleton from "./PrettySkeleton";
 import DebugHelpers from "./DebugHelpers";
+import CallerInfo from "../../components/CallerInfo";
+import {callWorkflowDeployment, concludeWorkflowDeployment, introWorkflowDeployment} from "../../utils/deployments";
+import {faPlus} from "@fortawesome/pro-solid-svg-icons/faPlus";
 
 export const MISC_DRAWER_WIDTH = 295;
 
@@ -43,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     width: "20%",
     flexShrink: 0,
     backgroundColor: theme.palette.grey[800],
-    padding: theme.spacing(8, 3, 6),
+    padding: theme.spacing(0, 3, 6),
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
@@ -69,18 +71,23 @@ const useStyles = makeStyles((theme) => ({
 const TEMP_PANES = [{ id: "1", icon: faCommentAlt }];
 
 function App() {
-  const deployments = useSelector(selectDeployments);
-  const [callWorkflow, buyingWorkflow] = deployments;
-  const activeWorkflows = useSelector(selectActiveWorkflows);
-  const [firstWorkflow] = activeWorkflows ?? [];
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [isAutomaticState, setIsAutomaticState] = useState(false);
+  const deployments = useSelector(selectDeployments);
+  const activeWorkflows = useSelector(selectActiveWorkflows);
+  const isFlexTaskActive = useSelector(selectIsFlexTaskActive);
+  const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
+  const talkTrackWorkflows = Array.isArray(activeWorkflows)
+                                ? activeWorkflows.filter(({isTalkTrack}) => isTalkTrack)
+                                : null;
+  const [firstTalkTrack] = talkTrackWorkflows ?? [];
+  const [callWorkflow] = initDeployments;
+  const [isAutomaticState, setIsAutomaticState] = useState(true);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [activePaneId, setActivePaneId] = useState(TEMP_PANES[0]?.id);
   const [numberOfNotes, setNumberOfNotes] = useState(0);
-
   const toggleNotes = useCallback(() => setIsNotesOpen((currentIsNotesOpen) => !currentIsNotesOpen), [])
+  const isATalkTrackBeingFetched = useSelector(selectIsATalkTrackBeingFetched);
 
   useEffect(() => dispatch(getDeploymentId()), []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -93,25 +100,25 @@ function App() {
   }, [isAutomaticState, dispatch]);
 
   useEffect(() => {
-    if (buyingWorkflow && activeWorkflows){
-      const activeWorkflow = activeWorkflows.find((currentActiveWorkflow) => currentActiveWorkflow.includes(buyingWorkflow));
-      if (activeWorkflow)
-        return;
-      dispatch(initWorkflow(buyingWorkflow));
+    if (isFlexTaskActive === false) {
+      const { did, isTalkTrack } = concludeWorkflowDeployment;
+      dispatch(initWorkflow(did, isTalkTrack));
     }
-  }, [buyingWorkflow, activeWorkflows]);
+    return () => {};
+  }, [isFlexTaskActive, dispatch]);
 
   useEffect(() => {
-    if (deployments && activeWorkflows){
-      deployments.forEach((deployment) => {
-        const activeWorkflow = activeWorkflows.find((currentActiveWorkflow) => currentActiveWorkflow.includes(deployment));
+    if (Array.isArray(activeWorkflows)){
+      initDeployments.forEach(({did, isTalkTrack}) => {
+        const activeWorkflow = Array.isArray(activeWorkflows)
+            ? activeWorkflows.find(({iid}) => iid.includes(did))
+            : null;
         if (activeWorkflow)
           return;
-        dispatch(initWorkflow(deployment));
+        dispatch(initWorkflow(did, isTalkTrack));
       });
     }
-  }, [deployments, activeWorkflows, dispatch]);
-
+  }, [activeWorkflows, dispatch]);
 
   return (
     <div className={classes.app}>
@@ -124,19 +131,25 @@ function App() {
       />
       <section className={classes.pane}>
         <section className={clsx(classes.tray, classes.tray1)}>
-
+          <CallerInfo deploymentID={callWorkflow.did} callerName="John Doe" />
         </section>
         <section className={clsx(classes.tray, classes.tray2, { [classes.contentShift]: isNotesOpen })} data-testid="tray2">
           <TalkTracksWrapper
-            onTabChange={() => {}}
-            talkTrackWorkflows={activeWorkflows}
+            isATalkTrackBeingFetched={isATalkTrackBeingFetched}
+            talkTrackWorkflows={talkTrackWorkflows}
             headerAction={(
-            <IconButton color="secondary" onClick={toggleNotes} data-testid="drawer-toggle-button">
-              <Badge badgeContent={numberOfNotes} color="secondary">
-                <FontAwesomeIcon icon={faFileAlt} />
-              </Badge>
-            </IconButton>)}
-            activeTalkTrackID={firstWorkflow}
+                <>
+                  <IconButton color="secondary" onClick={toggleNotes} data-testid="drawer-toggle-button">
+                    <Badge badgeContent={numberOfNotes} color="secondary">
+                      <FontAwesomeIcon icon={faFileAlt} />
+                    </Badge>
+                  </IconButton>
+                  <IconButton disabled={!isFlexTaskActive} type="button" color="default"  className={classes.addButton}>
+                    <FontAwesomeIcon icon={faPlus} />
+                  </IconButton>
+                </>
+             )}
+            activeTalkTrackID={firstTalkTrack?.iid}
           />
         </section>
         <Drawer

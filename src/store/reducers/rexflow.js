@@ -8,6 +8,8 @@ const INITIAL_STATE = {
   error: null,
   tasksState: {},
   deployments: [],
+  isFlexTaskActive: true,
+  isATalkTrackBeingFetched: false,
 };
 
 const updateTasksState = (state, taskId, propKey, propValue) => {
@@ -29,9 +31,9 @@ const setActiveWorkflows = (activeWorkflows, payload) => {
   const { workflows } = payload;
 
   if(!Array.isArray(activeWorkflows))
-    return workflows;
+    return Array.isArray(workflows) ? workflows : [workflows];
 
-  const newWorkflows = workflows.filter((currentWorkflow) => activeWorkflows.indexOf(currentWorkflow) < 0);
+  const newWorkflows = workflows.filter(({iid}) => !activeWorkflows.find(({iid: activeWFIID}) => activeWFIID === iid));
 
   if(!newWorkflows.length)
     return activeWorkflows;
@@ -110,6 +112,20 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         deployments,
+      };
+    }
+    case rexFlowActionTypes.SET_IS_FLEX_TASK_ACTIVE: {
+      const { isFlexTaskActive } = payload;
+      return {
+        ...state,
+        isFlexTaskActive,
+      };
+    }
+    case rexFlowActionTypes.SET_IS_TALK_TRACK_BEING_FETCHED: {
+      const { isATalkTrackBeingFetched } = payload;
+      return {
+        ...state,
+        isATalkTrackBeingFetched,
       };
     }
     default:

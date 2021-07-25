@@ -52,6 +52,16 @@ export const selectDeployments = createSelector(
   ({ deployments }) => deployments
 );
 
+export const selectIsFlexTaskActive = createSelector(
+  [rexFlowSelector],
+  ({ isFlexTaskActive }) => isFlexTaskActive
+);
+
+export const selectIsATalkTrackBeingFetched = createSelector(
+  [rexFlowSelector],
+  ({ isATalkTrackBeingFetched }) => isATalkTrackBeingFetched
+);
+
 export const selectValidationErrors = (task) =>
   createSelector(
     [rexFlowSelector],
@@ -69,6 +79,7 @@ export const selectWorkflowID = (workflowName) => createSelector(
     [selectActiveWorkflows],
     (activeWorkflows) => {
       if (!Array.isArray(activeWorkflows)) return "";
-      return activeWorkflows.find((activeWorkflow) => activeWorkflow.includes(workflowName));
+      const activeWorkflowObject = activeWorkflows.find(({iid}) => iid.includes(workflowName));
+      return activeWorkflowObject?.iid ?? "";
     }
 );

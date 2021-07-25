@@ -1,32 +1,15 @@
 import React, {useEffect} from "react";
 import {
-  IconButton,
   makeStyles,
   Tab,
   Tabs,
-  Typography,
 } from "@material-ui/core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/pro-solid-svg-icons/faPlus";
 import PropTypes from "prop-types";
 import Workflow from "../../Workflow";
-import {TabContext, TabPanel} from "@material-ui/lab";
+import {Skeleton, TabContext, TabPanel} from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
-  },
-  addButton: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    color: theme.palette.common.black,
-  },
   talkTracks: {
-    marginTop: theme.spacing(5),
     display: "flex",
   },
   tabs: {
@@ -41,16 +24,18 @@ const useStyles = makeStyles((theme) => ({
   tabsIndicator: {
     backgroundColor: theme.palette.primary.main,
   },
-  title: {
-    marginTop: theme.spacing(1),
-  }
+  tab: {
+   textAlign: "left",
+  },
+  tabLoading: {
+   padding: theme.spacing(0, 10, 0, 1.5),
+  },
 }));
 
-function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected, onTabChange, onContinue, className }) {
+function TalkTrack({ talkTrackItems, activeTalkTrackID, isATalkTrackBeingFetched, className }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(activeTalkTrackID);
   const handleChange = (event, newValue) => {
-    onTabChange(newValue);
     setValue(newValue);
   };
 
@@ -60,12 +45,6 @@ function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected
 
   return (
     <section className={className}>
-      <section className={classes.header}>
-        <Typography variant="h4" className={classes.title}>Talk track</Typography>
-        <IconButton type="button" color="default"  className={classes.addButton}>
-          <FontAwesomeIcon icon={faPlus} />
-        </IconButton>
-      </section>
       <section className={classes.talkTracks}>
         <TabContext value={value}>
           <Tabs
@@ -75,19 +54,28 @@ function TalkTrack({ talkTrackItems, activeTalkTrackID, onSkip, onActionSelected
               orientation="vertical"
               value={value}
           >
-            {Array.isArray(talkTrackItems) &&
-            talkTrackItems.map((workflowID) => (
-                <Tab
-                    key={`tab-${workflowID}`}
-                    label={workflowID}
-                    value={workflowID}
-                />
+
+            { Array.isArray(talkTrackItems) &&
+                talkTrackItems.map(({iid: workflowID}) => (
+                    <Tab
+                        className={classes.tab}
+                        key={`tab-${workflowID}`}
+                        label={workflowID}
+                        value={workflowID}
+                    />
             ))}
+
+            { isATalkTrackBeingFetched &&
+                (<div className={classes.tabLoading}>
+                  <Skeleton height={30} />
+                </div>)
+            }
+
           </Tabs>
           <section className={classes.tabsPanel}>
             {Array.isArray(talkTrackItems) &&
             talkTrackItems.map(
-                (workflowID) => (
+                ({iid: workflowID}) => (
                     <TabPanel
                         key={workflowID}
                         index={`${value}`}
@@ -112,10 +100,7 @@ TalkTrack.propTypes = {
   talkTrackItems: PropTypes.arrayOf(PropTypes.string).isRequired,
   className: PropTypes.string,
   activeTalkTrackID: PropTypes.string.isRequired,
-  onSkip: PropTypes.func.isRequired,
-  onActionSelected: PropTypes.func.isRequired,
-  onContinue: PropTypes.func.isRequired,
-  onTabChange: PropTypes.func.isRequired,
+  isATalkTrackBeingFetched: PropTypes.bool.isRequired,
 };
 
 export default TalkTrack;

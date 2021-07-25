@@ -1,8 +1,9 @@
 import React from "react";
 import {Chip, makeStyles} from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PropTypes from "prop-types";
-import { initWorkflow } from "../../store/thunks/thunks";
+import {startWorkflowByName} from "../../store/thunks/thunks";
+import {selectActiveWorkflows, selectIsFlexTaskActive} from "../../store/selectors/rexflow";
 
 const useStyles = makeStyles(({ spacing }) => ({
     chip: {
@@ -11,17 +12,25 @@ const useStyles = makeStyles(({ spacing }) => ({
     }
 }))
 
-function WorkflowInstantiatorButton({onClick, deploymentID, label, ...props}){
+function WorkflowInstantiatorButton({onClick, data: workflowName, label, ...props}){
     const classes = useStyles();
     const dispatch = useDispatch();
+    const activeWorkflows = useSelector(selectActiveWorkflows);
+    const isInitialized =  Array.isArray(activeWorkflows)
+                           ? !!activeWorkflows.find(({ iid }) => iid.includes(workflowName))
+                           : false;
+    const isFlexTaskActive = useSelector(selectIsFlexTaskActive);
+
     const initializeWorkflow = () => {
-        if (!deploymentID)
+        if (!workflowName || isInitialized || !isFlexTaskActive)
             return
-        dispatch(initWorkflow(deploymentID));
+        dispatch(startWorkflowByName(workflowName));
         onClick();
-    }
+    };
+
     return (
         <Chip
+            disabled={isInitialized || !isFlexTaskActive}
             className={classes.chip}
             onClick={initializeWorkflow}
             label={label}
@@ -38,7 +47,7 @@ WorkflowInstantiatorButton.defaultProps = {
 WorkflowInstantiatorButton.propTypes = {
     onClick: PropTypes.func,
     label: PropTypes.string.isRequired,
-    deploymentID: PropTypes.string.isRequired,
+    data: PropTypes.string.isRequired,
 };
 
 export default WorkflowInstantiatorButton;

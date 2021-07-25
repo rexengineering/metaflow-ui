@@ -12,6 +12,7 @@ const buildTheme = () => {
         main: "#FF685F",
         light: "#FF8B84",
         dark: "#E65E55",
+        contrastText: "#FFF",
       },
       secondary: {
         main: "#807DFB",
