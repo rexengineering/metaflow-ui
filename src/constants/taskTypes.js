@@ -56,6 +56,7 @@ const taskTypes = {
   FLOAT,
   TABLE,
   COPY,
+  WORKFLOW_INSTANTIATOR,
 };
 
 export default taskTypes;

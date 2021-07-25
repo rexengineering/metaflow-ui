@@ -1,1 +1,1 @@
-export { default } from "./TalkTracksWrapper";
+export { default } from "./TalkTracks";

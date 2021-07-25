@@ -7,7 +7,7 @@ import {
   makeStyles,
   Drawer,
   IconButton,
-  Badge,
+  Badge, Typography, Card,
 } from "@material-ui/core";
 import clsx from "clsx";
 import {fetchTasks, initWorkflow} from "../../store/thunks/thunks";
@@ -18,11 +18,12 @@ import {
 } from "../../store/selectors/rexflow";
 import SideBar from "../../components/Sidebar";
 import Notes from "../../components/Notes";
-import TalkTracksWrapper from "../../components/TalkTracks";
+import TalkTracks from "../../components/TalkTracks";
 import DebugHelpers from "./DebugHelpers";
 import CallerInfo from "../../components/CallerInfo";
 import {callWorkflowDeployment, concludeWorkflowDeployment, introWorkflowDeployment} from "../../utils/deployments";
 import {faPlus} from "@fortawesome/pro-solid-svg-icons/faPlus";
+import TalkTrackSkeleton from "../../components/TalkTracks/TalkTrackSkeleton";
 
 export const MISC_DRAWER_WIDTH = 295;
 
@@ -82,7 +83,7 @@ function App() {
                                 : null;
   const [firstTalkTrack] = talkTrackWorkflows ?? [];
   const [callWorkflow] = initDeployments;
-  const [isAutomaticState, setIsAutomaticState] = useState(true);
+  const [isAutomaticState, setIsAutomaticState] = useState(false);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [activePaneId, setActivePaneId] = useState(TEMP_PANES[0]?.id);
   const [numberOfNotes, setNumberOfNotes] = useState(0);
@@ -134,23 +135,40 @@ function App() {
           <CallerInfo deploymentID={callWorkflow.did} callerName="John Doe" />
         </section>
         <section className={clsx(classes.tray, classes.tray2, { [classes.contentShift]: isNotesOpen })} data-testid="tray2">
-          <TalkTracksWrapper
-            isATalkTrackBeingFetched={isATalkTrackBeingFetched}
-            talkTrackWorkflows={talkTrackWorkflows}
-            headerAction={(
-                <>
-                  <IconButton color="secondary" onClick={toggleNotes} data-testid="drawer-toggle-button">
-                    <Badge badgeContent={numberOfNotes} color="secondary">
-                      <FontAwesomeIcon icon={faFileAlt} />
-                    </Badge>
-                  </IconButton>
-                  <IconButton disabled={!isFlexTaskActive} type="button" color="default"  className={classes.addButton}>
-                    <FontAwesomeIcon icon={faPlus} />
-                  </IconButton>
-                </>
-             )}
-            activeTalkTrackID={firstTalkTrack?.iid}
-          />
+
+          { !Array.isArray(talkTrackWorkflows) &&
+            (
+              <Card>
+                <TalkTrackSkeleton/>
+              </Card>
+            )
+          }
+
+          { ( Array.isArray(talkTrackWorkflows) && !talkTrackWorkflows.length ) &&
+            ( <Typography>There are no active talk tracks.</Typography> )
+          }
+
+          { ( Array.isArray(talkTrackWorkflows)  && talkTrackWorkflows.length ) &&
+          (
+                <TalkTracks
+                    isATalkTrackBeingFetched={isATalkTrackBeingFetched}
+                    talkTrackWorkflows={talkTrackWorkflows}
+                    headerAction={(
+                        <>
+                          <IconButton color="secondary" onClick={toggleNotes} data-testid="drawer-toggle-button">
+                            <Badge badgeContent={numberOfNotes} color="secondary">
+                              <FontAwesomeIcon icon={faFileAlt} />
+                            </Badge>
+                          </IconButton>
+                          <IconButton disabled={!isFlexTaskActive} type="button" color="default"  className={classes.addButton}>
+                            <FontAwesomeIcon icon={faPlus} />
+                          </IconButton>
+                        </>
+                    )}
+                    activeTalkTrackID={firstTalkTrack?.iid}
+                />
+            )
+          }
         </section>
         <Drawer
           open={isNotesOpen}

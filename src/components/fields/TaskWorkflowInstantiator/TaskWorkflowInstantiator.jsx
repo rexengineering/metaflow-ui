@@ -2,8 +2,8 @@ import React from "react";
 import {Chip, makeStyles} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import PropTypes from "prop-types";
-import {startWorkflowByName} from "../../store/thunks/thunks";
-import {selectActiveWorkflows, selectIsFlexTaskActive} from "../../store/selectors/rexflow";
+import {startWorkflowByName} from "../../../store/thunks/thunks";
+import {selectActiveWorkflows, selectIsFlexTaskActive} from "../../../store/selectors/rexflow";
 
 const useStyles = makeStyles(({ spacing }) => ({
     chip: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles(({ spacing }) => ({
     }
 }))
 
-function WorkflowInstantiatorButton({onClick, data: workflowName, label, ...props}){
+function TaskWorkflowInstantiator({onClick, data: workflowName, label, ...props}){
     const classes = useStyles();
     const dispatch = useDispatch();
     const activeWorkflows = useSelector(selectActiveWorkflows);
@@ -40,14 +40,14 @@ function WorkflowInstantiatorButton({onClick, data: workflowName, label, ...prop
 }
 
 
-WorkflowInstantiatorButton.defaultProps = {
+TaskWorkflowInstantiator.defaultProps = {
     onClick: () => {},
 };
 
-WorkflowInstantiatorButton.propTypes = {
+TaskWorkflowInstantiator.propTypes = {
     onClick: PropTypes.func,
     label: PropTypes.string.isRequired,
     data: PropTypes.string.isRequired,
 };
 
-export default WorkflowInstantiatorButton;
+export default TaskWorkflowInstantiator;
