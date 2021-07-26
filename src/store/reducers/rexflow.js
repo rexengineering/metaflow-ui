@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   deployments: [],
   isFlexTaskActive: true,
   isATalkTrackBeingFetched: false,
+  availableTalkTracks: null,
 };
 
 const updateTasksState = (state, taskId, propKey, propValue) => {
@@ -126,6 +127,13 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         isATalkTrackBeingFetched,
+      };
+    }
+    case rexFlowActionTypes.SET_AVAILABLE_TALK_TRACKS: {
+      const { availableTalkTracks } = payload;
+      return {
+        ...state,
+        availableTalkTracks,
       };
     }
     default:

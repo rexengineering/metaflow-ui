@@ -62,6 +62,11 @@ export const selectIsATalkTrackBeingFetched = createSelector(
   ({ isATalkTrackBeingFetched }) => isATalkTrackBeingFetched
 );
 
+export const selectAvailableTalkTracks = createSelector(
+  [rexFlowSelector],
+  ({ availableTalkTracks }) => availableTalkTracks
+);
+
 export const selectValidationErrors = (task) =>
   createSelector(
     [rexFlowSelector],

@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import PropTypes from "prop-types";
 import {startWorkflowByName} from "../../../store/thunks/thunks";
 import {selectActiveWorkflows, selectIsFlexTaskActive} from "../../../store/selectors/rexflow";
+import isTalkTrackDidInitialized from "../../../utils/talkTracks";
 
 const useStyles = makeStyles(({ spacing }) => ({
     chip: {
@@ -16,9 +17,7 @@ function TaskWorkflowInstantiator({onClick, data: workflowName, label, ...props}
     const classes = useStyles();
     const dispatch = useDispatch();
     const activeWorkflows = useSelector(selectActiveWorkflows);
-    const isInitialized =  Array.isArray(activeWorkflows)
-                           ? !!activeWorkflows.find(({ iid }) => iid.includes(workflowName))
-                           : false;
+    const isInitialized =  isTalkTrackDidInitialized(activeWorkflows, workflowName);
     const isFlexTaskActive = useSelector(selectIsFlexTaskActive);
 
     const initializeWorkflow = () => {

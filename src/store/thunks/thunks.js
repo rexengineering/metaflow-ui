@@ -10,9 +10,9 @@ import {
   fetchTasksSuccess,
   setFetchTasksIsLoading,
   fetchTasksFailure,
-  saveTaskDataException, setIsATalkTrackBeingFetched,
+  saveTaskDataException, setIsATalkTrackBeingFetched, setAvailableTalkTracks,
 } from "../actions";
-import {getTasks, startWorkflow, finishTask, initWorkflowByName} from "../queries";
+import {getTasks, startWorkflow, finishTask, initWorkflowByName, getAvailableTalkTracks} from "../queries";
 import { convertFormToQueryPayload } from "../../utils/tasks";
 import { buildTaskIdentifier } from "../selectors/rexflow";
 
@@ -125,3 +125,22 @@ export const startWorkflowByName = (workflowName) => async (dispatch) => {
   }
   dispatch( setIsATalkTrackBeingFetched(false) );
 }
+
+export const fetchAvailableTalkTracks = () => async (dispatch) => {
+  const { data } = await apolloClient.query({
+    query: getAvailableTalkTracks
+  });
+  const { talktracks : { list } } = data ?? {};
+  if (!Array.isArray(list)){
+    dispatch(setAvailableTalkTracks([]));
+    return;
+  }
+  const availableTalkTracks = list.map(({ name, deployments }) => {
+    const [did] = deployments;
+    return {
+      name,
+      did
+    }
+  });
+  dispatch(setAvailableTalkTracks(availableTalkTracks));
+};

@@ -3,22 +3,30 @@ import { IconButton, makeStyles, Menu, MenuItem } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/pro-solid-svg-icons/faPlus";
+import isTalkTrackDidInitialized from "../../utils/talkTracks";
+import clsx from "clsx";
+import {useSelector} from "react-redux";
+import {selectActiveWorkflows} from "../../store/selectors/rexflow";
 
 const useStyles = makeStyles(({ spacing }) => ({
     menuContainer: {
         width: spacing(100),
+    },
+    disabledMenuItem: {
+       opacity: 0.3,
     }
 }));
 
 function TalkTrackPicker({ availableTalkTracks, onMenuItemSelected, isDisabled }){
     const [anchor, setAnchor] = useState(null);
-    const handleItemSelected = (did) => {
-        onMenuItemSelected(did);
+    const handleItemSelected = (name) => {
+        onMenuItemSelected(name);
         handleClose();
     };
     const handleOnClick = ({currentTarget}) => setAnchor(currentTarget);
     const handleClose = () => setAnchor(null);
     const classes = useStyles();
+    const activeWorkflows = useSelector(selectActiveWorkflows);
 
     return (
         <div>
@@ -33,11 +41,21 @@ function TalkTrackPicker({ availableTalkTracks, onMenuItemSelected, isDisabled }
                 onClose={handleClose}
             >
                 { Array.isArray(availableTalkTracks) &&
-                    availableTalkTracks.map(({name, did}) => (
-                        <MenuItem key={did} onClick={() => handleItemSelected(did)}>
-                            {name}
-                        </MenuItem>
-                    ))
+                    availableTalkTracks.map(({name, did}) => {
+                        const isDisabled = isTalkTrackDidInitialized(activeWorkflows, name);
+                        return (
+                            <MenuItem
+                                className={clsx({
+                                    [classes.disabledMenuItem]: isDisabled
+                                })}
+                                disableRipple={isDisabled}
+                                disabled={isDisabled}
+                                key={did}
+                                onClick={() => handleItemSelected(name)}>
+                                {name}
+                            </MenuItem>
+                        );
+                    })
                 }
             </Menu>
         </div>

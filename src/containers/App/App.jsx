@@ -10,10 +10,10 @@ import {
   Badge, Typography, Card,
 } from "@material-ui/core";
 import clsx from "clsx";
-import {fetchTasks, initWorkflow} from "../../store/thunks/thunks";
+import { fetchAvailableTalkTracks, fetchTasks, initWorkflow, startWorkflowByName } from "../../store/thunks/thunks";
 import getDeploymentId from "../../store/thunks/getDeploymentId";
 import {
-  selectActiveWorkflows,
+  selectActiveWorkflows, selectAvailableTalkTracks,
   selectDeployments, selectIsATalkTrackBeingFetched, selectIsFlexTaskActive,
 } from "../../store/selectors/rexflow";
 import SideBar from "../../components/Sidebar";
@@ -22,8 +22,9 @@ import TalkTracks from "../../components/TalkTracks";
 import DebugHelpers from "./DebugHelpers";
 import CallerInfo from "../../components/CallerInfo";
 import {callWorkflowDeployment, concludeWorkflowDeployment, introWorkflowDeployment} from "../../utils/deployments";
-import {faPlus} from "@fortawesome/pro-solid-svg-icons/faPlus";
 import TalkTrackSkeleton from "../../components/TalkTracks/TalkTrackSkeleton";
+import TalkTrackPicker from "../../components/TalkTrackPicker";
+import isTalkTrackDidInitialized from "../../utils/talkTracks";
 
 export const MISC_DRAWER_WIDTH = 295;
 
@@ -67,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
     width: MISC_DRAWER_WIDTH,
     padding: theme.spacing(2),
   },
+  cardButtons: {
+    display: "flex",
+  },
 }));
 
 const TEMP_PANES = [{ id: "1", icon: faCommentAlt }];
@@ -76,6 +80,7 @@ function App() {
   const classes = useStyles();
   const deployments = useSelector(selectDeployments);
   const activeWorkflows = useSelector(selectActiveWorkflows);
+  const availableTalkTracks = useSelector(selectAvailableTalkTracks);
   const isFlexTaskActive = useSelector(selectIsFlexTaskActive);
   const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
   const talkTrackWorkflows = Array.isArray(activeWorkflows)
@@ -83,14 +88,22 @@ function App() {
                                 : null;
   const [firstTalkTrack] = talkTrackWorkflows ?? [];
   const [callWorkflow] = initDeployments;
-  const [isAutomaticState, setIsAutomaticState] = useState(false);
+  const [isAutomaticState, setIsAutomaticState] = useState(true);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [activePaneId, setActivePaneId] = useState(TEMP_PANES[0]?.id);
   const [numberOfNotes, setNumberOfNotes] = useState(0);
   const toggleNotes = useCallback(() => setIsNotesOpen((currentIsNotesOpen) => !currentIsNotesOpen), [])
   const isATalkTrackBeingFetched = useSelector(selectIsATalkTrackBeingFetched);
+  const handleAvailableTalkTrackSelected = (talkTrackWorkflowName) => {
+    const isInitialized = isTalkTrackDidInitialized(activeWorkflows, talkTrackWorkflowName);
+    if (isInitialized)
+      return;
+    dispatch(startWorkflowByName(talkTrackWorkflowName));
+  }
 
   useEffect(() => dispatch(getDeploymentId()), []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => dispatch(fetchAvailableTalkTracks()), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (isAutomaticState) {
@@ -136,7 +149,7 @@ function App() {
         </section>
         <section className={clsx(classes.tray, classes.tray2, { [classes.contentShift]: isNotesOpen })} data-testid="tray2">
 
-          { !Array.isArray(talkTrackWorkflows) &&
+          { ( !Array.isArray(talkTrackWorkflows) || !Array.isArray(availableTalkTracks) ) &&
             (
               <Card>
                 <TalkTrackSkeleton/>
@@ -148,22 +161,23 @@ function App() {
             ( <Typography>There are no active talk tracks.</Typography> )
           }
 
-          { ( Array.isArray(talkTrackWorkflows)  && talkTrackWorkflows.length ) &&
+          { ( Array.isArray(talkTrackWorkflows)  && talkTrackWorkflows.length && Array.isArray(availableTalkTracks)) &&
           (
                 <TalkTracks
                     isATalkTrackBeingFetched={isATalkTrackBeingFetched}
                     talkTrackWorkflows={talkTrackWorkflows}
                     headerAction={(
-                        <>
+                        <div className={classes.cardButtons}>
                           <IconButton color="secondary" onClick={toggleNotes} data-testid="drawer-toggle-button">
                             <Badge badgeContent={numberOfNotes} color="secondary">
                               <FontAwesomeIcon icon={faFileAlt} />
                             </Badge>
                           </IconButton>
-                          <IconButton disabled={!isFlexTaskActive} type="button" color="default"  className={classes.addButton}>
-                            <FontAwesomeIcon icon={faPlus} />
-                          </IconButton>
-                        </>
+                          <TalkTrackPicker
+                              availableTalkTracks={availableTalkTracks}
+                              onMenuItemSelected={handleAvailableTalkTrackSelected}
+                              isDisabled={!isFlexTaskActive} />
+                        </div>
                     )}
                     activeTalkTrackID={firstTalkTrack?.iid}
                 />
