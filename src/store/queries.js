@@ -97,3 +97,14 @@ export const finishTask = gql`
     }
   }
 `;
+
+export const getAvailableTalkTracks = gql`
+  query Talktracks{
+    talktracks {
+      list {
+        name
+        deployments
+      }
+    }
+  }
+`;
