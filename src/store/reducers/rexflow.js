@@ -34,9 +34,9 @@ const setActiveWorkflows = (activeWorkflows, payload) => {
   if(!Array.isArray(activeWorkflows))
     return Array.isArray(workflows) ? workflows : [workflows];
 
-  const newWorkflows = workflows.filter(({iid}) => !activeWorkflows.find(({iid: activeWFIID}) => activeWFIID === iid));
+  const newWorkflows = workflows?.filter(({iid}) => !activeWorkflows.find(({iid: activeWFIID}) => activeWFIID === iid));
 
-  if(!newWorkflows.length)
+  if(!newWorkflows?.length)
     return activeWorkflows;
 
   return [

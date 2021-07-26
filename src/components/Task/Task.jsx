@@ -77,15 +77,12 @@ function Task({ className, task, submitButtonText }) {
     setInitialValues(formUtils.formikInitialValues ?? {});
   }, [data]);
 
-  if (isCompleted) return <Typography>Form completed!</Typography>;
+  if (isCompleted) return <Typography>Talk track completed</Typography>;
 
   if (isProcessing || !data?.length || !initialValues) {
     return (
       <section className={classes.inProgressContainer}>
         <CircularProgress size={25} />
-        <Typography className={classes.inProgressMessage} variant="body2">
-          Workflow in progress
-        </Typography>
       </section>
     );
   }
