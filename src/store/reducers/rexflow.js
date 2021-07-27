@@ -43,7 +43,6 @@ const setActiveWorkflows = (activeWorkflows, payload) => {
     ...activeWorkflows,
     ...newWorkflows
   ];
-
 }
 
 const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {

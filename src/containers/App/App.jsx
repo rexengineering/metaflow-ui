@@ -7,7 +7,7 @@ import {
   makeStyles,
   Drawer,
   IconButton,
-  Badge, Typography, Card,
+  Badge, Typography, Card, Button,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { fetchAvailableTalkTracks, fetchTasks, initWorkflow, startWorkflowByName } from "../../store/thunks/thunks";
@@ -25,6 +25,7 @@ import {callWorkflowDeployment, concludeWorkflowDeployment, introWorkflowDeploym
 import TalkTrackSkeleton from "../../components/TalkTracks/TalkTrackSkeleton";
 import TalkTrackPicker from "../../components/TalkTrackPicker";
 import isTalkTrackDidInitialized from "../../utils/talkTracks";
+import {setIsFlexTaskActive} from "../../store/actions";
 
 export const MISC_DRAWER_WIDTH = 295;
 
@@ -163,24 +164,30 @@ function App() {
 
           { ( Array.isArray(talkTrackWorkflows)  && talkTrackWorkflows.length && Array.isArray(availableTalkTracks)) &&
           (
-                <TalkTracks
-                    isATalkTrackBeingFetched={isATalkTrackBeingFetched}
-                    talkTrackWorkflows={talkTrackWorkflows}
-                    headerAction={(
-                        <div className={classes.cardButtons}>
-                          <IconButton color="secondary" onClick={toggleNotes} data-testid="drawer-toggle-button">
-                            <Badge badgeContent={numberOfNotes} color="secondary">
-                              <FontAwesomeIcon icon={faFileAlt} />
-                            </Badge>
-                          </IconButton>
-                          <TalkTrackPicker
-                              availableTalkTracks={availableTalkTracks}
-                              onMenuItemSelected={handleAvailableTalkTrackSelected}
-                              isDisabled={!isFlexTaskActive} />
-                        </div>
-                    )}
-                    activeTalkTrackID={firstTalkTrack?.iid}
-                />
+                <>
+                  <TalkTracks
+                      isATalkTrackBeingFetched={isATalkTrackBeingFetched}
+                      talkTrackWorkflows={talkTrackWorkflows}
+                      headerAction={(
+                          <div className={classes.cardButtons}>
+                            <IconButton color="secondary" onClick={toggleNotes} data-testid="drawer-toggle-button">
+                              <Badge badgeContent={numberOfNotes} color="secondary">
+                                <FontAwesomeIcon icon={faFileAlt} />
+                              </Badge>
+                            </IconButton>
+                            <TalkTrackPicker
+                                availableTalkTracks={availableTalkTracks}
+                                onMenuItemSelected={handleAvailableTalkTrackSelected}
+                                isDisabled={!isFlexTaskActive} />
+                          </div>
+                      )}
+                      activeTalkTrackID={firstTalkTrack?.iid}
+                  />
+
+                  <Button style={{marginTop: "2em"}} onClick={() => dispatch(setIsFlexTaskActive(false))}>
+                    Emulate twilio task closing
+                  </Button>
+                </>
             )
           }
         </section>

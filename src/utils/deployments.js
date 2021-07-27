@@ -9,6 +9,6 @@ export const introWorkflowDeployment = {
 }
 
 export const concludeWorkflowDeployment = {
-    did: "selling-abc",
+    did: "conclude-123",
     isTalkTrack: true,
 }
