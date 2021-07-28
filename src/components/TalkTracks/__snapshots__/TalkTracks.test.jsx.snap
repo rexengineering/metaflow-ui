@@ -79,9 +79,9 @@ exports[`<TalkTrack /> should match snapshot 1`] = `
             class="makeStyles-tabsPanel-20"
           >
             <div
-              aria-labelledby="mui-p-67698-T-buying-123"
+              aria-labelledby="mui-p-26486-T-buying-123"
               class="MuiTabPanel-root"
-              id="mui-p-67698-P-buying-123"
+              id="mui-p-26486-P-buying-123"
               index="buying-123"
               role="tabpanel"
             >
@@ -122,10 +122,10 @@ exports[`<TalkTrack /> should match snapshot 1`] = `
               </section>
             </div>
             <div
-              aria-labelledby="mui-p-67698-T-selling-123"
+              aria-labelledby="mui-p-26486-T-selling-123"
               class="MuiTabPanel-root"
               hidden=""
-              id="mui-p-67698-P-selling-123"
+              id="mui-p-26486-P-selling-123"
               index="buying-123"
               role="tabpanel"
             />

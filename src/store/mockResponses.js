@@ -14,3 +14,16 @@ export const getAvailableDeployments = {
     },
   },
 };
+
+export const completeTaskResponse = (status) => ({
+  data: {
+    workflow: {
+      tasks: {
+        complete: {
+          status,
+          errors: [{}],
+        }
+      }
+    }
+  }
+});
