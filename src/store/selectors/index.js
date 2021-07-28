@@ -40,6 +40,11 @@ export const selectIsTaskCompleted = (task) =>
       tasksState[buildTaskIdentifier(task)]?.isTaskCompleted ?? false
   );
 
+export const selectIsFlexTaskActive = createSelector(
+    [rexFlowSelector],
+    ({ isFlexTaskActive }) => isFlexTaskActive
+);
+
 export const selectTask = (workflowID) => {
   return createSelector(selectTasks, (tasks) => {
     if (!tasks) return {};

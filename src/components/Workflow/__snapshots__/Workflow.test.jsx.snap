@@ -2,14 +2,11 @@
 
 exports[`<Workflow /> should match snapshot 1`] = `
 <DocumentFragment>
-  <section>
-    <h6
-      class="MuiTypography-root MuiTypography-h6"
-    >
-      456456
-    </h6>
+  <section
+    data-testid="456456"
+  >
     <section
-      class="makeStyles-inProgressContainer-9"
+      class="makeStyles-inProgressContainer-10"
     >
       <div
         class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
@@ -30,11 +27,6 @@ exports[`<Workflow /> should match snapshot 1`] = `
           />
         </svg>
       </div>
-      <p
-        class="MuiTypography-root makeStyles-inProgressMessage-10 MuiTypography-body2"
-      >
-        Workflow in progress
-      </p>
     </section>
   </section>
 </DocumentFragment>

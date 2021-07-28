@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import React from "react";
 import { Provider } from "react-redux";
 import Workflow from "./Workflow";
@@ -25,10 +25,4 @@ describe("<Workflow />", () => {
     expect(initialRender).toMatchSnapshot();
   });
 
-  it("should render a title for the workflow", () => {
-    render(renderWorkflow());
-    const element = screen.getByText("456456");
-
-    expect(element).toBeInTheDocument();
-  });
 });

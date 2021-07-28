@@ -53,3 +53,13 @@ export const parseFieldNumberValue = (value) => {
   const parsedValue = Number.parseFloat(value);
   return Number.isNaN(parsedValue) ? null : parsedValue;
 };
+
+export const formatRawWorkflows = (workflows) => {
+  return workflows.map(({ iid, metadata }) => {
+    const isTalkTrack = metadata.find( ({key, value}) => key === "type" && value === "talktrack");
+    return {
+      iid,
+      isTalkTrack: !!isTalkTrack
+    }
+  });
+}

@@ -14,3 +14,28 @@ export const getAvailableDeployments = {
     },
   },
 };
+
+export const fetchTasksResponse = {
+  data: {
+    workflows: {
+      active: [
+        {
+          iid: "iid1",
+          metadata: [{
+            key: "type",
+            value: "talktrack"
+          }],
+          tasks: [{}],
+        },
+        {
+          iid: "iid2",
+          metadata: [{
+            key: "ids_session",
+            value: "anon"
+          }],
+          tasks: [{}],
+        },
+      ],
+    },
+  },
+};

@@ -3,10 +3,10 @@
 exports[`<Task /> should match snapshot 1`] = `
 <DocumentFragment>
   <form
-    class="makeStyles-form-6"
+    class="makeStyles-form-7"
   >
     <div
-      class="makeStyles-field-8"
+      class="makeStyles-field-9"
     >
       <div
         class="MuiFormControl-root MuiTextField-root"
@@ -30,7 +30,9 @@ exports[`<Task /> should match snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div>
+    <div
+      class="makeStyles-infoField-12"
+    >
       <p
         class="MuiTypography-root MuiTypography-body1"
       >
@@ -38,7 +40,7 @@ exports[`<Task /> should match snapshot 1`] = `
       </p>
     </div>
     <button
-      class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-submitButton-7 MuiButton-containedSecondary"
+      class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-submitButton-8 MuiButton-containedPrimary"
       tabindex="0"
       type="submit"
     >

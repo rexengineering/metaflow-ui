@@ -1,11 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<WorkflowInstantiatorButton /> should match snapshot 1`] = `
+exports[`<TaskWorkflowInstantiator /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="MuiButtonBase-root MuiChip-root MuiChip-clickable"
+    aria-disabled="true"
+    class="MuiButtonBase-root MuiChip-root makeStyles-chip-2 Mui-disabled MuiChip-clickable"
     role="button"
     tabindex="0"
+    workflowidentifier="buying-123"
   >
     <span
       class="MuiChip-label"

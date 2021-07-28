@@ -44,8 +44,8 @@ describe("<TalkTracks />", () => {
     const workflows = ["workflowId1", "workflowId2", "workflowId3"];
     render(wrappedTalkTracks({ talkTrackWorkflows: workflows }));
 
-    expect(screen.getByText(workflows[0])).not.toBeNull();
-    expect(screen.getByText(workflows[1])).not.toBeNull();
-    expect(screen.getByText(workflows[2])).not.toBeNull();
+    expect(screen.getByTestId(workflows[0])).not.toBeNull();
+    expect(screen.getByTestId(workflows[1])).not.toBeNull();
+    expect(screen.getByTestId(workflows[2])).not.toBeNull();
   });
 });
