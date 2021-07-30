@@ -13,7 +13,7 @@ const useStyles = makeStyles(({ spacing }) => ({
     }
 }))
 
-function TaskWorkflowInstantiator({onClick, data: workflowName, label, ...props}){
+function TaskWorkflowInstantiatorField({onClick, data: workflowName, label, ...props}){
     const classes = useStyles();
     const dispatch = useDispatch();
     const activeWorkflows = useSelector(selectActiveWorkflows);
@@ -39,14 +39,14 @@ function TaskWorkflowInstantiator({onClick, data: workflowName, label, ...props}
 }
 
 
-TaskWorkflowInstantiator.defaultProps = {
+TaskWorkflowInstantiatorField.defaultProps = {
     onClick: () => {},
 };
 
-TaskWorkflowInstantiator.propTypes = {
+TaskWorkflowInstantiatorField.propTypes = {
     onClick: PropTypes.func,
     label: PropTypes.string.isRequired,
     data: PropTypes.string.isRequired,
 };
 
-export default TaskWorkflowInstantiator;
+export default TaskWorkflowInstantiatorField;

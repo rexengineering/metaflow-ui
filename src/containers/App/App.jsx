@@ -183,7 +183,6 @@ function App() {
                       )}
                       activeTalkTrackID={firstTalkTrack?.iid}
                   />
-
                   <Button style={{marginTop: "2em"}} onClick={() => dispatch(setIsFlexTaskActive(false))}>
                     Emulate twilio task closing
                   </Button>

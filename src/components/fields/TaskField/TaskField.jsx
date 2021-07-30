@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import TaskWorkflowInstantiator from "../TaskWorkflowInstantiator";
+import TaskWorkflowInstantiatorField from "../TaskWorkflowInstantiatorField";
 import TASK_TYPES, {
   TEXT,
   PHONE_NUMBER,
@@ -32,7 +32,7 @@ export const componentMapping = {
   [FLOAT]: TaskFloatField,
   [TABLE]: TaskTableField,
   [COPY]: TaskTypographyField,
-  [WORKFLOW_INSTANTIATOR]: TaskWorkflowInstantiator,
+  [WORKFLOW_INSTANTIATOR]: TaskWorkflowInstantiatorField,
 };
 
 function TaskField({ id, type, ...passProps }) {
