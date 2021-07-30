@@ -1,11 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { connect } from "react-redux";
 import Task from "../Task";
-import { selectTask } from "../../store/selectors/rexflow";
 
-function Workflow({ workflowID, submitButtonText, className }) {
-  const task = useSelector(selectTask(workflowID));
+function Workflow({ task, submitButtonText, className }) {
   return (
     <section>
       {task && <Task submitButtonText={submitButtonText} className={className} task={task} />}
@@ -24,4 +22,10 @@ Workflow.propTypes = {
   workflowID: PropTypes.string.isRequired,
 };
 
-export default Workflow;
+const mapStateToProps = ({ rexFlow: { tasks } }, { workflowID }) => ({
+  task: !!tasks
+          ? tasks[workflowID] ?? {}
+          : {}
+});
+
+export default connect(mapStateToProps)(Workflow);

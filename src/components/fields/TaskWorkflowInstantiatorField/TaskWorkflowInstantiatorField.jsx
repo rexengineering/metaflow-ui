@@ -1,9 +1,8 @@
 import React from "react";
 import {Chip, makeStyles} from "@material-ui/core";
-import {useDispatch, useSelector} from "react-redux";
+import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {startWorkflowByName} from "../../../store/thunks/thunks";
-import {selectActiveWorkflows, selectIsFlexTaskActive} from "../../../store/selectors/rexflow";
 import isTalkTrackDidInitialized from "../../../utils/talkTracks";
 
 const useStyles = makeStyles(({ spacing }) => ({
@@ -13,13 +12,8 @@ const useStyles = makeStyles(({ spacing }) => ({
     }
 }))
 
-function TaskWorkflowInstantiatorField({onClick, data: workflowName, label, ...props}){
+function TaskWorkflowInstantiatorField({onClick, data: workflowName, activeWorkflows, isInitialized, isFlexTaskActive, label, dispatch, ...props}){
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const activeWorkflows = useSelector(selectActiveWorkflows);
-    const isInitialized =  isTalkTrackDidInitialized(activeWorkflows, workflowName);
-    const isFlexTaskActive = useSelector(selectIsFlexTaskActive);
-
     const initializeWorkflow = () => {
         if (!workflowName || isInitialized || !isFlexTaskActive)
             return
@@ -49,4 +43,10 @@ TaskWorkflowInstantiatorField.propTypes = {
     data: PropTypes.string.isRequired,
 };
 
-export default TaskWorkflowInstantiatorField;
+const mapStateToProps = ({ rexFlow: { activeWorkflows, isFlexTaskActive } }, { data: workflowName }) => ({
+    activeWorkflows,
+    isFlexTaskActive,
+    isInitialized: isTalkTrackDidInitialized(activeWorkflows, workflowName)
+});
+
+export default connect(mapStateToProps)(TaskWorkflowInstantiatorField);

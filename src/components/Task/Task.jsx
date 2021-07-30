@@ -8,13 +8,9 @@ import {
 import { object } from "yup";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
 import TaskField from "../fields/TaskField";
 import {
-  selectExceptionError,
-  selectIsTaskBeingProcessed,
-  selectIsTaskCompleted,
-  selectValidationErrors,
+  buildTaskIdentifier
 } from "../../store/selectors/rexflow";
 import { completeTask } from "../../store/thunks/thunks";
 import {
@@ -23,6 +19,7 @@ import {
 } from "../../utils/tasks";
 import useValidateField from "../../utils/useValidateField";
 import { isInfoType, isInputType } from "../../constants/taskTypes";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -51,23 +48,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Task({ className, task, submitButtonText }) {
+function Task({ className, task, submitButtonText, isProcessing, isCompleted, errors, exceptionError, dispatch }) {
   const { data } = task;
-  const dispatch = useDispatch();
   const { formikInitialValues, validationSchema } =
     convertTaskFieldsToFormUtils(data);
   const [initialValues, setInitialValues] = useState(formikInitialValues ?? {});
   const formValidationSchema = object().shape(validationSchema);
-  const isProcessing = useSelector(selectIsTaskBeingProcessed(task));
-  const isCompleted = useSelector(selectIsTaskCompleted(task));
-  const exceptionError = useSelector(selectExceptionError(task));
   const onSubmit = useCallback(
     (fields) => dispatch(completeTask(fields, task)),
     [dispatch, task]
   );
   const validateField = useValidateField(formValidationSchema);
   const classes = useStyles();
-  const errors = useSelector(selectValidationErrors(task));
   const { initialErrors, initialTouched } = convertValidationErrorsTo(
     errors ?? []
   );
@@ -177,4 +169,18 @@ Task.propTypes = {
   }),
 };
 
-export default Task;
+const mapStateToProps = ({ rexFlow: { tasksState } }, { task }) => {
+  const { isLoading, isTaskCompleted, errors: validationErrors, exceptionError: exceptions } = tasksState[buildTaskIdentifier(task)] ?? {};
+  const isProcessing = isLoading ?? false;
+  const isCompleted = isTaskCompleted ?? false;
+  const errors = validationErrors ?? null;
+  const exceptionError = exceptions ?? null;
+  return {
+    isProcessing,
+    isCompleted,
+    errors,
+    exceptionError
+  }
+};
+
+export default connect(mapStateToProps)(Task);

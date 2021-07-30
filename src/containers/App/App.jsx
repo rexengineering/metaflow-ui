@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {connect, useSelector} from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentAlt, faFileAlt } from "@fortawesome/pro-light-svg-icons";
 import {
@@ -12,10 +12,6 @@ import {
 import clsx from "clsx";
 import { fetchAvailableTalkTracks, fetchTasks, initWorkflow, startWorkflowByName } from "../../store/thunks/thunks";
 import getDeploymentId from "../../store/thunks/getDeploymentId";
-import {
-  selectActiveWorkflows, selectAvailableTalkTracks,
-  selectDeployments, selectIsATalkTrackBeingFetched, selectIsFlexTaskActive,
-} from "../../store/selectors/rexflow";
 import SideBar from "../../components/Sidebar";
 import Notes from "../../components/Notes";
 import TalkTracks from "../../components/TalkTracks";
@@ -26,6 +22,7 @@ import TalkTrackSkeleton from "../../components/TalkTracks/TalkTrackSkeleton";
 import TalkTrackPicker from "../../components/TalkTrackPicker";
 import isTalkTrackDidInitialized from "../../utils/talkTracks";
 import {setIsFlexTaskActive} from "../../store/actions";
+import {calculateWorkFlowNameFromDeploymentID} from "../../utils/tasks";
 
 export const MISC_DRAWER_WIDTH = 295;
 
@@ -76,13 +73,8 @@ const useStyles = makeStyles((theme) => ({
 
 const TEMP_PANES = [{ id: "1", icon: faCommentAlt }];
 
-function App() {
-  const dispatch = useDispatch();
+function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTracks, isATalkTrackBeingFetched, dispatch }) {
   const classes = useStyles();
-  const deployments = useSelector(selectDeployments);
-  const activeWorkflows = useSelector(selectActiveWorkflows);
-  const availableTalkTracks = useSelector(selectAvailableTalkTracks);
-  const isFlexTaskActive = useSelector(selectIsFlexTaskActive);
   const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
   const talkTrackWorkflows = Array.isArray(activeWorkflows)
                                 ? activeWorkflows.filter(({isTalkTrack}) => isTalkTrack)
@@ -94,7 +86,7 @@ function App() {
   const [activePaneId, setActivePaneId] = useState(TEMP_PANES[0]?.id);
   const [numberOfNotes, setNumberOfNotes] = useState(0);
   const toggleNotes = useCallback(() => setIsNotesOpen((currentIsNotesOpen) => !currentIsNotesOpen), [])
-  const isATalkTrackBeingFetched = useSelector(selectIsATalkTrackBeingFetched);
+
   const handleAvailableTalkTrackSelected = (talkTrackWorkflowName) => {
     const isInitialized = isTalkTrackDidInitialized(activeWorkflows, talkTrackWorkflowName);
     if (isInitialized)
@@ -146,7 +138,7 @@ function App() {
       />
       <section className={classes.pane}>
         <section className={clsx(classes.tray, classes.tray1)}>
-          <CallerInfo deploymentID={callWorkflow.did} callerName="John Doe" />
+          <CallerInfo workflowName={calculateWorkFlowNameFromDeploymentID(callWorkflow.did)} callerName="John Doe" />
         </section>
         <section className={clsx(classes.tray, classes.tray2, { [classes.contentShift]: isNotesOpen })} data-testid="tray2">
 
@@ -209,4 +201,12 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = ({ rexFlow: { deployments, activeWorkflows, availableTalkTracks, isFlexTaskActive, isATalkTrackBeingFetched } }) => ({
+  deployments,
+  activeWorkflows,
+  availableTalkTracks,
+  isFlexTaskActive,
+  isATalkTrackBeingFetched
+});
+
+export default connect(mapStateToProps)(App);

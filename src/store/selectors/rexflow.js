@@ -9,11 +9,6 @@ export const buildTaskIdentifier = ({ iid, tid }) => {
 
 const rexFlowSelector = (state) => state.rexFlow;
 
-export const selectTasks = createSelector(
-  [rexFlowSelector],
-  ({ tasks }) => tasks
-);
-
 export const selectIsWorkflowBeingInitialized = (deploymentID) =>
   createSelector(
     [rexFlowSelector],
@@ -24,67 +19,4 @@ export const selectIsWorkflowBeingInitialized = (deploymentID) =>
 export const selectActiveWorkflows = createSelector(
   [rexFlowSelector],
   ({ activeWorkflows }) => activeWorkflows
-);
-
-export const selectIsTaskBeingProcessed = (task) =>
-  createSelector(
-    [rexFlowSelector],
-    ({ tasksState }) =>
-      tasksState[buildTaskIdentifier(task)]?.isLoading ?? false
-  );
-
-export const selectIsTaskCompleted = (task) =>
-  createSelector(
-    [rexFlowSelector],
-    ({ tasksState }) =>
-      tasksState[buildTaskIdentifier(task)]?.isTaskCompleted ?? false
-  );
-
-export const selectTask = (workflowID) => {
-  return createSelector(selectTasks, (tasks) => {
-    if (!tasks) return {};
-    return tasks[workflowID] ?? {};
-  });
-};
-
-export const selectDeployments = createSelector(
-  [rexFlowSelector],
-  ({ deployments }) => deployments
-);
-
-export const selectIsFlexTaskActive = createSelector(
-  [rexFlowSelector],
-  ({ isFlexTaskActive }) => isFlexTaskActive
-);
-
-export const selectIsATalkTrackBeingFetched = createSelector(
-  [rexFlowSelector],
-  ({ isATalkTrackBeingFetched }) => isATalkTrackBeingFetched
-);
-
-export const selectAvailableTalkTracks = createSelector(
-  [rexFlowSelector],
-  ({ availableTalkTracks }) => availableTalkTracks
-);
-
-export const selectValidationErrors = (task) =>
-  createSelector(
-    [rexFlowSelector],
-    ({ tasksState }) => tasksState[buildTaskIdentifier(task)]?.errors ?? null
-  );
-
-export const selectExceptionError = (task) =>
-  createSelector(
-    [rexFlowSelector],
-    ({ tasksState }) =>
-      tasksState[buildTaskIdentifier(task)]?.exceptionError ?? null
-  );
-
-export const selectWorkflowID = (workflowName) => createSelector(
-    [selectActiveWorkflows],
-    (activeWorkflows) => {
-      if (!Array.isArray(activeWorkflows)) return "";
-      const activeWorkflowObject = activeWorkflows.find(({iid}) => iid.includes(workflowName));
-      return activeWorkflowObject?.iid ?? "";
-    }
 );
