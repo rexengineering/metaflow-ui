@@ -9,7 +9,7 @@ describe("<CallerInfo />", () => {
 
     const renderCallerInfo = (callerName = "John Doe", deploymentID = "deployment-865") => (
         <Provider store={getStore({})}>
-            <CallerInfo callerName={callerName} deploymentID={deploymentID}/>
+            <CallerInfo callerName={callerName} workflowName={deploymentID}/>
         </Provider>
     );
 

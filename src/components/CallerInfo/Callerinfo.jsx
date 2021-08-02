@@ -1,10 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Box, Divider, makeStyles, Typography } from "@material-ui/core";
 import Workflow from "../Workflow";
-import {useSelector} from "react-redux";
-import { calculateWorkFlowNameFromDeploymentID } from "../../utils/tasks";
-import { selectWorkflowID } from "../../store/selectors/rexflow";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -25,16 +23,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CallerInfo({ callerName, deploymentID }) {
+function CallerInfo({ callerName, workflowID }) {
   const classes = useStyles();
-  const [workflowName, setWorkflowName] = useState(null);
-  const workflowID = useSelector(selectWorkflowID(workflowName));
-
-  useEffect(() => {
-      if (!deploymentID) return;
-      setWorkflowName(calculateWorkFlowNameFromDeploymentID(deploymentID));
-  }, [deploymentID, setWorkflowName]);
-
   return (
     <Box className={classes.container}>
       <Typography className={classes.subtitle} variant="body2">
@@ -51,7 +41,20 @@ function CallerInfo({ callerName, deploymentID }) {
 
 CallerInfo.propTypes = {
   callerName: PropTypes.string.isRequired,
-  deploymentID: PropTypes.string.isRequired,
+  workflowName: PropTypes.string.isRequired,
 };
 
-export default CallerInfo;
+const mapStateToProps = (state, { workflowName }) => {
+    const { activeWorkflows } = state?.rexFlow ?? { };
+    const workflowID = "";
+    if (!Array.isArray(activeWorkflows))
+        return {
+            workflowID
+        };
+    const activeWorkflowObject = activeWorkflows.find(({iid}) => iid.includes(workflowName));
+    return {
+        workflowID: activeWorkflowObject?.iid ?? ""
+    }
+};
+
+export default connect(mapStateToProps)(CallerInfo);
