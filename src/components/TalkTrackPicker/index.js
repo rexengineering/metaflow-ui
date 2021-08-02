@@ -1,1 +1,1 @@
-import { default } from "./TalkTrackPicker";
+export { default } from "./TalkTrackPicker";

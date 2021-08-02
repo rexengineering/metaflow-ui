@@ -1,52 +1,83 @@
-import React, { useCallback, useState } from "react";
+import React, {useState} from "react";
+import { IconButton, makeStyles, Menu, MenuItem } from "@material-ui/core";
 import PropTypes from "prop-types";
-import { Menu, MenuItem, IconButton, makeStyles } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/pro-solid-svg-icons";
+import { faPlus } from "@fortawesome/pro-solid-svg-icons/faPlus";
+import isTalkTrackDidInitialized from "../../utils/talkTracks";
+import clsx from "clsx";
+import {connect} from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    height: theme.spacing(6),
-    width: theme.spacing(6),
-  }
+const useStyles = makeStyles(({ spacing }) => ({
+    menuContainer: {
+        width: spacing(100),
+    },
+    disabledMenuItem: {
+       opacity: 0.3,
+    }
 }));
 
-function TalkTrackPicker({ talkTracks, onClickTalkTrack }) {
-  const [menuAnchor, setMenuAnchor] = useState(null);
-  const onOpenMenu = useCallback(({ currentTarget }) => setMenuAnchor(currentTarget), [setMenuAnchor]);
-  const onCloseMenu = useCallback(() => setMenuAnchor(null), [setMenuAnchor]);
-  const onClickItem = useCallback((id) => {
-    onClickTalkTrack?.(id);
-    onCloseMenu();
-  }, [onClickTalkTrack, onCloseMenu])
+function TalkTrackPicker({ availableTalkTracks, onMenuItemSelected, isDisabled, activeWorkflows }){
+    const [anchor, setAnchor] = useState(null);
+    const handleItemSelected = (name) => {
+        onMenuItemSelected(name);
+        handleClose();
+    };
+    const handleOnClick = ({currentTarget}) => setAnchor(currentTarget);
+    const handleClose = () => setAnchor(null);
+    const classes = useStyles();
 
-  const classes = useStyles();
+    return (
+        <div>
+            <IconButton disabled={isDisabled} onClick={handleOnClick} type="button" color="default">
+                <FontAwesomeIcon icon={faPlus} />
+            </IconButton>
+            <Menu
+                className={classes.menuContainer}
+                anchorEl={anchor}
+                keepMounted
+                open={!!anchor}
+                onClose={handleClose}
+            >
+                { Array.isArray(availableTalkTracks) &&
+                    availableTalkTracks.map(({name, did}) => {
+                        const isDisabled = isTalkTrackDidInitialized(activeWorkflows, name);
+                        return (
+                            <MenuItem
+                                className={clsx({
+                                    [classes.disabledMenuItem]: isDisabled
+                                })}
+                                disableRipple={isDisabled}
+                                disabled={isDisabled}
+                                key={did}
+                                onClick={() => handleItemSelected(name)}>
+                                {name}
+                            </MenuItem>
+                        );
+                    })
+                }
+            </Menu>
+        </div>
+    )
+}
 
-  return (
-    <>
-      <IconButton onClick={onOpenMenu} className={classes.button}>
-        <FontAwesomeIcon icon={faPlus} />
-      </IconButton>
-      <Menu open={!!menuAnchor} onClose={onCloseMenu} anchorEl={menuAnchor}>
-        {Array.isArray(talkTracks) && talkTracks.map(({id, label}) => (
-          <MenuItem
-            key={id}
-            onClick={() => onClickItem(id)}
-          >
-            {label}
-          </MenuItem>
-        ))}
-      </Menu>
-    </>
-  );
+TalkTrackPicker.defaultProps = {
+ isDisabled: false,
 }
 
 TalkTrackPicker.propTypes = {
-  talkTracks: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-  })).isRequired,
-  onClickTalkTrack: PropTypes.func.isRequired,
+ availableTalkTracks: PropTypes.arrayOf(PropTypes.shape({
+     name: PropTypes.string.isRequired,
+     did: PropTypes.string.isRequired,
+ })).isRequired,
+ onMenuItemSelected: PropTypes.func.isRequired,
+ isDisabled: PropTypes.bool,
+}
+
+const mapStateToProps = (state) => {
+    const { activeWorkflows } = state?.rexFlow ?? { };
+    return {
+        activeWorkflows: activeWorkflows ?? []
+    }
 };
 
-export default TalkTrackPicker;
+export default connect(mapStateToProps)(TalkTrackPicker);
