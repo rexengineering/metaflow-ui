@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import React from "react";
 import TaskWorkflowInstantiator from "./TaskWorkflowInstantiatorField";
 import {Provider} from "react-redux";
@@ -9,13 +9,12 @@ describe("<TaskWorkflowInstantiator />", () => {
     const workflowInstantiatorButtonProps = {
         label: "Buying",
         onClick: () => {},
-        workflowIdentifier: "buying-123",
-        data: "some data",
+        data: "buying-123",
     };
 
-    const renderTaskWorkflowInstantiator = ( {label, onClick, workflowIdentifier, data } = workflowInstantiatorButtonProps ) => (
+    const renderTaskWorkflowInstantiator = ( {label, onClick, data } = workflowInstantiatorButtonProps ) => (
         <Provider store={getStore({})}>
-            <TaskWorkflowInstantiator data={data} label={label} onClick={onClick} workflowIdentifier={workflowIdentifier} />
+            <TaskWorkflowInstantiator data={data} label={label} onClick={onClick} />
         </Provider>
     );
 

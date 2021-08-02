@@ -103,7 +103,7 @@ export const completeTask = (formFields, task) => async (dispatch) => {
   dispatch(setSaveTaskDataIsLoading(taskIdentifier, false));
 };
 
-export const startWorkflowByName = (workflowName) => async (dispatch) => {
+export const startWorkflowByName = async (dispatch, workflowName) => {
   dispatch( setIsATalkTrackBeingFetched(true) );
   try {
     const mutation = initWorkflowByName(workflowName);

@@ -1,10 +1,9 @@
 import React from "react";
-import { Chip, makeStyles } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import {Chip, makeStyles} from "@material-ui/core";
+import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import { startWorkflowByName } from "../../../store/thunks/thunks";
-import { selectActiveWorkflows, selectIsFlexTaskActive } from "../../../store/selectors";
-import isTalkTrackDIDInitialized from "../../../utils/talkTracks";
+import {startWorkflowByName} from "../../../store/thunks/thunks";
+import isTalkTrackDidInitialized from "../../../utils/talkTracks";
 
 const useStyles = makeStyles(({ spacing }) => ({
     chip: {
@@ -13,17 +12,12 @@ const useStyles = makeStyles(({ spacing }) => ({
     }
 }))
 
-function TaskWorkflowInstantiator({onClick, data: workflowName, label, ...props}){
+function TaskWorkflowInstantiatorField({onClick, data: workflowName, activeWorkflows, isInitialized, isFlexTaskActive, label, startWorkflowByName, ...props}){
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const activeWorkflows = useSelector(selectActiveWorkflows);
-    const isInitialized =  isTalkTrackDIDInitialized(activeWorkflows, workflowName);
-    const isFlexTaskActive = useSelector(selectIsFlexTaskActive);
-
     const initializeWorkflow = () => {
         if (!workflowName || isInitialized || !isFlexTaskActive)
             return
-        dispatch(startWorkflowByName(workflowName));
+        startWorkflowByName(workflowName);
         onClick();
     };
 
@@ -39,14 +33,24 @@ function TaskWorkflowInstantiator({onClick, data: workflowName, label, ...props}
 }
 
 
-TaskWorkflowInstantiator.defaultProps = {
+TaskWorkflowInstantiatorField.defaultProps = {
     onClick: () => {},
 };
 
-TaskWorkflowInstantiator.propTypes = {
+TaskWorkflowInstantiatorField.propTypes = {
     onClick: PropTypes.func,
     label: PropTypes.string.isRequired,
     data: PropTypes.string.isRequired,
 };
 
-export default TaskWorkflowInstantiator;
+const mapStateToProps = ({ rexFlow: { activeWorkflows, isFlexTaskActive } }, { data: workflowName }) => ({
+    activeWorkflows,
+    isFlexTaskActive,
+    isInitialized: isTalkTrackDidInitialized(activeWorkflows, workflowName)
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    startWorkflowByName: (workflowName) => startWorkflowByName(dispatch, workflowName)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskWorkflowInstantiatorField);
