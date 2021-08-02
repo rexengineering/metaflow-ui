@@ -5,8 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/pro-solid-svg-icons/faPlus";
 import isTalkTrackDidInitialized from "../../utils/talkTracks";
 import clsx from "clsx";
-import {useSelector} from "react-redux";
-import {selectActiveWorkflows} from "../../store/selectors/rexflow";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles(({ spacing }) => ({
     menuContainer: {
@@ -17,7 +16,7 @@ const useStyles = makeStyles(({ spacing }) => ({
     }
 }));
 
-function TalkTrackPicker({ availableTalkTracks, onMenuItemSelected, isDisabled }){
+function TalkTrackPicker({ availableTalkTracks, onMenuItemSelected, isDisabled, activeWorkflows }){
     const [anchor, setAnchor] = useState(null);
     const handleItemSelected = (name) => {
         onMenuItemSelected(name);
@@ -26,7 +25,6 @@ function TalkTrackPicker({ availableTalkTracks, onMenuItemSelected, isDisabled }
     const handleOnClick = ({currentTarget}) => setAnchor(currentTarget);
     const handleClose = () => setAnchor(null);
     const classes = useStyles();
-    const activeWorkflows = useSelector(selectActiveWorkflows);
 
     return (
         <div>
@@ -75,4 +73,11 @@ TalkTrackPicker.propTypes = {
  isDisabled: PropTypes.bool,
 }
 
-export default TalkTrackPicker;
+const mapStateToProps = (state) => {
+    const { activeWorkflows } = state?.rexFlow ?? { };
+    return {
+        activeWorkflows: activeWorkflows ?? []
+    }
+};
+
+export default connect(mapStateToProps)(TalkTrackPicker);

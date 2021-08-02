@@ -45,12 +45,12 @@ CallerInfo.propTypes = {
 };
 
 const mapStateToProps = (state, { workflowName }) => {
-    const { rexFlow: { activeWorkflows } } = state;
+    const { activeWorkflows } = state?.rexFlow ?? { };
     const workflowID = "";
     if (!Array.isArray(activeWorkflows))
         return {
-        workflowID
-    };
+            workflowID
+        };
     const activeWorkflowObject = activeWorkflows.find(({iid}) => iid.includes(workflowName));
     return {
         workflowID: activeWorkflowObject?.iid ?? ""

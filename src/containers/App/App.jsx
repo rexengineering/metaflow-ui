@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import {connect, useSelector} from "react-redux";
+import {connect} from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentAlt, faFileAlt } from "@fortawesome/pro-light-svg-icons";
 import {
@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TEMP_PANES = [{ id: "1", icon: faCommentAlt }];
 
-function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTracks, isATalkTrackBeingFetched, dispatch }) {
+function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTracks, isATalkTrackBeingFetched, dispatch, getDeploymentId, startWorkflowByName, fetchAvailableTalkTracks, fetchTasks, initWorkflow }) {
   const classes = useStyles();
   const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
   const talkTrackWorkflows = Array.isArray(activeWorkflows)
@@ -91,25 +91,25 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
     const isInitialized = isTalkTrackDidInitialized(activeWorkflows, talkTrackWorkflowName);
     if (isInitialized)
       return;
-    dispatch(startWorkflowByName(talkTrackWorkflowName));
+    startWorkflowByName(talkTrackWorkflowName);
   }
 
-  useEffect(() => dispatch(getDeploymentId()), []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => getDeploymentId(), []);
 
-  useEffect(() => dispatch(fetchAvailableTalkTracks()), []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => fetchAvailableTalkTracks(), []);
 
   useEffect(() => {
     if (isAutomaticState) {
-      const interval = setInterval(() => dispatch(fetchTasks()), 500);
+      const interval = setInterval(() => fetchTasks(), 500);
       return () => clearInterval(interval);
     }
     return () => {};
-  }, [isAutomaticState, dispatch]);
+  }, [isAutomaticState]);
 
   useEffect(() => {
     if (isFlexTaskActive === false) {
       const { did, isTalkTrack } = concludeWorkflowDeployment;
-      dispatch(initWorkflow(did, isTalkTrack));
+      initWorkflow(did, isTalkTrack);
     }
     return () => {};
   }, [isFlexTaskActive, dispatch]);
@@ -122,7 +122,7 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
             : null;
         if (activeWorkflow)
           return;
-        dispatch(initWorkflow(did, isTalkTrack));
+        initWorkflow(did, isTalkTrack);
       });
     }
   }, [activeWorkflows, dispatch]);
@@ -201,12 +201,24 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
   );
 }
 
-const mapStateToProps = ({ rexFlow: { deployments, activeWorkflows, availableTalkTracks, isFlexTaskActive, isATalkTrackBeingFetched } }) => ({
-  deployments,
-  activeWorkflows,
-  availableTalkTracks,
-  isFlexTaskActive,
-  isATalkTrackBeingFetched
+const mapStateToProps = (state) => {
+  const { deployments, activeWorkflows, availableTalkTracks, isFlexTaskActive, isATalkTrackBeingFetched } = state?.rexFlow ?? {};
+  return {
+    deployments,
+    activeWorkflows,
+    availableTalkTracks,
+    isFlexTaskActive,
+    isATalkTrackBeingFetched
+  }
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+  getDeploymentId: () => getDeploymentId(dispatch),
+  startWorkflowByName: (workflowName) => startWorkflowByName(dispatch, workflowName),
+  fetchAvailableTalkTracks: () => fetchAvailableTalkTracks(dispatch),
+  fetchTasks: () => fetchTasks(dispatch),
+  initWorkflow: (did, isTalkTrack) => initWorkflow(dispatch, did, isTalkTrack),
 });
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

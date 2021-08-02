@@ -22,10 +22,13 @@ Workflow.propTypes = {
   workflowID: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ({ rexFlow: { tasks } }, { workflowID }) => ({
-  task: !!tasks
-          ? tasks[workflowID] ?? {}
-          : {}
-});
+const mapStateToProps = ( state, { workflowID }) => {
+  const { tasks } = state?.rexFlow ?? {};
+  return {
+    task: !!tasks
+        ? tasks[workflowID] ?? {}
+        : {}
+  };
+};
 
 export default connect(mapStateToProps)(Workflow);

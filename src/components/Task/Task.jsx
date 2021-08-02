@@ -9,11 +9,9 @@ import { object } from "yup";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
 import TaskField from "../fields/TaskField";
-import {
-  buildTaskIdentifier
-} from "../../store/selectors/rexflow";
 import { completeTask } from "../../store/thunks/thunks";
 import {
+  buildTaskIdentifier,
   convertTaskFieldsToFormUtils,
   convertValidationErrorsTo,
 } from "../../utils/tasks";
@@ -48,15 +46,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Task({ className, task, submitButtonText, isProcessing, isCompleted, errors, exceptionError, dispatch }) {
+function Task({ className, task, submitButtonText, isProcessing, isCompleted, errors, exceptionError, completeTask }) {
   const { data } = task;
   const { formikInitialValues, validationSchema } =
     convertTaskFieldsToFormUtils(data);
   const [initialValues, setInitialValues] = useState(formikInitialValues ?? {});
   const formValidationSchema = object().shape(validationSchema);
   const onSubmit = useCallback(
-    (fields) => dispatch(completeTask(fields, task)),
-    [dispatch, task]
+    (fields) => completeTask(fields, task),
+    [completeTask, task]
   );
   const validateField = useValidateField(formValidationSchema);
   const classes = useStyles();
@@ -169,8 +167,13 @@ Task.propTypes = {
   }),
 };
 
-const mapStateToProps = ({ rexFlow: { tasksState } }, { task }) => {
-  const { isLoading, isTaskCompleted, errors: validationErrors, exceptionError: exceptions } = tasksState[buildTaskIdentifier(task)] ?? {};
+const mapStateToProps = (state, { task }) => {
+  const { tasksState } = state.rexFlow ?? {};
+  const taskIdentifier = buildTaskIdentifier(task);
+  const taskState = taskIdentifier && Array.isArray(tasksState)
+      ? tasksState[taskIdentifier]
+      : {};
+  const { isLoading, isTaskCompleted, errors: validationErrors, exceptionError: exceptions } = taskState  ?? {};
   const isProcessing = isLoading ?? false;
   const isCompleted = isTaskCompleted ?? false;
   const errors = validationErrors ?? null;
@@ -183,4 +186,8 @@ const mapStateToProps = ({ rexFlow: { tasksState } }, { task }) => {
   }
 };
 
-export default connect(mapStateToProps)(Task);
+const mapDispatchToProps = (dispatch) => ({
+  completeTask: (formFields, task) => completeTask(dispatch, formFields, task)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Task);

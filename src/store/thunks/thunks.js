@@ -13,8 +13,7 @@ import {
   saveTaskDataException, setIsATalkTrackBeingFetched, setAvailableTalkTracks,
 } from "../actions";
 import {getTasks, startWorkflow, finishTask, initWorkflowByName, getAvailableTalkTracks} from "../queries";
-import { convertFormToQueryPayload } from "../../utils/tasks";
-import { buildTaskIdentifier } from "../selectors/rexflow";
+import {buildTaskIdentifier, convertFormToQueryPayload} from "../../utils/tasks";
 
 const defaultOptions = {
   query: {
@@ -28,7 +27,7 @@ export const apolloClient = new ApolloClient({
   defaultOptions,
 });
 
-export const fetchTasks = () => async (dispatch) => {
+export const fetchTasks = async (dispatch) => {
   try {
     dispatch(setFetchTasksIsLoading(true));
     const { data } = await apolloClient.query({
@@ -53,7 +52,7 @@ export const fetchTasks = () => async (dispatch) => {
   dispatch(setFetchTasksIsLoading(false));
 };
 
-export const initWorkflow = (did, isTalkTrack) => async (dispatch) => {
+export const initWorkflow = async (dispatch, did, isTalkTrack) => {
   try {
     dispatch(initWorkflowLoading(true));
     const response = await apolloClient.mutate({
@@ -72,7 +71,7 @@ export const initWorkflow = (did, isTalkTrack) => async (dispatch) => {
   dispatch(initWorkflowLoading(false));
 };
 
-export const completeTask = (formFields, task) => async (dispatch) => {
+export const completeTask = async (dispatch, formFields, task) => {
   const data = convertFormToQueryPayload(formFields);
   const { tid, iid } = task;
   const taskIdentifier = buildTaskIdentifier(task);
@@ -109,8 +108,7 @@ export const completeTask = (formFields, task) => async (dispatch) => {
   dispatch(setSaveTaskDataIsLoading(taskIdentifier, false));
 };
 
-
-export const startWorkflowByName = (workflowName) => async (dispatch) => {
+export const startWorkflowByName = async (dispatch, workflowName) => {
   dispatch( setIsATalkTrackBeingFetched(true) );
   try {
     const mutation = initWorkflowByName(workflowName);
@@ -126,7 +124,7 @@ export const startWorkflowByName = (workflowName) => async (dispatch) => {
   dispatch( setIsATalkTrackBeingFetched(false) );
 }
 
-export const fetchAvailableTalkTracks = () => async (dispatch) => {
+export const fetchAvailableTalkTracks = async (dispatch) => {
   const { data } = await apolloClient.query({
     query: getAvailableTalkTracks
   });

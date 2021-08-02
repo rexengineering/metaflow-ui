@@ -12,12 +12,12 @@ const useStyles = makeStyles(({ spacing }) => ({
     }
 }))
 
-function TaskWorkflowInstantiatorField({onClick, data: workflowName, activeWorkflows, isInitialized, isFlexTaskActive, label, dispatch, ...props}){
+function TaskWorkflowInstantiatorField({onClick, data: workflowName, activeWorkflows, isInitialized, isFlexTaskActive, label, startWorkflowByName, ...props}){
     const classes = useStyles();
     const initializeWorkflow = () => {
         if (!workflowName || isInitialized || !isFlexTaskActive)
             return
-        dispatch(startWorkflowByName(workflowName));
+        startWorkflowByName(workflowName);
         onClick();
     };
 
@@ -49,4 +49,8 @@ const mapStateToProps = ({ rexFlow: { activeWorkflows, isFlexTaskActive } }, { d
     isInitialized: isTalkTrackDidInitialized(activeWorkflows, workflowName)
 });
 
-export default connect(mapStateToProps)(TaskWorkflowInstantiatorField);
+const mapDispatchToProps = (dispatch) => ({
+    startWorkflowByName: (workflowName) => startWorkflowByName(dispatch, workflowName)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskWorkflowInstantiatorField);
