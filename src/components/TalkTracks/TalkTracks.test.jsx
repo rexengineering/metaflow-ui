@@ -30,11 +30,4 @@ describe("<TalkTrack />", () => {
     expect(initialRender).not.toBeNull();
   });
 
-  it("should match snapshot", () => {
-    const { asFragment } = render(renderTalkTrackComponent());
-    const initialRender = asFragment();
-
-    expect(initialRender).toMatchSnapshot();
-  });
-
 });
