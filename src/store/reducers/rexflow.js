@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   tasksState: {},
   deployments: [],
   isFlexTaskActive: true,
+  isFlexTaskAccepted: false,
   isATalkTrackBeingFetched: false,
   availableTalkTracks: null,
 };
@@ -133,6 +134,13 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         availableTalkTracks,
+      };
+    }
+    case rexFlowActionTypes.SET_IS_FLEX_TASK_ACCEPTED: {
+      const { isFlexTaskAccepted } = payload;
+      return {
+        ...state,
+        isFlexTaskAccepted,
       };
     }
     default:

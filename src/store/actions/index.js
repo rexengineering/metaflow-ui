@@ -16,6 +16,8 @@ export const rexFlowActionTypes = {
   IS_TALK_TRACK_BEING_FETCHED: "IS_TALK_TRACK_BEING_FETCHED",
   SET_IS_TALK_TRACK_BEING_FETCHED: "SET_IS_TALK_TRACK_BEING_FETCHED",
   SET_AVAILABLE_TALK_TRACKS: "SET_AVAILABLE_TALK_TRACKS",
+  IS_FLEX_TASK_ACCEPTED: "IS_TASK_ACCEPTED",
+  SET_IS_FLEX_TASK_ACCEPTED: "SET_IS_TASK_ACCEPTED",
 };
 
 export const initWorkflowSuccessful = (workflows) => ({
@@ -86,4 +88,9 @@ export const setIsATalkTrackBeingFetched = (isATalkTrackBeingFetched) => ({
 export const setAvailableTalkTracks = (availableTalkTracks) => ({
   type: rexFlowActionTypes.SET_AVAILABLE_TALK_TRACKS,
   payload: { availableTalkTracks },
+});
+
+export const setIsFlexTaskAccepted = (isFlexTaskAccepted) => ({
+  type: rexFlowActionTypes.SET_IS_FLEX_TASK_ACCEPTED,
+  payload: { isFlexTaskAccepted },
 });
