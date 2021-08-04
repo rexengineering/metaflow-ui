@@ -8,6 +8,7 @@ const INITIAL_STATE = {
   error: null,
   tasksState: {},
   deployments: [],
+  isFlexTaskActive: true,
 };
 
 const updateTasksState = (state, taskId, propKey, propValue) => {
@@ -94,6 +95,13 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         deployments,
+      };
+    }
+    case rexFlowActionTypes.SET_IS_FLEX_TASK_ACTIVE: {
+      const { isFlexTaskActive } = payload;
+      return {
+        ...state,
+        isFlexTaskActive,
       };
     }
     default:

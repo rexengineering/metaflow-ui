@@ -11,6 +11,7 @@ export const rexFlowActionTypes = {
   SAVE_TASK_DATA_EXCEPTION: "SAVE_TASK_DATA_EXCEPTION",
   IS_TASK_COMPLETED: "IS_TASK_COMPLETED",
   SET_DEPLOYMENT_ID: "SET_DEPLOYMENT_ID",
+  SET_IS_FLEX_TASK_ACTIVE: "SET_IS_FLEX_TASK_ACTIVE",
 };
 
 export const initWorkflowSuccessful = (workflows) => ({
@@ -66,4 +67,9 @@ export const saveTaskDataException = (taskId, errorMessage) => ({
 export const setDeploymentId = (deployments) => ({
   type: rexFlowActionTypes.SET_DEPLOYMENT_ID,
   payload: { deployments },
+});
+
+export const setIsFlexTaskActive = (isFlexTaskActive) => ({
+  type: rexFlowActionTypes.SET_IS_FLEX_TASK_ACTIVE,
+  payload: { isFlexTaskActive },
 });
