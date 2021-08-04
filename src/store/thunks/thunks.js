@@ -87,20 +87,13 @@ export const completeTask = (formFields, task) => async (dispatch) => {
         completeTasksInput: tasksPayload,
       },
     });
-
-    console.log(result);
-
     const { status, errors } = result?.data?.workflow?.tasks?.complete;
-
-
     if (status === "FAILURE") {
       dispatch(saveTaskDataFailure(taskIdentifier, errors));
     } else {
       dispatch(setIsTaskCompleted(taskIdentifier, true));
     }
   } catch (error) {
-
-
     dispatch(
       saveTaskDataException(taskIdentifier, "There was an unexpected error.")
     );
