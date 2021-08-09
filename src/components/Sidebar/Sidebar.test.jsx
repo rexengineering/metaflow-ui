@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import SideBar from "./Sidebar";
-import svgLogo from "../../../public/prism.svg";
+import svgLogo from "../../assets/prism.svg";
 import menuItems from "./mockData";
 
 describe("<SideBar />", () => {

@@ -21,6 +21,7 @@ import Notes from "../../components/Notes";
 import TalkTracks from "../../components/TalkTracks";
 import PrettySkeleton from "./PrettySkeleton";
 import DebugHelpers from "./DebugHelpers";
+import logo from "../../assets/prism.svg";
 
 export const MISC_DRAWER_WIDTH = 295;
 
@@ -78,6 +79,7 @@ function App() {
   const [activePaneId, setActivePaneId] = useState(TEMP_PANES[0]?.id);
   const [numberOfNotes, setNumberOfNotes] = useState(0);
 
+
   const toggleNotes = useCallback(() => setIsNotesOpen((currentIsNotesOpen) => !currentIsNotesOpen), [])
 
   useEffect(() => dispatch(getDeploymentId()), []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -95,7 +97,7 @@ function App() {
       <CssBaseline />
       <SideBar
         onMenuItemClicked={setActivePaneId}
-        logo="prism.svg"
+        logo={logo}
         menuItems={TEMP_PANES}
         activeMenuItemId={activePaneId}
       />
