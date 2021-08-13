@@ -176,6 +176,12 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
         activeTalkTrack
       };
     }
+    case rexFlowActionTypes.RESET_TASKS: {
+      return {
+        ...state,
+        tasks: null,
+      };
+    }
     default:
       return state;
   }

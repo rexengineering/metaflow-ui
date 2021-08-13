@@ -14,7 +14,7 @@ import {
   setAvailableTalkTracks,
   setButtonState,
   deleteWorkflows,
-  setActiveTalkTrack,
+  setActiveTalkTrack, resetTasks,
 } from "../actions";
 import {
   getTasks,
@@ -55,7 +55,7 @@ export const fetchTasks = async (dispatch) => {
 
     if (!workflows?.length && !areInitialized){
       areInitialized = true;
-      initDeployments.forEach(({did, isTalkTrack}) => initWorkflow(dispatch, did, isTalkTrack));
+      initDeployments.forEach(async ({did, isTalkTrack}) => await initWorkflow(dispatch, did, isTalkTrack));
     }
 
     const mappedWorkflows = workflows.map(({ iid, metadata, name, did }) => {
@@ -69,7 +69,7 @@ export const fetchTasks = async (dispatch) => {
     });
 
     const talkTracks = mappedWorkflows.filter(({ isTalkTrack }) => isTalkTrack);
-    if (setInitialTalkTrack){
+    if (setInitialTalkTrack && talkTracks.length){
       const [ firstTalkTrack ] = talkTracks ?? [];
       const talkTrackIdentifier = firstTalkTrack[talkTrackIdentifierProp];
       dispatch(setActiveTalkTrack(talkTrackIdentifier ?? null ));
@@ -197,8 +197,10 @@ export const cancelWorkflows = async (dispatch, activeWorkflows) => {
     });
     const canceledWorkflows = activeWorkflows?.filter( currentActiveWorkflow => !canceledWorkflowsIds.includes(currentActiveWorkflow) );
     dispatch(deleteWorkflows(canceledWorkflows));
-    setInitialTalkTrack = true;
     dispatch(setActiveTalkTrack(null));
+    dispatch(resetTasks());
+    setInitialTalkTrack = true;
+    areInitialized = false;
   }catch (error){
     console.log(error);
   }

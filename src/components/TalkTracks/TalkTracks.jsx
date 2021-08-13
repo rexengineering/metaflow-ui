@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function TalkTracks({ talkTracks, headerAction, activeTalkTrackID, isATalkTrackBeingFetched, className }) {
+function TalkTracks({ talkTracks, headerAction, activeTalkTrackID, isATalkTrackBeingFetched, className, onTaskCompleted }) {
   const classes = useStyles();
   const [value, setValue] = useState(activeTalkTrackID);
   const handleChange = (event, newValue) => setValue(newValue);
@@ -84,7 +84,7 @@ function TalkTracks({ talkTracks, headerAction, activeTalkTrackID, isATalkTrackB
                                       index={`${value}`}
                                       value={workflowID}
                                   >
-                                      <Workflow submitButtonText="continue" workflowID={workflowID} />
+                                      <Workflow onTaskCompleted={onTaskCompleted} submitButtonText="continue" workflowID={workflowID} />
                                   </TabPanel>
                               )
                           )}
@@ -95,6 +95,10 @@ function TalkTracks({ talkTracks, headerAction, activeTalkTrackID, isATalkTrackB
       </CardContent>
     </Card>
   );
+}
+
+TalkTracks.defaultProps = {
+  onTaskCompleted: () => {},
 }
 
 TalkTracks.propTypes = {
@@ -108,6 +112,7 @@ TalkTracks.propTypes = {
   isATalkTrackBeingFetched: PropTypes.bool.isRequired,
   activeTalkTrackID: PropTypes.string.isRequired,
   className: PropTypes.string,
+  onTaskCompleted: PropTypes.func,
 };
 
 TalkTracks.defaultProps = {

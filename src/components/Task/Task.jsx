@@ -50,11 +50,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Task({ className, task, submitButtonText, isProcessing, isCompleted, errors, exceptionError, completeTask, isLoading }) {
-  const { data } = task;
+function Task({ className, task, submitButtonText, isProcessing, isCompleted, errors, exceptionError, completeTask, isLoading, onTaskCompleted }) {
+  const { data, iid, tid } = task;
   const { formikInitialValues, validationSchema } =
     convertTaskFieldsToFormUtils(data);
   const [initialValues, setInitialValues] = useState(formikInitialValues ?? {});
+  const [completedTask, setCompletedTask] = useState(null);
   const formValidationSchema = object().shape(validationSchema);
   const onSubmit = useCallback(
     (fields) => completeTask(fields, task),
@@ -71,7 +72,11 @@ function Task({ className, task, submitButtonText, isProcessing, isCompleted, er
     setInitialValues(formUtils.formikInitialValues ?? {});
   }, [data]);
 
-  if (isCompleted) return <Typography>Talk track completed</Typography>;
+  if (isCompleted && completedTask !== tid) {
+    onTaskCompleted({tid, iid});
+    setCompletedTask(tid);
+    return <Typography>Talk track completed</Typography>
+  }
 
   if (isProcessing || !data?.length || !initialValues) {
     return (
@@ -150,6 +155,7 @@ Task.defaultProps = {
   className: "",
   submitButtonText: "Submit",
   task: {},
+  onTaskCompleted: () => {},
 };
 
 Task.propTypes = {
@@ -176,12 +182,13 @@ Task.propTypes = {
     status: PropTypes.string,
     tid: PropTypes.string,
   }),
+  onTaskCompleted: PropTypes.func,
 };
 
 const mapStateToProps = (state, { task }) => {
   const { tasksState, buttons } = state.rexFlow ?? {};
   const taskIdentifier = buildTaskIdentifier(task);
-  const taskState = taskIdentifier && Array.isArray(tasksState)
+  const taskState = taskIdentifier && tasksState
       ? tasksState[taskIdentifier]
       : {};
   const { isLoading, isTaskCompleted, errors: validationErrors, exceptionError: exceptions } = taskState  ?? {};

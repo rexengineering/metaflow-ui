@@ -7,7 +7,7 @@ import {
   makeStyles,
   Drawer,
   IconButton,
-  Badge, Typography, Card, Button,
+  Badge, Typography, Card, Button, ButtonBase,
 } from "@material-ui/core";
 import clsx from "clsx";
 import {
@@ -27,7 +27,7 @@ import {callWorkflowDeployment, concludeWorkflowDeployment, introWorkflowDeploym
 import TalkTrackSkeleton from "../../components/TalkTracks/TalkTrackSkeleton";
 import TalkTrackPicker from "../../components/TalkTrackPicker";
 import isTalkTrackDidInitialized from "../../utils/talkTracks";
-import {setIsFlexTaskAccepted, setIsFlexTaskActive} from "../../store/actions";
+import {setActiveTalkTrack, setIsFlexTaskAccepted, setIsFlexTaskActive} from "../../store/actions";
 import {calculateWorkFlowNameFromDeploymentID} from "../../utils/tasks";
 import {talkTrackIdentifierProp} from "../../constants";
 
@@ -80,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
   splashScreenContainer: {
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
     background: theme.palette.grey["800"],
     width: "100%",
     height: "100vh",
@@ -91,8 +92,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TEMP_PANES = [{ id: "1", icon: faCommentAlt }];
 
-function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTracks, isFlexTaskAccepted: data, isATalkTrackBeingFetched, dispatch, getDeploymentId, startWorkflowByName, fetchAvailableTalkTracks, getTasks, initWorkflow, cancelActiveWorkflows, talkTracks, currentActiveTalkTrack }) {
-  const isFlexTaskAccepted = !data;
+function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTracks, isFlexTaskAccepted, isATalkTrackBeingFetched, dispatch, getDeploymentId, startWorkflowByName, fetchAvailableTalkTracks, getTasks, initWorkflow, cancelActiveWorkflows, talkTracks, currentActiveTalkTrack }) {
   const classes = useStyles();
   const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
   const [callWorkflow] = initDeployments;
@@ -107,6 +107,22 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
     if (isInitialized)
       return;
     startWorkflowByName(talkTrackWorkflowName);
+  }
+
+  const handleTalkTrackTaskCompleted = ({ iid }) => {
+    const completedTalkTrackIndex = talkTracks.findIndex(({ iid: currentIid }) => iid === currentIid);
+    if (completedTalkTrackIndex < 0)
+      return;
+    const lastTalkTrackIndex = talkTracks.length - 1;
+    if (completedTalkTrackIndex === lastTalkTrackIndex)
+      return;
+
+    const nextActiveTalkTrack = talkTracks[completedTalkTrackIndex + 1];
+    if (!nextActiveTalkTrack)
+      return;
+
+    const activeTalkTrackIdentifier = nextActiveTalkTrack[talkTrackIdentifierProp];
+    dispatch(setActiveTalkTrack(activeTalkTrackIdentifier));
   }
 
   useEffect(() => isFlexTaskAccepted && getDeploymentId(), [isFlexTaskAccepted]);
@@ -136,13 +152,22 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
     }
   }, [activeWorkflows, isFlexTaskAccepted, cancelActiveWorkflows]);
 
+  const renderResetButton = (resetFlag) => {
+    const buttonMessage = resetFlag ? "Hang up call" : "Make call";
+    return (
+        <Button variant="contained" onClick={() => dispatch(setIsFlexTaskAccepted(!resetFlag))}>
+          {buttonMessage}
+        </Button>
+    )
+  }
+
   return (
     <div className={classes.app}>
       {
         !isFlexTaskAccepted
             ? (
                 <div className={classes.splashScreenContainer}>
-                  <img alt="PrismUI" className={classes.splashImage} src="https://cdn.rexhomes.com/assets/images/logos/rex-logo.svg" />
+                    <img alt="PrismUI" className={classes.splashImage} src="https://cdn.rexhomes.com/assets/images/logos/rex-logo.svg" />
                 </div>
               )
             : (<>
@@ -175,6 +200,7 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
                     (
                         <>
                           <TalkTracks
+                              onTaskCompleted={handleTalkTrackTaskCompleted}
                               isATalkTrackBeingFetched={isATalkTrackBeingFetched}
                               talkTracks={talkTracks}
                               activeTalkTrackID={currentActiveTalkTrack}
@@ -192,14 +218,8 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
                                   </div>
                               )}
                           />
-                          <Button style={{marginTop: "2em"}} onClick={() => dispatch(setIsFlexTaskActive(false))}>
-                            Emulate twilio task closing
-                          </Button>
-                          <Button style={{marginTop: "2em"}} onClick={() => cancelActiveWorkflows(activeWorkflows)}>
-                            Cancel workflows
-                          </Button>
                         </>
-                    )
+                      )
                     }
                   </section>
                   <Drawer
