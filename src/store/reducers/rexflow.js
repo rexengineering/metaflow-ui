@@ -9,9 +9,11 @@ const INITIAL_STATE = {
   tasksState: {},
   deployments: [],
   isFlexTaskActive: true,
-  isFlexTaskAccepted: false,
+  isFlexTaskAccepted: null,
   isATalkTrackBeingFetched: false,
   availableTalkTracks: null,
+  buttons: {},
+  activeTalkTrack: null,
 };
 
 const updateTasksState = (state, taskId, propKey, propValue) => {
@@ -29,21 +31,26 @@ const updateTasksState = (state, taskId, propKey, propValue) => {
   };
 };
 
-const setActiveWorkflows = (activeWorkflows, payload) => {
-  const { workflows } = payload;
+const setActiveWorkflows = (activeWorkflows, { workflows }) => {
 
   if(!Array.isArray(activeWorkflows))
-    return Array.isArray(workflows) ? workflows : [workflows];
+    return workflows;
 
   const newWorkflows = workflows?.filter(({iid}) => !activeWorkflows.find(({iid: activeWFIID}) => activeWFIID === iid));
+  const deletedWorkflows = activeWorkflows?.filter(({iid}) => !workflows.find(({iid: activeWFIID}) => activeWFIID === iid));
 
-  if(!newWorkflows?.length)
+  if (!newWorkflows?.length && !deletedWorkflows?.length)
     return activeWorkflows;
 
-  return [
-    ...activeWorkflows,
-    ...newWorkflows
-  ];
+  let result = [];
+
+  if (deletedWorkflows?.length)
+    result = activeWorkflows.filter((currentEl) => !deletedWorkflows.find(({iid: activeWFIID}) => activeWFIID === currentEl));
+
+  if(newWorkflows?.length)
+    result = [...result, ...newWorkflows];
+
+  return result;
 }
 
 const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -141,6 +148,32 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         isFlexTaskAccepted,
+      };
+    }
+    case rexFlowActionTypes.DELETE_WORKFLOWS: {
+      const { canceledWorkflows } = payload;
+      const { activeWorkflows } = state;
+      const newActiveWorkflows = activeWorkflows.filter( currentActiveWorkflow => !canceledWorkflows.includes(currentActiveWorkflow) );
+      return {
+        ...state,
+        activeWorkflows: newActiveWorkflows,
+      };
+    }
+    case rexFlowActionTypes.SET_BUTTONS_STATE: {
+      const { buttonName, buttonState } = payload;
+      return {
+        ...state,
+        buttons: {
+          ...state.buttons,
+          [buttonName]: buttonState,
+        },
+      };
+    }
+    case rexFlowActionTypes.SET_ACTIVE_TALK_TRACK: {
+      const { activeTalkTrack } = payload;
+      return {
+        ...state,
+        activeTalkTrack
       };
     }
     default:

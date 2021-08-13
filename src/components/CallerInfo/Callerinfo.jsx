@@ -39,8 +39,12 @@ function CallerInfo({ callerName, workflowID }) {
   );
 }
 
+CallerInfo.defaultProps = {
+  callerName: "Unknown",
+};
+
 CallerInfo.propTypes = {
-  callerName: PropTypes.string.isRequired,
+  callerName: PropTypes.string,
   workflowName: PropTypes.string.isRequired,
 };
 

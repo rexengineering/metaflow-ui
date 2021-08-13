@@ -18,6 +18,7 @@ import {
 import useValidateField from "../../utils/useValidateField";
 import { isInfoType, isInputType } from "../../constants/taskTypes";
 import {connect} from "react-redux";
+import {LoadingButtonState} from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -44,9 +45,12 @@ const useStyles = makeStyles((theme) => ({
   infoField: {
     marginTop: theme.spacing(1),
   },
+  circularProgress: {
+    marginRight: theme.spacing(1),
+  },
 }));
 
-function Task({ className, task, submitButtonText, isProcessing, isCompleted, errors, exceptionError, completeTask }) {
+function Task({ className, task, submitButtonText, isProcessing, isCompleted, errors, exceptionError, completeTask, isLoading }) {
   const { data } = task;
   const { formikInitialValues, validationSchema } =
     convertTaskFieldsToFormUtils(data);
@@ -116,14 +120,21 @@ function Task({ className, task, submitButtonText, isProcessing, isCompleted, er
               }
               return <></>;
             })}
+
           <Button
-            className={classes.submitButton}
-            type="submit"
-            variant="contained"
-            color="primary"
+              className={classes.submitButton}
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={isLoading}
           >
-            {submitButtonText}
+            {
+              isLoading
+                  ? ( <CircularProgress className={classes.circularProgress} size={15} /> )
+                  : submitButtonText
+            }
           </Button>
+
           {exceptionError && (
             <Typography variant="body2" color="error">
               {exceptionError}
@@ -168,7 +179,7 @@ Task.propTypes = {
 };
 
 const mapStateToProps = (state, { task }) => {
-  const { tasksState } = state.rexFlow ?? {};
+  const { tasksState, buttons } = state.rexFlow ?? {};
   const taskIdentifier = buildTaskIdentifier(task);
   const taskState = taskIdentifier && Array.isArray(tasksState)
       ? tasksState[taskIdentifier]
@@ -182,7 +193,8 @@ const mapStateToProps = (state, { task }) => {
     isProcessing,
     isCompleted,
     errors,
-    exceptionError
+    exceptionError,
+    isLoading: buttons[taskIdentifier] === LoadingButtonState,
   }
 };
 

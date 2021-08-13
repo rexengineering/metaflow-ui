@@ -10,6 +10,7 @@ export const startWorkflow = gql`
           iid
           did
           status
+          name
         }
         errors {
           __typename
@@ -36,7 +37,9 @@ export const getTasks = gql`
   query GetTaskData {
     workflows {
       active {
+        did
         iid
+        name
         metadata {
           key
           value
@@ -110,6 +113,7 @@ export const initWorkflowByName = (workflowName) => gql`
         did
         workflow {
           iid
+          name
         }
       }
     }
@@ -122,6 +126,23 @@ export const getAvailableTalkTracks = gql`
       list {
         name
         deployments
+      }
+    }
+  }
+`;
+
+export const cancelAllWorkflows = gql`
+  mutation CancelWorkflow($cancelWorkflowInput: CancelWorkflowInput!) {
+    workflow {
+      cancel (input: $cancelWorkflowInput) {
+        status
+        iid
+        errors {
+          __typename
+          ... on ProblemInterface {
+            message
+          }
+        }
       }
     }
   }

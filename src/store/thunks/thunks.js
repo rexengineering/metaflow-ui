@@ -1,5 +1,4 @@
-import { ApolloClient } from "@apollo/client";
-import { InMemoryCache } from "apollo-cache-inmemory";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 import {
   initWorkflowLoading,
   initWorkflowSuccessful,
@@ -10,10 +9,24 @@ import {
   fetchTasksSuccess,
   setFetchTasksIsLoading,
   fetchTasksFailure,
-  saveTaskDataException, setIsATalkTrackBeingFetched, setAvailableTalkTracks,
+  saveTaskDataException,
+  setIsATalkTrackBeingFetched,
+  setAvailableTalkTracks,
+  setButtonState,
+  deleteWorkflows,
+  setActiveTalkTrack,
 } from "../actions";
-import {getTasks, startWorkflow, finishTask, initWorkflowByName, getAvailableTalkTracks} from "../queries";
+import {
+  getTasks,
+  startWorkflow,
+  finishTask,
+  initWorkflowByName,
+  getAvailableTalkTracks,
+  cancelAllWorkflows
+} from "../queries";
 import {buildTaskIdentifier, convertFormToQueryPayload} from "../../utils/tasks";
+import {InitialButtonState, LoadingButtonState, talkTrackIdentifierProp} from "../../constants";
+import {callWorkflowDeployment, introWorkflowDeployment} from "../../utils/deployments";
 
 const defaultOptions = {
   query: {
@@ -22,25 +35,47 @@ const defaultOptions = {
 };
 
 export const apolloClient = new ApolloClient({
-  uri: "http://localhost:8000/query/",
+  uri: "http://localhost/prism-api/query/",
   cache: new InMemoryCache(),
   defaultOptions,
 });
 
+const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
+let areInitialized = false;
+let setInitialTalkTrack = true;
+
 export const fetchTasks = async (dispatch) => {
   try {
-    dispatch(setFetchTasksIsLoading(true));
+
     const { data } = await apolloClient.query({
       query: getTasks,
     });
+
     const workflows = data.workflows.active;
-    const mappedWorkflows = workflows.map(({ iid, metadata }) => {
+
+    if (!workflows?.length && !areInitialized){
+      areInitialized = true;
+      initDeployments.forEach(({did, isTalkTrack}) => initWorkflow(dispatch, did, isTalkTrack));
+    }
+
+    const mappedWorkflows = workflows.map(({ iid, metadata, name, did }) => {
       const isTalkTrack = metadata.find( ({key, value}) => key === "type" && value === "talktrack");
       return {
         iid,
-        isTalkTrack: !!isTalkTrack
+        isTalkTrack: !!isTalkTrack,
+        name,
+        did
       }
     });
+
+    const talkTracks = mappedWorkflows.filter(({ isTalkTrack }) => isTalkTrack);
+    if (setInitialTalkTrack){
+      const [ firstTalkTrack ] = talkTracks ?? [];
+      const talkTrackIdentifier = firstTalkTrack[talkTrackIdentifierProp];
+      dispatch(setActiveTalkTrack(talkTrackIdentifier ?? null ));
+      setInitialTalkTrack = false;
+    }
+
     dispatch(initWorkflowSuccessful(mappedWorkflows));
     workflows.forEach(({ iid, tasks }) => {
       const task = tasks[0];
@@ -49,10 +84,9 @@ export const fetchTasks = async (dispatch) => {
   } catch (error) {
     dispatch(fetchTasksFailure({error})); // pending reducer change
   }
-  dispatch(setFetchTasksIsLoading(false));
 };
 
-export const initWorkflow = async (dispatch, did, isTalkTrack) => {
+export const initWorkflow = async (dispatch, did, isTalkTrack, setAsActive = false) => {
   try {
     dispatch(initWorkflowLoading(true));
     const response = await apolloClient.mutate({
@@ -63,8 +97,11 @@ export const initWorkflow = async (dispatch, did, isTalkTrack) => {
         },
       },
     });
-    const iid = response?.data?.workflow?.start?.iid;
-    dispatch(initWorkflowSuccessful({iid, isTalkTrack}));
+    const { data: { workflow: { start : { workflow: { iid, name } } } } } = response;
+    dispatch(initWorkflowSuccessful([{iid, isTalkTrack, did, name}]));
+    if (setAsActive){
+      dispatch(setActiveTalkTrack(iid));
+    }
   } catch (e) {
     dispatch(initWorkflowFailure({error: e}));
   }
@@ -84,7 +121,7 @@ export const completeTask = async (dispatch, formFields, task) => {
       },
     ],
   };
-
+  dispatch( setButtonState(taskIdentifier, LoadingButtonState) );
   try {
     dispatch(setSaveTaskDataIsLoading(taskIdentifier, true));
     const result = await apolloClient.mutate({
@@ -106,22 +143,25 @@ export const completeTask = async (dispatch, formFields, task) => {
     dispatch(setIsTaskCompleted(taskIdentifier, false));
   }
   dispatch(setSaveTaskDataIsLoading(taskIdentifier, false));
+  dispatch(setButtonState(taskIdentifier, InitialButtonState));
 };
 
 export const startWorkflowByName = async (dispatch, workflowName) => {
   dispatch( setIsATalkTrackBeingFetched(true) );
+  dispatch( setButtonState(workflowName, LoadingButtonState) );
   try {
     const mutation = initWorkflowByName(workflowName);
     const result = await apolloClient.mutate({ mutation });
-    const iid = result?.data?.workflow?.startByName?.workflow?.iid;
+    const { data: { workflow: { startByName : { did, workflow: { iid, name } } } } } = result;
     if (!iid){
       throw new Error("Unable to init workflow");
     }
-    dispatch(initWorkflowSuccessful([{iid, isTalkTrack: true}]));
+    dispatch(initWorkflowSuccessful([{iid, isTalkTrack: true, name, did}]));
   }catch (error){
     dispatch(initWorkflowFailure({error}));
   }
   dispatch( setIsATalkTrackBeingFetched(false) );
+  dispatch( setButtonState(workflowName, InitialButtonState) );
 }
 
 export const fetchAvailableTalkTracks = async (dispatch) => {
@@ -141,4 +181,25 @@ export const fetchAvailableTalkTracks = async (dispatch) => {
     }
   });
   dispatch(setAvailableTalkTracks(availableTalkTracks));
+};
+
+export const cancelWorkflows = async (dispatch, activeWorkflows) => {
+  if (!Array.isArray(activeWorkflows)) return;
+  try {
+    const workflows = activeWorkflows.map(({ iid }) => iid);
+    const { data: { workflow: { cancel: { iid: canceledWorkflowsIds } } } } = await apolloClient.mutate({
+      mutation: cancelAllWorkflows,
+      variables: {
+        cancelWorkflowInput: {
+          iid: workflows,
+        },
+      },
+    });
+    const canceledWorkflows = activeWorkflows?.filter( currentActiveWorkflow => !canceledWorkflowsIds.includes(currentActiveWorkflow) );
+    dispatch(deleteWorkflows(canceledWorkflows));
+    setInitialTalkTrack = true;
+    dispatch(setActiveTalkTrack(null));
+  }catch (error){
+    console.log(error);
+  }
 };

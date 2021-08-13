@@ -18,6 +18,9 @@ export const rexFlowActionTypes = {
   SET_AVAILABLE_TALK_TRACKS: "SET_AVAILABLE_TALK_TRACKS",
   IS_FLEX_TASK_ACCEPTED: "IS_TASK_ACCEPTED",
   SET_IS_FLEX_TASK_ACCEPTED: "SET_IS_TASK_ACCEPTED",
+  SET_BUTTONS_STATE: "SET_BUTTONS_STATE",
+  DELETE_WORKFLOWS: "DELETE_WORKFLOWS",
+  SET_ACTIVE_TALK_TRACK: "SET_ACTIVE_TALK_TRACK",
 };
 
 export const initWorkflowSuccessful = (workflows) => ({
@@ -93,4 +96,19 @@ export const setAvailableTalkTracks = (availableTalkTracks) => ({
 export const setIsFlexTaskAccepted = (isFlexTaskAccepted) => ({
   type: rexFlowActionTypes.SET_IS_FLEX_TASK_ACCEPTED,
   payload: { isFlexTaskAccepted },
+});
+
+export const setButtonState = (buttonName, buttonState) => ({
+  type: rexFlowActionTypes.SET_BUTTONS_STATE,
+  payload: { buttonName, buttonState },
+});
+
+export const setActiveTalkTrack = (activeTalkTrack) => ({
+  type: rexFlowActionTypes.SET_ACTIVE_TALK_TRACK,
+  payload: { activeTalkTrack },
+});
+
+export const deleteWorkflows = (canceledWorkflows) => ({
+  type: rexFlowActionTypes.DELETE_WORKFLOWS,
+  payload: { canceledWorkflows },
 });

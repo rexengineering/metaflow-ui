@@ -1,9 +1,16 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
-import { TextField } from "@material-ui/core";
+import {makeStyles, TextField} from "@material-ui/core";
 import { useField } from "formik";
 
+const useStyles = makeStyles((theme) => ({
+  inputColor: {
+    color: theme.palette.common.white,
+  }
+}));
+
 function TaskTextField({ name, validateFn, ...passProps }) {
+  const classes = useStyles();
   const [
     { onChange: onChangeFormik, onBlur: onBlurFormik, ...field },
     { error, touched },
@@ -28,6 +35,9 @@ function TaskTextField({ name, validateFn, ...passProps }) {
 
   return (
     <TextField
+      InputProps={{
+        className: classes.inputColor
+      }}
       fullWidth
       variant="filled"
       error={!!(touched && error)}

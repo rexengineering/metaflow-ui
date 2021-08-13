@@ -1,6 +1,8 @@
-function isTalkTrackDidInitialized(activeWorkflows, talkTrackDid){
+function isTalkTrackDidInitialized(activeWorkflows, talkTrackDid, searchByName = false){
     return Array.isArray(activeWorkflows)
-        ? !!activeWorkflows.find(({ iid }) => iid.includes(talkTrackDid))
+        ? !!activeWorkflows.find(({ did, iid }) => searchByName
+                                                      ? iid.includes(talkTrackDid)
+                                                      : did === talkTrackDid )
         : false;
 }
 

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {
     Card, CardContent, CardHeader, makeStyles, Tab, Tabs,
@@ -34,14 +34,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function TalkTracks({ talkTrackWorkflows, headerAction, activeTalkTrackID, isATalkTrackBeingFetched, className }) {
+function TalkTracks({ talkTracks, headerAction, activeTalkTrackID, isATalkTrackBeingFetched, className }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(activeTalkTrackID);
+  const [value, setValue] = useState(activeTalkTrackID);
   const handleChange = (event, newValue) => setValue(newValue);
 
   useEffect(() => {
       setValue(activeTalkTrackID);
-  }, [activeTalkTrackID, setValue])
+  }, [activeTalkTrackID, setValue]);
 
     return (
     <Card>
@@ -58,13 +58,13 @@ function TalkTracks({ talkTrackWorkflows, headerAction, activeTalkTrackID, isATa
                           value={value}
                       >
 
-                          { Array.isArray(talkTrackWorkflows) &&
-                          talkTrackWorkflows.map(({iid: workflowID}) => (
+                          { Array.isArray(talkTracks) &&
+                          talkTracks.map(({iid, name}) => (
                               <Tab
                                   className={classes.tab}
-                                  key={`tab-${workflowID}`}
-                                  label={workflowID}
-                                  value={workflowID}
+                                  key={`tab-${iid}`}
+                                  label={name}
+                                  value={iid}
                               />
                           ))}
 
@@ -76,8 +76,8 @@ function TalkTracks({ talkTrackWorkflows, headerAction, activeTalkTrackID, isATa
 
                       </Tabs>
                       <section className={classes.tabsPanel}>
-                          {Array.isArray(talkTrackWorkflows) &&
-                          talkTrackWorkflows.map(
+                          {Array.isArray(talkTracks) &&
+                          talkTracks.map(
                               ({iid: workflowID}) => (
                                   <TabPanel
                                       key={workflowID}
@@ -98,9 +98,11 @@ function TalkTracks({ talkTrackWorkflows, headerAction, activeTalkTrackID, isATa
 }
 
 TalkTracks.propTypes = {
-  talkTrackWorkflows: PropTypes.arrayOf(PropTypes.shape({
+  talkTracks: PropTypes.arrayOf(PropTypes.shape({
       iid: PropTypes.string.isRequired,
       isTalkTrack: PropTypes.bool.isRequired,
+      name: PropTypes.string.isRequired,
+      did: PropTypes.string.isRequired,
   })).isRequired,
   headerAction: PropTypes.node,
   isATalkTrackBeingFetched: PropTypes.bool.isRequired,
