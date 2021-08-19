@@ -14,7 +14,7 @@ import {
   setAvailableTalkTracks,
   setButtonState,
   deleteWorkflows,
-  setActiveTalkTrack, resetTasks,
+  setActiveTalkTrack, resetTasks, setWorkflowsFinished, resetTaskData, addWorkflows,
 } from "../actions";
 import {
   getTasks,
@@ -44,7 +44,7 @@ const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
 let areInitialized = false;
 let setInitialTalkTrack = true;
 
-export const fetchTasks = async (dispatch) => {
+export const reconcileState = async (dispatch, getState) => {
   try {
 
     const { data } = await apolloClient.query({
@@ -52,21 +52,55 @@ export const fetchTasks = async (dispatch) => {
     });
 
     const workflows = data.workflows.active;
+    const formattedWorkflows = workflows.map(({ iid, metadata, name, did, tasks }) => {
+      const isTalkTrack = metadata.find( ({key, value}) => key === "type" && value === "talktrack");
+      return {
+        iid,
+        isTalkTrack: !!isTalkTrack,
+        name,
+        did,
+        tasks,
+      }
+    });
+
+    const { rexFlow: { activeWorkflows } } = getState();
+    const newWorkflows = [], existingWorkflows = [], finishedWorkflows = [], unfinishedWorkflows = [];
+    formattedWorkflows.forEach((currentWorkflow) => {
+        const isNewWorkflow = !!activeWorkflows.find(({iid}) => iid === currentWorkflow.iid);
+        if ( isNewWorkflow ){
+           newWorkflows.push(currentWorkflow);
+        }else{
+          existingWorkflows.push(currentWorkflow);
+        }
+    });
+
+    activeWorkflows.forEach((currentWorkflow) => {
+      const isUnfinishedWorkflow = !!existingWorkflows.find(({iid}) => iid === currentWorkflow.iid);
+      if (isUnfinishedWorkflow){
+        unfinishedWorkflows.push(currentWorkflow);
+      }else {
+        finishedWorkflows.push(currentWorkflow);
+      }
+    });
+
+    dispatch(addWorkflows(newWorkflows));
+    dispatch(setWorkflowsFinished(finishedWorkflows.map(({ iid }) => iid)));
+
+
+
+
+
+
+
+
 
     if (!workflows?.length && !areInitialized){
       areInitialized = true;
       initDeployments.forEach(async ({did, isTalkTrack}) => await initWorkflow(dispatch, did, isTalkTrack));
     }
 
-    const mappedWorkflows = workflows.map(({ iid, metadata, name, did }) => {
-      const isTalkTrack = metadata.find( ({key, value}) => key === "type" && value === "talktrack");
-      return {
-        iid,
-        isTalkTrack: !!isTalkTrack,
-        name,
-        did
-      }
-    });
+
+
 
     const talkTracks = mappedWorkflows.filter(({ isTalkTrack }) => isTalkTrack);
     if (setInitialTalkTrack && talkTracks.length){
@@ -76,11 +110,18 @@ export const fetchTasks = async (dispatch) => {
       setInitialTalkTrack = false;
     }
 
-    dispatch(initWorkflowSuccessful(mappedWorkflows));
+    dispatch(initWorkflowSuccessful(mappedWorkflows)); // Change to a proper name
+
+    //dispatch(setWorkflowsFinished(mappedWorkflows));
+
     workflows.forEach(({ iid, tasks }) => {
       const task = tasks[0];
       dispatch(fetchTasksSuccess(task, iid));
     });
+
+
+
+
   } catch (error) {
     dispatch(fetchTasksFailure({error})); // pending reducer change
   }
@@ -135,6 +176,7 @@ export const completeTask = async (dispatch, formFields, task) => {
       dispatch(saveTaskDataFailure(taskIdentifier, errors));
     } else {
       dispatch(setIsTaskCompleted(taskIdentifier, true));
+      dispatch(resetTaskData(iid));
     }
   } catch (error) {
     dispatch(
@@ -156,7 +198,7 @@ export const startWorkflowByName = async (dispatch, workflowName) => {
     if (!iid){
       throw new Error("Unable to init workflow");
     }
-    dispatch(initWorkflowSuccessful([{iid, isTalkTrack: true, name, did}]));
+    dispatch(initWorkflowSuccessful([{iid, isTalkTrack: true, name, did}], true));
   }catch (error){
     dispatch(initWorkflowFailure({error}));
   }

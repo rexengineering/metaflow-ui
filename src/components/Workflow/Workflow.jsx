@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Task from "../Task";
 
-function Workflow({ task, submitButtonText, onTaskCompleted, className }) {
+function Workflow({ task, submitButtonText, onTaskCompleted, isFinished, className }) {
   return (
     <section>
-      {task && <Task submitButtonText={submitButtonText} onTaskCompleted={onTaskCompleted} className={className} task={task} />}
+      {task && <Task submitButtonText={submitButtonText} onTaskCompleted={onTaskCompleted} isWorkflowFinished={isFinished} className={className} task={task} />}
     </section>
   );
 }
@@ -15,6 +15,7 @@ Workflow.propTypes = {
   className: "",
   submitButtonText: undefined,
   onTaskCompleted: () => {},
+  isFinished: false,
 };
 
 Workflow.propTypes = {
@@ -22,6 +23,7 @@ Workflow.propTypes = {
   submitButtonText: PropTypes.string,
   workflowID: PropTypes.string.isRequired,
   onTaskCompleted: PropTypes.func,
+  isFinished: PropTypes.bool,
 };
 
 const mapStateToProps = ( state, { workflowID }) => {

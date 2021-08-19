@@ -22,11 +22,50 @@ export const rexFlowActionTypes = {
   DELETE_WORKFLOWS: "DELETE_WORKFLOWS",
   SET_ACTIVE_TALK_TRACK: "SET_ACTIVE_TALK_TRACK",
   RESET_TASKS: "RESET_TASKS",
+  SET_WORKFLOWS_FINISHED: "SET_WORKFLOWS_FINISHED",
+  SET_WORKFLOW_FINISHED: "SET_WORKFLOW_FINISHED",
+  RESET_TASK_DATA: "RESET_TASK_DATA",
+  ADD_WORKFLOW: "ADD_WORKFLOW",
+  ADD_WORKFLOWS: "ADD_WORKFLOWS",
+  ADD_TASK: "ADD_TASK",
+  UPDATING_TASK: "UPDATING_TASK",
+  REMOVE_TASK: "REMOVE_TASK",
 };
 
-export const initWorkflowSuccessful = (workflows) => ({
-  type: rexFlowActionTypes.INIT_WORKFLOW_SUCCESSFUL,
+
+export const addTask = (iid, tasks) => ({
+  type: rexFlowActionTypes.ADD_TASK,
+  payload: { iid, tasks },
+});
+
+export const addWorkflow = (workflow) => ({
+  type: rexFlowActionTypes.ADD_WORKFLOW,
+  payload: { workflow },
+});
+
+export const addWorkflows = (workflows) => ({
+  type: rexFlowActionTypes.ADD_WORKFLOWS,
   payload: { workflows },
+});
+
+export const setWorkFlowFinished = (iid) => ({
+  type: rexFlowActionTypes.SET_WORKFLOW_FINISHED,
+  payload: { iid },
+});
+
+export const initWorkflowSuccessful = (workflows, initializedByName = false) => ({
+  type: rexFlowActionTypes.INIT_WORKFLOW_SUCCESSFUL,
+  payload: { workflows, initializedByName },
+});
+
+export const setWorkflowsFinished = (iids) => ({
+  type: rexFlowActionTypes.SET_WORKFLOWS_FINISHED,
+  payload: { iids },
+});
+
+export const resetTaskData = (iid) => ({
+  type: rexFlowActionTypes.RESET_TASK_DATA,
+  payload: { iid },
 });
 
 export const initWorkflowFailure = (error) => ({

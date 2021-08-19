@@ -55,6 +55,9 @@ const mapStateToProps = (state, { workflowName }) => {
         return {
             workflowID
         };
+
+    console.log(activeWorkflows);
+
     const activeWorkflowObject = activeWorkflows.find(({iid}) => iid.includes(workflowName));
     return {
         workflowID: activeWorkflowObject?.iid ?? ""

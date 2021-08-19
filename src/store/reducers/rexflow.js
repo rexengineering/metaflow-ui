@@ -31,7 +31,7 @@ const updateTasksState = (state, taskId, propKey, propValue) => {
   };
 };
 
-const setActiveWorkflows = (activeWorkflows, { workflows }) => {
+const setActiveWorkflows = (activeWorkflows, { workflows }, initializedByName ) => {
 
   if(!Array.isArray(activeWorkflows))
     return workflows;
@@ -42,15 +42,56 @@ const setActiveWorkflows = (activeWorkflows, { workflows }) => {
   if (!newWorkflows?.length && !deletedWorkflows?.length)
     return activeWorkflows;
 
-  let result = [];
+  let calculatedWorkflows = [];
 
-  if (deletedWorkflows?.length)
-    result = activeWorkflows.filter((currentEl) => !deletedWorkflows.find(({iid: activeWFIID}) => activeWFIID === currentEl));
+  if (deletedWorkflows?.length && !initializedByName)
+    calculatedWorkflows = activeWorkflows.map((currentEl) => {
+      const workflow = deletedWorkflows.find(({iid: activeWFIID}) => activeWFIID === currentEl.iid)
+      currentEl.isFinished = !!workflow;
+      return currentEl;
+    });
 
   if(newWorkflows?.length)
-    result = [...result, ...newWorkflows];
+    calculatedWorkflows = [...calculatedWorkflows, ...newWorkflows];
 
-  return result;
+  return calculatedWorkflows;
+
+
+
+  /*
+  *
+  * Adding new wf
+  * Updating previous ones
+  *
+  *
+  *
+  * */
+
+
+}
+
+const addWorkflow = (currentWorkflows, newWorkflow) => {
+  const isExistingWorkflow = !!currentWorkflows.find(({iid}) => iid === newWorkflow.iid);
+  if (isExistingWorkflow){
+    return currentWorkflows;
+  }
+  return [...currentWorkflows, newWorkflow];
+}
+
+const setWorkflowFinished = (iid, activeWorkflows) => {
+  let selectedWorkflow = undefined;
+  const unselectedWorkflows = [];
+  activeWorkflows.forEach((currentWorkflow) => {
+    if (currentWorkflow.iid === iid){
+      selectedWorkflow = {
+        ...currentWorkflow,
+        isFinished: true
+      };
+    }else {
+      unselectedWorkflows.push(currentWorkflow);
+    }
+  });
+  return  [...unselectedWorkflows, selectedWorkflow];
 }
 
 const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -66,10 +107,10 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       };
     }
     case rexFlowActionTypes.INIT_WORKFLOW_SUCCESSFUL: {
-      const { activeWorkflows } = state;
+      const { activeWorkflows, initializedByName } = state;
       return {
         ...state,
-        activeWorkflows: setActiveWorkflows(activeWorkflows, payload)
+        activeWorkflows: setActiveWorkflows(activeWorkflows, payload, initializedByName)
       };
     }
     case rexFlowActionTypes.INIT_WORKFLOW_FAILURE:
@@ -100,12 +141,16 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
     }
     case rexFlowActionTypes.IS_TASK_COMPLETED: {
       const { taskId, isTaskCompleted } = payload;
-      return updateTasksState(
-        state,
-        taskId,
-        "isTaskCompleted",
-        isTaskCompleted
-      );
+      const { tasksState } = state;
+      return {
+        ...state,
+        tasksState: {
+          ...tasksState,
+          [taskId]: {
+            isTaskCompleted: isTaskCompleted,
+          },
+        },
+      };
     }
     case rexFlowActionTypes.SAVE_TASK_DATA_FAILURE: {
       const { taskId, errors } = payload;
@@ -181,6 +226,81 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
         ...state,
         tasks: null,
       };
+    }
+    case rexFlowActionTypes.RESET_TASK_DATA: {
+      const { iid } = payload;
+      const { tasks } = state;
+      return {
+        ...state,
+        tasks: {
+          ...tasks,
+          [iid]: null,
+        },
+      };
+    }
+
+
+
+
+
+
+
+
+    case rexFlowActionTypes.REMOVE_TASK: {
+      const { iid, task } = payload;
+      const { activeWorkflows } = state;
+      const newWorkflows = activeWorkflows.map((currentWorkflow) => {
+        if (currentWorkflow.iid !== iid){
+          return currentWorkflow;
+        }
+        const { tasks } = currentWorkflow;
+        const newTasks = tasks.filter(({ tid }) => task.tid !== tid);
+        return {
+          ...currentWorkflow,
+          tasks: newTasks
+        };
+      });
+      return {
+        ...state,
+        activeWorkflows: newWorkflows
+      }
+    }
+    case rexFlowActionTypes.SET_WORKFLOW_FINISHED: {
+      const { iid } = payload;
+      const { activeWorkflows } = state;
+      const newWorkflows = setWorkflowFinished(iid, activeWorkflows);
+      return {
+        ...state,
+        activeWorkflows: newWorkflows
+      };
+    }
+    case rexFlowActionTypes.SET_WORKFLOWS_FINISHED: {
+      const { iids } = payload;
+      const { activeWorkflows } = state;
+      let newWorkflows = [...activeWorkflows];
+      iids.forEach((currentIid) => newWorkflows = setWorkflowFinished(currentIid, newWorkflows));
+      return {
+        ...state,
+        activeWorkflows: newWorkflows
+      };
+    }
+    case rexFlowActionTypes.ADD_WORKFLOW: {
+      const { activeWorkflows } = state;
+      const { workflow } = payload;
+      return {
+        ...state,
+        activeWorkflows: addWorkflow(activeWorkflows, workflow),
+      };
+    }
+    case rexFlowActionTypes.ADD_WORKFLOWS: {
+      const { workflows } = payload;
+      const { activeWorkflows } = state;
+      let newWorkflows = [...activeWorkflows];
+      workflows.forEach((currentWorkflow) => newWorkflows = addWorkflow(newWorkflows, currentWorkflow));
+      return {
+        ...state,
+        activeWorkflows: newWorkflows
+      }
     }
     default:
       return state;

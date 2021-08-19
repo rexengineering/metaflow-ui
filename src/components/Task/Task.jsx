@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Task({ className, task, submitButtonText, isProcessing, isCompleted, errors, exceptionError, completeTask, isLoading, onTaskCompleted }) {
+function Task({ className, task, submitButtonText, isProcessing, isCompleted, errors, exceptionError, completeTask, isLoading, onTaskCompleted, isWorkflowFinished }) {
   const { data, iid, tid } = task;
   const { formikInitialValues, validationSchema } =
     convertTaskFieldsToFormUtils(data);
@@ -72,7 +72,7 @@ function Task({ className, task, submitButtonText, isProcessing, isCompleted, er
     setInitialValues(formUtils.formikInitialValues ?? {});
   }, [data]);
 
-  if (isCompleted && completedTask !== tid) {
+  if (isWorkflowFinished) {
     onTaskCompleted({tid, iid});
     setCompletedTask(tid);
     return <Typography>Talk track completed</Typography>
@@ -156,11 +156,13 @@ Task.defaultProps = {
   submitButtonText: "Submit",
   task: {},
   onTaskCompleted: () => {},
+  isWorkflowFinished: false,
 };
 
 Task.propTypes = {
   className: PropTypes.string,
   submitButtonText: PropTypes.string,
+  isWorkflowFinished: PropTypes.bool,
   task: PropTypes.shape({
     data: PropTypes.arrayOf(
       PropTypes.shape({

@@ -78,13 +78,13 @@ function TalkTracks({ talkTracks, headerAction, activeTalkTrackID, isATalkTrackB
                       <section className={classes.tabsPanel}>
                           {Array.isArray(talkTracks) &&
                           talkTracks.map(
-                              ({iid: workflowID}) => (
+                              ({iid: workflowID, isFinished}) => (
                                   <TabPanel
                                       key={workflowID}
                                       index={`${value}`}
                                       value={workflowID}
                                   >
-                                      <Workflow onTaskCompleted={onTaskCompleted} submitButtonText="continue" workflowID={workflowID} />
+                                      <Workflow isFinished={isFinished} onTaskCompleted={onTaskCompleted} submitButtonText="continue" workflowID={workflowID} />
                                   </TabPanel>
                               )
                           )}

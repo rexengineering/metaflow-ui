@@ -13,7 +13,7 @@ import clsx from "clsx";
 import {
   cancelWorkflows,
   fetchAvailableTalkTracks,
-  fetchTasks,
+  reconcileState,
   initWorkflow,
   startWorkflowByName
 } from "../../store/thunks/thunks";
@@ -92,7 +92,8 @@ const useStyles = makeStyles((theme) => ({
 
 const TEMP_PANES = [{ id: "1", icon: faCommentAlt }];
 
-function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTracks, isFlexTaskAccepted, isATalkTrackBeingFetched, dispatch, getDeploymentId, startWorkflowByName, fetchAvailableTalkTracks, getTasks, initWorkflow, cancelActiveWorkflows, talkTracks, currentActiveTalkTrack }) {
+function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTracks, isFlexTaskAccepted: data, isATalkTrackBeingFetched, dispatch, getDeploymentId, startWorkflowByName, fetchAvailableTalkTracks, getTasks, initWorkflow, cancelActiveWorkflows, talkTracks, currentActiveTalkTrack }) {
+  const isFlexTaskAccepted = !data;
   const classes = useStyles();
   const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
   const [callWorkflow] = initDeployments;
@@ -245,9 +246,15 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
 
 const mapStateToProps = (state) => {
   const { deployments, activeWorkflows, availableTalkTracks, isFlexTaskActive, isATalkTrackBeingFetched, isFlexTaskAccepted, activeTalkTrack: currentActiveTalkTrack } = state?.rexFlow ?? {};
+
+
+  console.log(activeWorkflows);
+
+
   const talkTracks = Array.isArray(activeWorkflows)
                              ? activeWorkflows?.filter(({isTalkTrack}) => isTalkTrack)
                              : null;
+
   return {
     deployments,
     activeWorkflows,
@@ -262,10 +269,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   dispatch,
-  getDeploymentId: () => getDeploymentId(dispatch),
+  getDeploymentId: () => dispatch(getDeploymentId()),
   startWorkflowByName: (workflowName) => startWorkflowByName(dispatch, workflowName),
   fetchAvailableTalkTracks: () => fetchAvailableTalkTracks(dispatch),
-  getTasks: () => fetchTasks(dispatch),
+  getTasks: () => dispatch(reconcileState()),
   initWorkflow: (did, isTalkTrack, setAsActive) => initWorkflow(dispatch, did, isTalkTrack, setAsActive),
   cancelActiveWorkflows: (activeWorkflows) => cancelWorkflows(dispatch, activeWorkflows),
 });
