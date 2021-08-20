@@ -135,7 +135,7 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
       return () => clearInterval(interval);
     }
     return () => {};
-  }, [isAutomaticState, isFlexTaskAccepted]);
+  }, [isAutomaticState, isFlexTaskAccepted, activeWorkflows]);
 
   useEffect(() => {
     if (isFlexTaskActive === false) {
