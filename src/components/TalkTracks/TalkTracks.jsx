@@ -34,14 +34,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function TalkTracks({ talkTracks, headerAction, activeTalkTrackID, isATalkTrackBeingFetched, className, onTaskCompleted }) {
+function TalkTracks({ talkTracks, headerAction, activeTalkTrackID, isATalkTrackBeingFetched, className, onTaskCompleted, setActiveTalkTrack }) {
   const classes = useStyles();
-  const [value, setValue] = useState(activeTalkTrackID);
-  const handleChange = (event, newValue) => setValue(newValue);
-
-  useEffect(() => {
-      setValue(activeTalkTrackID);
-  }, [activeTalkTrackID, setValue]);
+  const handleChange = (event, newValue) => {
+      setActiveTalkTrack(newValue);
+  };
 
     return (
     <Card>
@@ -49,13 +46,13 @@ function TalkTracks({ talkTracks, headerAction, activeTalkTrackID, isATalkTrackB
       <CardContent>
           <section className={className}>
               <section className={classes.talkTracks}>
-                  <TabContext value={value}>
+                  <TabContext value={activeTalkTrackID}>
                       <Tabs
                           classes={{ indicator: classes.tabsIndicator }}
                           className={classes.tabs}
                           onChange={handleChange}
                           orientation="vertical"
-                          value={value}
+                          value={activeTalkTrackID}
                       >
 
                           { Array.isArray(talkTracks) &&
@@ -78,13 +75,13 @@ function TalkTracks({ talkTracks, headerAction, activeTalkTrackID, isATalkTrackB
                       <section className={classes.tabsPanel}>
                           {Array.isArray(talkTracks) &&
                           talkTracks.map(
-                              ({iid: workflowID}) => (
+                              ({iid: workflowID, isFinished}) => (
                                   <TabPanel
                                       key={workflowID}
-                                      index={`${value}`}
+                                      index={`${activeTalkTrackID}`}
                                       value={workflowID}
                                   >
-                                      <Workflow onTaskCompleted={onTaskCompleted} submitButtonText="continue" workflowID={workflowID} />
+                                      <Workflow isFinished={isFinished} onTaskCompleted={onTaskCompleted} submitButtonText="continue" workflowID={workflowID} />
                                   </TabPanel>
                               )
                           )}
@@ -113,6 +110,7 @@ TalkTracks.propTypes = {
   activeTalkTrackID: PropTypes.string.isRequired,
   className: PropTypes.string,
   onTaskCompleted: PropTypes.func,
+  setActiveTalkTrack: PropTypes.func.isRequired,
 };
 
 TalkTracks.defaultProps = {

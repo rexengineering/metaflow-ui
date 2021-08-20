@@ -182,6 +182,35 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
         tasks: null,
       };
     }
+    case rexFlowActionTypes.RESET_WORKFLOW_TASK: {
+      const { workflowId } = payload;
+      return {
+        ...state,
+        tasks: {
+          ...state.tasks,
+          [workflowId]: null,
+        },
+      };
+    }
+    case rexFlowActionTypes.SET_WORKFLOWS_FINISHED: {
+      const { finishedWorkflowsIdentifiers } = payload;
+      const { activeWorkflows } = state;
+      const newWorkflows = activeWorkflows.map((currentWorkflow) => {
+        const { iid } = currentWorkflow;
+        const isFinished = finishedWorkflowsIdentifiers.includes(iid);
+        if (!isFinished){
+          return currentWorkflow;
+        }
+        return {
+          ...currentWorkflow,
+          isFinished: true
+        }
+      });
+      return {
+        ...state,
+        activeWorkflows: newWorkflows,
+      };
+    }
     default:
       return state;
   }

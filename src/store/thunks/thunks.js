@@ -7,7 +7,6 @@ import {
   saveTaskDataFailure,
   setIsTaskCompleted,
   fetchTasksSuccess,
-  setFetchTasksIsLoading,
   fetchTasksFailure,
   saveTaskDataException,
   setIsATalkTrackBeingFetched,
@@ -15,6 +14,7 @@ import {
   setButtonState,
   deleteWorkflows,
   setActiveTalkTrack, resetTasks,
+  resetWorkflowTask, setWorkflowsFinished,
 } from "../actions";
 import {
   getTasks,
@@ -44,9 +44,10 @@ const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
 let areInitialized = false;
 let setInitialTalkTrack = true;
 
-export const fetchTasks = async (dispatch) => {
+export const fetchTasks = () => async (dispatch, getState) => {
   try {
 
+    const { rexFlow: { activeWorkflows } } = getState();
     const { data } = await apolloClient.query({
       query: getTasks,
     });
@@ -77,6 +78,14 @@ export const fetchTasks = async (dispatch) => {
     }
 
     dispatch(initWorkflowSuccessful(mappedWorkflows));
+
+
+    if (Array.isArray(activeWorkflows)){
+      const deletedWorkflows = activeWorkflows?.filter(({iid}) => !workflows.find(({iid: activeWFIID}) => activeWFIID === iid));
+      dispatch(setWorkflowsFinished(deletedWorkflows.map(({ iid }) => iid)));
+    }
+
+
     workflows.forEach(({ iid, tasks }) => {
       const task = tasks[0];
       dispatch(fetchTasksSuccess(task, iid));
@@ -135,6 +144,7 @@ export const completeTask = async (dispatch, formFields, task) => {
       dispatch(saveTaskDataFailure(taskIdentifier, errors));
     } else {
       dispatch(setIsTaskCompleted(taskIdentifier, true));
+      dispatch(resetWorkflowTask(iid));
     }
   } catch (error) {
     dispatch(

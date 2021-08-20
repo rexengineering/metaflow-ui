@@ -7,7 +7,7 @@ import {
   makeStyles,
   Drawer,
   IconButton,
-  Badge, Typography, Card, Button, ButtonBase,
+  Badge, Typography, Card, Button,
 } from "@material-ui/core";
 import clsx from "clsx";
 import {
@@ -101,7 +101,7 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
   const [activePaneId, setActivePaneId] = useState(TEMP_PANES[0]?.id);
   const [numberOfNotes, setNumberOfNotes] = useState(0);
   const toggleNotes = useCallback(() => setIsNotesOpen((currentIsNotesOpen) => !currentIsNotesOpen), [])
-
+  const handleActiveTalkTrack = (activeTalkTrackIdentifier) => dispatch(setActiveTalkTrack(activeTalkTrackIdentifier));
   const handleAvailableTalkTrackSelected = (talkTrackWorkflowName) => {
     const isInitialized = isTalkTrackDidInitialized(activeWorkflows, talkTrackWorkflowName);
     if (isInitialized)
@@ -109,7 +109,7 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
     startWorkflowByName(talkTrackWorkflowName);
   }
 
-  const handleTalkTrackTaskCompleted = ({ iid }) => {
+  const handleTalkTrackTaskCompleted = ( iid ) => {
     const completedTalkTrackIndex = talkTracks.findIndex(({ iid: currentIid }) => iid === currentIid);
     if (completedTalkTrackIndex < 0)
       return;
@@ -122,7 +122,7 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
       return;
 
     const activeTalkTrackIdentifier = nextActiveTalkTrack[talkTrackIdentifierProp];
-    dispatch(setActiveTalkTrack(activeTalkTrackIdentifier));
+    handleActiveTalkTrack(activeTalkTrackIdentifier);
   }
 
   useEffect(() => isFlexTaskAccepted && getDeploymentId(), [isFlexTaskAccepted]);
@@ -200,6 +200,7 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
                     (
                         <>
                           <TalkTracks
+                              setActiveTalkTrack={handleActiveTalkTrack}
                               onTaskCompleted={handleTalkTrackTaskCompleted}
                               isATalkTrackBeingFetched={isATalkTrackBeingFetched}
                               talkTracks={talkTracks}
@@ -265,7 +266,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDeploymentId: () => getDeploymentId(dispatch),
   startWorkflowByName: (workflowName) => startWorkflowByName(dispatch, workflowName),
   fetchAvailableTalkTracks: () => fetchAvailableTalkTracks(dispatch),
-  getTasks: () => fetchTasks(dispatch),
+  getTasks: () => dispatch(fetchTasks()),
   initWorkflow: (did, isTalkTrack, setAsActive) => initWorkflow(dispatch, did, isTalkTrack, setAsActive),
   cancelActiveWorkflows: (activeWorkflows) => cancelWorkflows(dispatch, activeWorkflows),
 });

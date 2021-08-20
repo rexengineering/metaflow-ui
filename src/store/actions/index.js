@@ -22,6 +22,8 @@ export const rexFlowActionTypes = {
   DELETE_WORKFLOWS: "DELETE_WORKFLOWS",
   SET_ACTIVE_TALK_TRACK: "SET_ACTIVE_TALK_TRACK",
   RESET_TASKS: "RESET_TASKS",
+  RESET_WORKFLOW_TASK: "RESET_WORKFLOW_TASK",
+  SET_WORKFLOWS_FINISHED: "SET_WORKFLOWS_FINISHED",
 };
 
 export const initWorkflowSuccessful = (workflows) => ({
@@ -116,4 +118,14 @@ export const deleteWorkflows = (canceledWorkflows) => ({
 
 export const resetTasks = () => ({
   type: rexFlowActionTypes.RESET_TASKS
+});
+
+export const resetWorkflowTask = (workflowId) => ({
+  type: rexFlowActionTypes.RESET_WORKFLOW_TASK,
+  payload: { workflowId }
+});
+
+export const setWorkflowsFinished = (finishedWorkflowsIdentifiers) => ({
+  type: rexFlowActionTypes.SET_WORKFLOWS_FINISHED,
+  payload: { finishedWorkflowsIdentifiers }
 });

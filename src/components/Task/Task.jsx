@@ -19,6 +19,7 @@ import useValidateField from "../../utils/useValidateField";
 import { isInfoType, isInputType } from "../../constants/taskTypes";
 import {connect} from "react-redux";
 import {LoadingButtonState} from "../../constants";
+import {setIsTaskCompleted} from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -50,12 +51,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Task({ className, task, submitButtonText, isProcessing, isCompleted, errors, exceptionError, completeTask, isLoading, onTaskCompleted }) {
-  const { data, iid, tid } = task;
+function Task({ className, task, submitButtonText, isProcessing, errors, hasInvokeFinishedCallback, exceptionError, completeTask, isLoading, onTaskCompleted, isWorkflowFinished, activeTalkTrack, dispatch }) {
+  const { data, tid } = task;
   const { formikInitialValues, validationSchema } =
     convertTaskFieldsToFormUtils(data);
   const [initialValues, setInitialValues] = useState(formikInitialValues ?? {});
-  const [completedTask, setCompletedTask] = useState(null);
+  const [hasBeenFinished, setHasBeenFinished] = useState(false);
   const formValidationSchema = object().shape(validationSchema);
   const onSubmit = useCallback(
     (fields) => completeTask(fields, task),
@@ -72,10 +73,15 @@ function Task({ className, task, submitButtonText, isProcessing, isCompleted, er
     setInitialValues(formUtils.formikInitialValues ?? {});
   }, [data]);
 
-  if (isCompleted && completedTask !== tid) {
-    onTaskCompleted({tid, iid});
-    setCompletedTask(tid);
-    return <Typography>Talk track completed</Typography>
+  useEffect(() => {
+    if (isWorkflowFinished && !hasInvokeFinishedCallback){
+      onTaskCompleted(activeTalkTrack);
+      dispatch(setIsTaskCompleted(activeTalkTrack, true));
+    }
+  }, [isWorkflowFinished, activeTalkTrack, onTaskCompleted, hasInvokeFinishedCallback, dispatch]);
+
+  if (isWorkflowFinished) {
+    return <Typography>Talk track completed</Typography>;
   }
 
   if (isProcessing || !data?.length || !initialValues) {
@@ -156,11 +162,13 @@ Task.defaultProps = {
   submitButtonText: "Submit",
   task: {},
   onTaskCompleted: () => {},
+  isWorkflowFinished: false,
 };
 
 Task.propTypes = {
   className: PropTypes.string,
   submitButtonText: PropTypes.string,
+  isWorkflowFinished: PropTypes.bool,
   task: PropTypes.shape({
     data: PropTypes.arrayOf(
       PropTypes.shape({
@@ -186,11 +194,17 @@ Task.propTypes = {
 };
 
 const mapStateToProps = (state, { task }) => {
-  const { tasksState, buttons } = state.rexFlow ?? {};
+  const { tasksState, buttons, activeTalkTrack } = state.rexFlow ?? {};
   const taskIdentifier = buildTaskIdentifier(task);
   const taskState = taskIdentifier && tasksState
       ? tasksState[taskIdentifier]
       : {};
+
+  const customTaskState = activeTalkTrack && tasksState
+      ? tasksState[activeTalkTrack]
+      : {};
+
+  const hasInvokeFinishedCallback = customTaskState?.isTaskCompleted || false;
   const { isLoading, isTaskCompleted, errors: validationErrors, exceptionError: exceptions } = taskState  ?? {};
   const isProcessing = isLoading ?? false;
   const isCompleted = isTaskCompleted ?? false;
@@ -202,11 +216,14 @@ const mapStateToProps = (state, { task }) => {
     errors,
     exceptionError,
     isLoading: buttons[taskIdentifier] === LoadingButtonState,
+    activeTalkTrack,
+    hasInvokeFinishedCallback,
   }
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  completeTask: (formFields, task) => completeTask(dispatch, formFields, task)
+  completeTask: (formFields, task) => completeTask(dispatch, formFields, task),
+  dispatch,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Task);
