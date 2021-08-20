@@ -131,7 +131,7 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
 
   useEffect(() => {
     if (isAutomaticState && isFlexTaskAccepted) {
-      const interval = setInterval(() => getTasks(), 2000);
+      const interval = setInterval(() => getTasks(activeWorkflows), 2000);
       return () => clearInterval(interval);
     }
     return () => {};
@@ -266,7 +266,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDeploymentId: () => getDeploymentId(dispatch),
   startWorkflowByName: (workflowName) => startWorkflowByName(dispatch, workflowName),
   fetchAvailableTalkTracks: () => fetchAvailableTalkTracks(dispatch),
-  getTasks: () => dispatch(fetchTasks()),
+  getTasks: (activeWorkflows) => fetchTasks(dispatch, activeWorkflows),
   initWorkflow: (did, isTalkTrack, setAsActive) => initWorkflow(dispatch, did, isTalkTrack, setAsActive),
   cancelActiveWorkflows: (activeWorkflows) => cancelWorkflows(dispatch, activeWorkflows),
 });

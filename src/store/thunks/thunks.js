@@ -44,10 +44,9 @@ const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
 let areInitialized = false;
 let setInitialTalkTrack = true;
 
-export const fetchTasks = () => async (dispatch, getState) => {
+export const fetchTasks = async (dispatch, activeWorkflows) => {
   try {
 
-    const { rexFlow: { activeWorkflows } } = getState();
     const { data } = await apolloClient.query({
       query: getTasks,
     });
