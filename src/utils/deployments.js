@@ -1,5 +1,5 @@
 export const callWorkflowDeployment = {
-    did: "callworkflow-d12a2032",
+    did: "callworkflow-2cf2bc5f",
     isTalkTrack: false,
 };
 

@@ -67,11 +67,49 @@ export const getTasks = gql`
   }
 `;
 
-export const finishTask = gql`
+export const completeTask = gql`
   mutation CompleteTask($completeTasksInput: CompleteTasksInput!) {
     workflow {
       tasks {
         complete(input: $completeTasksInput) {
+          status
+          tasks {
+            iid
+            tid
+            status
+            data {
+              dataId
+              type
+              order
+              label
+              data
+              encrypted
+              validators {
+                type
+                constraint
+              }
+            }
+          }
+          errors {
+            __typename
+            ... on ValidationProblem {
+              message
+              iid
+              tid
+              dataId
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const saveTask = gql`
+  mutation SaveTask($saveTasksInput: SaveTasksInput!) {
+    workflow {
+      tasks {
+        save(input: $saveTasksInput) {
           status
           tasks {
             iid

@@ -29,7 +29,7 @@ import TalkTrackPicker from "../../components/TalkTrackPicker";
 import isTalkTrackDidInitialized from "../../utils/talkTracks";
 import {setActiveTalkTrack, setIsFlexTaskAccepted, setIsFlexTaskActive} from "../../store/actions";
 import {calculateWorkFlowNameFromDeploymentID} from "../../utils/tasks";
-import {talkTrackIdentifierProp} from "../../constants";
+import {talkTrackIdentifierProp, talkTrackType} from "../../constants";
 
 
 export const MISC_DRAWER_WIDTH = 295;
@@ -92,7 +92,8 @@ const useStyles = makeStyles((theme) => ({
 
 const TEMP_PANES = [{ id: "1", icon: faCommentAlt }];
 
-function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTracks, isFlexTaskAccepted, isATalkTrackBeingFetched, dispatch, getDeploymentId, startWorkflowByName, fetchAvailableTalkTracks, getTasks, initWorkflow, cancelActiveWorkflows, talkTracks, currentActiveTalkTrack }) {
+function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTracks, isFlexTaskAccepted: data, isATalkTrackBeingFetched, dispatch, getDeploymentId, startWorkflowByName, fetchAvailableTalkTracks, getTasks, initWorkflow, cancelActiveWorkflows, talkTracks, currentActiveTalkTrack }) {
+  const isFlexTaskAccepted = !data;
   const classes = useStyles();
   const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
   const [callWorkflow] = initDeployments;
@@ -247,7 +248,7 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
 const mapStateToProps = (state) => {
   const { deployments, activeWorkflows, availableTalkTracks, isFlexTaskActive, isATalkTrackBeingFetched, isFlexTaskAccepted, activeTalkTrack: currentActiveTalkTrack } = state?.rexFlow ?? {};
   const talkTracks = Array.isArray(activeWorkflows)
-                             ? activeWorkflows?.filter(({isTalkTrack}) => isTalkTrack)
+                             ? activeWorkflows?.filter(({metadata}) => metadata?.type === talkTrackType)
                              : null;
   return {
     deployments,

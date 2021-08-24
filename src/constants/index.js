@@ -9,3 +9,4 @@ export const ActionItemDisplayOnlyType = "ActionDisplayOnlyType";
 export const InitialButtonState = 'initial';
 export const LoadingButtonState = 'loading';
 export const talkTrackIdentifierProp = 'iid';
+export const talkTrackType = 'talktrack';

@@ -51,16 +51,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Task({ className, task, submitButtonText, isProcessing, errors, hasInvokeFinishedCallback, exceptionError, completeTask, isLoading, onTaskCompleted, isWorkflowFinished, activeTalkTrack, dispatch }) {
-  const { data, tid } = task;
+function Task({ className, task, submitButtonText, isProcessing, errors, hasInvokeFinishedCallback, exceptionError, completeTask, isLoading, onTaskCompleted, isWorkflowFinished, activeTalkTrack, dispatch, activeWorkflows }) {
+  const { data, iid } = task;
+  const currentWorkflow = Array.isArray(activeWorkflows) ? activeWorkflows.find(({iid: cuurentIid}) => cuurentIid === iid) : null;
   const { formikInitialValues, validationSchema } =
     convertTaskFieldsToFormUtils(data);
   const [initialValues, setInitialValues] = useState(formikInitialValues ?? {});
-  const [hasBeenFinished, setHasBeenFinished] = useState(false);
   const formValidationSchema = object().shape(validationSchema);
   const onSubmit = useCallback(
-    (fields) => completeTask(fields, task),
-    [completeTask, task]
+    (fields) => completeTask(fields, task, currentWorkflow?.metadata?.persistent),
+    [completeTask, task, currentWorkflow]
   );
   const validateField = useValidateField(formValidationSchema);
   const classes = useStyles();
@@ -194,7 +194,7 @@ Task.propTypes = {
 };
 
 const mapStateToProps = (state, { task }) => {
-  const { tasksState, buttons, activeTalkTrack } = state.rexFlow ?? {};
+  const { tasksState, buttons, activeTalkTrack, activeWorkflows } = state.rexFlow ?? {};
   const taskIdentifier = buildTaskIdentifier(task);
   const taskState = taskIdentifier && tasksState
       ? tasksState[taskIdentifier]
@@ -218,11 +218,12 @@ const mapStateToProps = (state, { task }) => {
     isLoading: buttons[taskIdentifier] === LoadingButtonState,
     activeTalkTrack,
     hasInvokeFinishedCallback,
+    activeWorkflows,
   }
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  completeTask: (formFields, task) => completeTask(dispatch, formFields, task),
+  completeTask: (formFields, task, isPersistent) => completeTask(dispatch, formFields, task, isPersistent),
   dispatch,
 });
 
