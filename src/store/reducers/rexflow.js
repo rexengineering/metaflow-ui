@@ -1,19 +1,37 @@
 import { rexFlowActionTypes } from "../actions";
+import { INITIAL } from "../../constants/networkStates";
 
-const INITIAL_STATE = {
-  isWorkflowBeingInitialized: {},
-  isLoadingFetchTasks: false,
-  activeWorkflows: null,
-  tasks: null,
-  error: null,
-  tasksState: {},
-  deployments: [],
-  isFlexTaskActive: true,
-  isFlexTaskAccepted: null,
-  isATalkTrackBeingFetched: false,
-  availableTalkTracks: null,
-  buttons: {},
-  activeTalkTrack: null,
+export const INITIAL_STATE = {
+  workflows: {
+    fetchState: INITIAL,
+    message: "",
+    available: [],
+  },
+  activeInteractionId: "",
+  interactions: {
+    /*
+    [phoneNumber]: {
+      workflows: {
+        fetchState: INITIAL,
+        message: "",
+        instantiated: [{
+         // dont' worry about this in interaction component
+         tasks: []
+        }],
+        activeWorkflowId: "",
+      }
+    }
+    */
+  },
+};
+
+const INITIAL_INTERACTION_STATE = {
+  workflows: {
+    fetchState: INITIAL,
+    message: "",
+    instantiated: [],
+    activeWorkflowId: "",
+  }
 };
 
 const updateTasksState = (state, taskId, propKey, propValue) => {
@@ -96,6 +114,123 @@ const setWorkflowFinished = (iid, activeWorkflows) => {
 
 const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
+    case rexFlowActionTypes.SET_AVAILABLE_WORKFLOWS_FETCH_STATE: {
+      return {
+        ...state,
+        workflows: {
+          ...state.workflows,
+          fetchState: payload,
+        }
+      }
+    }
+
+    case rexFlowActionTypes.SET_AVAILABLE_WORKFLOWS_MESSAGE: {
+      return {
+        ...state,
+        workflows: {
+          ...state.workflows,
+          message: payload,
+        }
+      }
+    }
+
+    case rexFlowActionTypes.SET_AVAILABLE_WORKFLOWS: {
+      return {
+        ...state,
+        workflows: {
+          ...state.workflows,
+          available: payload,
+        }
+      }
+    }
+
+    case rexFlowActionTypes.ADD_INTERACTION: {
+      return {
+        ...state,
+        interactions: {
+          ...state.interactions,
+          [payload]: INITIAL_INTERACTION_STATE
+        }
+      }
+    }
+
+    case rexFlowActionTypes.REMOVE_INTERACTION: {
+      const updatedInteractions = { ...state.interactions };
+      delete updatedInteractions[payload];
+
+      return {
+        ...state,
+        interactions: updatedInteractions
+      }
+    }
+
+    case rexFlowActionTypes.SET_ACTIVE_INTERACTION_ID: {
+      return {
+        ...state,
+        activeInteractionId: payload
+      }
+    }
+
+    case rexFlowActionTypes.SET_INSTANTIATED_WORKFLOW_FETCH_STATE: {
+      const { interactionId, fetchState } = payload;
+      return {
+        ...state,
+        interactions: {
+          ...state.interactions,
+          [interactionId]: {
+            ...state.interactions[interactionId],
+            fetchState
+          }
+        }
+      }
+    }
+
+    case rexFlowActionTypes.SET_INSTANTIATED_WORKFLOW_MESSAGE: {
+      const { interactionId, message } = payload;
+      return {
+        ...state,
+        interactions: {
+          ...state.interactions,
+          [interactionId]: {
+            ...state.interactions[interactionId],
+            message
+          }
+        }
+      }
+    }
+
+    case rexFlowActionTypes.ADD_INSTANTIATED_WORKFLOW: {
+      const { interactionId, workflow } = payload;
+      return {
+        ...state,
+        interactions: {
+          ...state.interactions,
+          [interactionId]: {
+            ...state.interactions[interactionId],
+            workflows: [
+              ...state.interactions[interactionId].workflows,
+              workflow
+            ]
+          }
+        }
+      }
+    }
+
+    case rexFlowActionTypes.REMOVE_INSTANTIATED_WORKFLOW: {
+      const { interactionId, iid } = payload;
+      return {
+        ...state,
+        interactions: {
+          ...state.interactions,
+          [interactionId]: {
+            ...state.interactions[interactionId],
+            workflows: state.interactions[interactionId].workflows
+              .filter((workflow) => workflow.iid === iid)
+          }
+        }
+      }
+    }
+
     case rexFlowActionTypes.INIT_WORKFLOW_IS_LOADING: {
       const { isLoading, deploymentID } = payload;
       return {

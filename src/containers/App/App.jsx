@@ -7,17 +7,17 @@ import {
   makeStyles,
   Drawer,
   IconButton,
-  Badge, Typography, Card, Button, ButtonBase,
+  Badge,
+  Typography,
+  Card,
+  Button,
 } from "@material-ui/core";
 import clsx from "clsx";
 import {
-  cancelWorkflows,
-  fetchAvailableTalkTracks,
   reconcileState,
-  initWorkflow,
   startWorkflowByName
 } from "../../store/thunks/thunks";
-import getDeploymentId from "../../store/thunks/getDeploymentId";
+import fetchAvailableWorkflows from "../../store/thunks/fetchAvailableWorkflows";
 import SideBar from "../../components/Sidebar";
 import Notes from "../../components/Notes";
 import TalkTracks from "../../components/TalkTracks";
@@ -27,9 +27,11 @@ import {callWorkflowDeployment, concludeWorkflowDeployment, introWorkflowDeploym
 import TalkTrackSkeleton from "../../components/TalkTracks/TalkTrackSkeleton";
 import TalkTrackPicker from "../../components/TalkTrackPicker";
 import isTalkTrackDidInitialized from "../../utils/talkTracks";
-import {setActiveTalkTrack, setIsFlexTaskAccepted, setIsFlexTaskActive} from "../../store/actions";
+import { addInteraction, setActiveTalkTrack, setIsFlexTaskAccepted, setIsFlexTaskActive } from "../../store/actions";
 import {calculateWorkFlowNameFromDeploymentID} from "../../utils/tasks";
 import {talkTrackIdentifierProp} from "../../constants";
+import instantiateWorkflow from "../../store/thunks/instantiateWorkflow";
+import { cancelInteractionWorkflowInstances } from "../../store/thunks/cancelWorkflowInstances";
 
 
 export const MISC_DRAWER_WIDTH = 295;
@@ -92,7 +94,13 @@ const useStyles = makeStyles((theme) => ({
 
 const TEMP_PANES = [{ id: "1", icon: faCommentAlt }];
 
-function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTracks, isFlexTaskAccepted: data, isATalkTrackBeingFetched, dispatch, getDeploymentId, startWorkflowByName, fetchAvailableTalkTracks, getTasks, initWorkflow, cancelActiveWorkflows, talkTracks, currentActiveTalkTrack }) {
+function App({
+  availableWorkflows,
+  activeWorkflows,
+  fetchAvailableWorkflows,
+  instantiateWorkflow,
+  cancelActiveWorkflows
+}) {
   const isFlexTaskAccepted = !data;
   const classes = useStyles();
   const initDeployments = [callWorkflowDeployment, introWorkflowDeployment];
@@ -102,6 +110,10 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
   const [activePaneId, setActivePaneId] = useState(TEMP_PANES[0]?.id);
   const [numberOfNotes, setNumberOfNotes] = useState(0);
   const toggleNotes = useCallback(() => setIsNotesOpen((currentIsNotesOpen) => !currentIsNotesOpen), [])
+
+  useEffect(() => fetchAvailableWorkflows() ,[]);
+
+
 
   const handleAvailableTalkTrackSelected = (talkTrackWorkflowName) => {
     const isInitialized = isTalkTrackDidInitialized(activeWorkflows, talkTrackWorkflowName);
@@ -245,36 +257,26 @@ function App({ deployments, activeWorkflows, isFlexTaskActive, availableTalkTrac
 }
 
 const mapStateToProps = (state) => {
-  const { deployments, activeWorkflows, availableTalkTracks, isFlexTaskActive, isATalkTrackBeingFetched, isFlexTaskAccepted, activeTalkTrack: currentActiveTalkTrack } = state?.rexFlow ?? {};
+  const {
+    workflows: {
+      available: availableWorkflows
+    },
+    activeInteractionId,
+    interactions,
+  } = state?.rexFlow ?? {};
 
-
-  console.log(activeWorkflows);
-
-
-  const talkTracks = Array.isArray(activeWorkflows)
-                             ? activeWorkflows?.filter(({isTalkTrack}) => isTalkTrack)
-                             : null;
+  const activeWorkflows = interactions[activeInteractionId].workflows.instantiated;
 
   return {
-    deployments,
-    activeWorkflows,
-    availableTalkTracks,
-    isFlexTaskActive,
-    isATalkTrackBeingFetched,
-    isFlexTaskAccepted,
-    talkTracks,
-    currentActiveTalkTrack
+    availableWorkflows,
+    activeWorkflows
   }
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatch,
-  getDeploymentId: () => dispatch(getDeploymentId()),
-  startWorkflowByName: (workflowName) => startWorkflowByName(dispatch, workflowName),
-  fetchAvailableTalkTracks: () => fetchAvailableTalkTracks(dispatch),
-  getTasks: () => dispatch(reconcileState()),
-  initWorkflow: (did, isTalkTrack, setAsActive) => initWorkflow(dispatch, did, isTalkTrack, setAsActive),
-  cancelActiveWorkflows: (activeWorkflows) => cancelWorkflows(dispatch, activeWorkflows),
+  fetchAvailableWorkflows: () => dispatch(fetchAvailableWorkflows()),
+  instantiateWorkflow: (interactionId, did) => dispatch(instantiateWorkflow(interactionId, did)),
+  cancelInteractionWorkflowInstances: (interactionId) => dispatch(cancelInteractionWorkflowInstances(interactionId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

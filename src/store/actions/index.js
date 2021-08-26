@@ -30,8 +30,83 @@ export const rexFlowActionTypes = {
   ADD_TASK: "ADD_TASK",
   UPDATING_TASK: "UPDATING_TASK",
   REMOVE_TASK: "REMOVE_TASK",
+
+  SET_AVAILABLE_WORKFLOWS_FETCH_STATE: "SET_AVAILABLE_WORKFLOWS_FETCH_STATE",
+  SET_AVAILABLE_WORKFLOWS_MESSAGE: "SET_AVAILABLE_WORKFLOWS_MESSAGE",
+  SET_AVAILABLE_WORKFLOWS: "SET_AVAILABLE_WORKFLOWS",
+
+  ADD_INTERACTION: "ADD_INTERACTION",
+  REMOVE_INTERACTION: "REMOVE_INTERACTION",
+
+  SET_ACTIVE_INTERACTION_ID: "SET_ACTIVE_INTERACTION_ID",
+
+  SET_INSTANTIATED_WORKFLOW_FETCH_STATE: "SET_INSTANTIATED_WORKFLOW_FETCH_STATE",
+  SET_INSTANTIATED_WORKFLOW_MESSAGE: "SET_INSTANTIATED_WORKFLOW_MESSAGE",
+  ADD_INSTANTIATED_WORKFLOW: "ADD_INSTANTIATED_WORKFLOW",
+  REMOVE_INSTANTIATED_WORKFLOW: "REMOVE_INSTANTIATED_WORKFLOW",
 };
 
+export const setAvailableWorkflowsFetchState = (fetchState) => ({
+  type: rexFlowActionTypes.SET_AVAILABLE_WORKFLOWS_FETCH_STATE,
+  payload: fetchState,
+});
+
+export const setAvailableWorkflowsMessage = (message) => ({
+  type: rexFlowActionTypes.SET_AVAILABLE_WORKFLOWS_MESSAGE,
+  payload: message,
+});
+
+export const setAvailableWorkflows = (workflows) => ({
+  type: rexFlowActionTypes.SET_AVAILABLE_WORKFLOWS,
+  payload: workflows,
+});
+
+export const addInteraction = (interactionId) => ({
+  type: rexFlowActionTypes.ADD_INTERACTION,
+  payload: interactionId,
+});
+
+export const removeInteraction = (interactionId) => ({
+  type: rexFlowActionTypes.REMOVE_INTERACTION,
+  payload: interactionId,
+});
+
+export const setActiveInteractionId = (interactionId) => ({
+  type: rexFlowActionTypes.SET_ACTIVE_INTERACTION_ID,
+  payload: interactionId,
+});
+
+export const setInstantiatedWorkflowFetchState = (interactionId, fetchState) => ({
+  type: rexFlowActionTypes.SET_INSTANTIATED_WORKFLOW_FETCH_STATE,
+  payload: {
+    interactionId,
+    fetchState
+  },
+});
+
+export const setInstantiatedWorkflowMessage = (interactionId, message) => ({
+  type: rexFlowActionTypes.SET_INSTANTIATED_WORKFLOW_MESSAGE,
+  payload: {
+    interactionId,
+    message
+  },
+});
+
+export const addInstantiatedWorkflow = (interactionId, workflow) => ({
+  type: rexFlowActionTypes.ADD_INSTANTIATED_WORKFLOW,
+  payload: {
+    interactionId,
+    workflow
+  },
+});
+
+export const removeInstantiatedWorkflow = (interactionId, iid) => ({
+  type: rexFlowActionTypes.REMOVE_INSTANTIATED_WORKFLOW,
+  payload: {
+    interactionId,
+    iid
+  },
+});
 
 export const addTask = (iid, tasks) => ({
   type: rexFlowActionTypes.ADD_TASK,
