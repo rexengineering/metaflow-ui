@@ -1,7 +1,7 @@
 services:
-  - name: prism-ui
-    externalPort: '80'
-    internalPort: '80'
+- name: prism-ui
+  externalPort: '80'
+  internalPort: '80'
 
 ingress:
   enabled: true
@@ -10,10 +10,8 @@ ingress:
     employee: true
   production-names:
     release-admin:
-      - prism.internal.rexchange.com
-      - prism.rex.sh
-
-replicaCount: 3
+    - prism.internal.rexchange.com
+    - prism.rex.sh
 
 readinessProbe:
   httpGet:
