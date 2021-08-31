@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
   CssBaseline,
   makeStyles,
@@ -7,6 +7,7 @@ import clsx from "clsx";
 import Debugging from "../../components/Debugging";
 import {connect} from "react-redux";
 import Interaction from "../../components/Interaction";
+import fetchAvailableWorkflows  from "../../store/thunks/fetchAvailableWorkflows";
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -43,9 +44,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App({ interactions }) {
-  const interactionsIDs = Object.keys(interactions);
+function App({ interactions, getAvailableWorkflows, activeInteractionId }) {
   const classes = useStyles();
+
+  useEffect(() => getAvailableWorkflows(), []);
+
   return (
     <div className={classes.app}>
       <CssBaseline />
@@ -55,8 +58,8 @@ function App({ interactions }) {
         </section>
         <section className={clsx(classes.tray, classes.tray2)} data-testid="tray2">
           {
-            Array.isArray(interactionsIDs) && interactionsIDs.map((currentInteraction) => (
-                <Interaction identifier={currentInteraction} />
+            Array.isArray(interactions) && interactions.map(({ id }) => (
+                <Interaction key={id} identifier={id} isActive={activeInteractionId === id} />
             ))
           }
         </section>
@@ -65,6 +68,23 @@ function App({ interactions }) {
   );
 }
 
-const mapStateToProps = ({ rexFlow: { interactions }}) => ({ interactions });
+const mapStateToProps = ({ rexFlow: { interactions, activeInteractionId }}) => {
+  const interactionsIDs = Object.keys(interactions);
+  const mappedInteractions = interactionsIDs.map((currentInteractionId) => {
+    const interaction = interactions[currentInteractionId];
+    return {
+      ...interaction,
+      id: currentInteractionId
+    }
+  })
+  return {
+    activeInteractionId,
+    interactions: mappedInteractions,
+  };
+};
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => ({
+  getAvailableWorkflows: () => dispatch(fetchAvailableWorkflows()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

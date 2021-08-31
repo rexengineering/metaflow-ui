@@ -1,9 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 import { useFormik } from "formik";
-import {Button, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField} from "@material-ui/core";
+import {
+    Button,
+    FormControl,
+    InputLabel,
+    makeStyles,
+    MenuItem,
+    Select,
+    TextField
+} from "@material-ui/core";
 import { object, string } from "yup";
-import {addInteraction, removeInteraction} from "../../store/actions";
+import {addInteraction, removeInteraction, setActiveInteractionId} from "../../store/actions";
 
 const validationSchema = {
     addInteraction: object({
@@ -36,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 function Debugging({ dispatch, interactions }){
   const classes = useStyles();
   const handleOnAddingInteraction = ({addInteractionIdentifier}) => dispatch(addInteraction(addInteractionIdentifier));
-  const handleOnRemovingInteraction = ({removeInteractionIdentifier}) => { dispatch(removeInteraction(removeInteractionIdentifier)) };
+  const handleOnRemovingInteraction = (removeInteractionIdentifier) => { dispatch(removeInteraction(removeInteractionIdentifier)) };
   const addInteractionFormik = useFormik({
       initialValues: initialValues.addInteraction,
       validationSchema: validationSchema.addInteraction,
@@ -47,7 +55,7 @@ function Debugging({ dispatch, interactions }){
       validationSchema: validationSchema.removeInteraction,
       onSubmit: handleOnRemovingInteraction,
   });
-
+  const handleSetInteractionActive = (interactionIdentifier) => dispatch(setActiveInteractionId(interactionIdentifier));
   return (
       <section>
           <form className={classes.form} onSubmit={addInteractionFormik.handleSubmit}>
@@ -75,7 +83,7 @@ function Debugging({ dispatch, interactions }){
           {
               Array.isArray(interactions) && interactions.length
                 ? (
-                      <form className={classes.form} onSubmit={removeInteractionFormik.handleSubmit}>
+                      <form className={classes.form} >
                           <FormControl>
                               <InputLabel id="interactions">Interactions</InputLabel>
                               <Select
@@ -89,7 +97,7 @@ function Debugging({ dispatch, interactions }){
                               >
                                   {
                                       interactions.map((interaction) => (
-                                          <MenuItem value={interaction}>
+                                          <MenuItem value={interaction} key={interaction}>
                                                 {interaction}
                                           </MenuItem>
                                       ))
@@ -97,20 +105,27 @@ function Debugging({ dispatch, interactions }){
                               </Select>
                           </FormControl>
 
-                          <Button
-                              type="submit"
+                          <Button onClick={() => handleOnRemovingInteraction(removeInteractionFormik.values.removeInteractionIdentifier)}
+                              type="button"
                               variant="contained"
                               color="primary"
                               className={classes.submitButton}
                           >
                               Remove Interaction
                           </Button>
+
+                          <Button onClick={() => handleSetInteractionActive(removeInteractionFormik.values.removeInteractionIdentifier)}
+                              type="button"
+                              variant="contained"
+                              color="secondary"
+                              className={classes.submitButton}
+                          >
+                              Set interaction active
+                          </Button>
                       </form>
                   )
                 : null
           }
-
-
 
       </section>
   );
