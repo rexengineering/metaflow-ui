@@ -1,7 +1,12 @@
 import { INITIAL } from "../../constants/networkStates";
 import { rexFlowActionTypes } from "../actions";
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
+  workflows: {
+    fetchState: INITIAL,
+    message: "",
+    available: [],
+  },
   activeInteractionId: "",
   interactions: {},
 };
