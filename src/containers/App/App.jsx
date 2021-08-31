@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.default,
   },
   tray1: {
-    width: "20%",
+    width: "25%",
     flexShrink: 0,
     backgroundColor: theme.palette.grey[800],
     padding: theme.spacing(2, 3, 6),

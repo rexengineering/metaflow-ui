@@ -11,6 +11,10 @@ export const startWorkflow = gql`
           did
           status
           name
+          metadata {
+            key
+            value
+          }
         }
         errors {
           __typename

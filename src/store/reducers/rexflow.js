@@ -74,6 +74,58 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
         activeInteractionId: payload
       }
     }
+    case rexFlowActionTypes.SET_INSTANTIATED_WORKFLOW_FETCH_STATE: {
+      const { interactionId, fetchState } = payload;
+      const interactionState = state.interactions[interactionId];
+      return {
+        ...state,
+        interactions: {
+          ...state.interactions,
+          [interactionId]: {
+            ...interactionState,
+            workflows: {
+              ...interactionState.workflows,
+              fetchState
+            }
+          }
+        }
+      }
+    }
+    case rexFlowActionTypes.SET_INSTANTIATED_WORKFLOW_MESSAGE: {
+      const { interactionId, message } = payload;
+      const interactionState = state.interactions[interactionId];
+      return {
+        ...state,
+        interactions: {
+          ...state.interactions,
+          [interactionId]: {
+            ...interactionState,
+            workflows: {
+              ...interactionState.workflows,
+              message
+            }
+          }
+        }
+      }
+    }
+    case rexFlowActionTypes.ADD_INSTANTIATED_WORKFLOW: {
+      const { interactionId, workflow } = payload;
+      const interactionState = state.interactions[interactionId];
+      const { workflows: { instantiated } } = interactionState;
+      return {
+        ...state,
+        interactions: {
+          ...state.interactions,
+          [interactionId]: {
+            ...interactionState,
+            workflows: {
+              ...interactionState.workflows,
+              instantiated: [...instantiated, workflow],
+            }
+          }
+        }
+      }
+    }
     default:
       return state;
   }

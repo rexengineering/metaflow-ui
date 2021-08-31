@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import {
     Button,
     FormControl,
-    InputLabel,
+    InputLabel, List, ListItem, ListItemSecondaryAction, ListItemText, ListSubheader,
     makeStyles,
     MenuItem,
     Select,
@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { object, string } from "yup";
 import {addInteraction, removeInteraction, setActiveInteractionId} from "../../store/actions";
+import instantiateWorkflow from "../../store/thunks/instantiateWorkflow";
 
 const validationSchema = {
     addInteraction: object({
@@ -38,10 +39,14 @@ const useStyles = makeStyles((theme) => ({
     },
     submitButton: {
         marginTop: theme.spacing(2),
+    },
+    listSecondaryItem: {
+        position: "initial",
+        margin: theme.spacing(0.5, 0, 0, 1),
     }
 }));
 
-function Debugging({ dispatch, interactions }){
+function Debugging({ dispatch, interactions, availableWorkflows, instantiateWorkflow, activeInteractionId }){
   const classes = useStyles();
   const handleOnAddingInteraction = ({addInteractionIdentifier}) => dispatch(addInteraction(addInteractionIdentifier));
   const handleOnRemovingInteraction = (removeInteractionIdentifier) => { dispatch(removeInteraction(removeInteractionIdentifier)) };
@@ -56,6 +61,10 @@ function Debugging({ dispatch, interactions }){
       onSubmit: handleOnRemovingInteraction,
   });
   const handleSetInteractionActive = (interactionIdentifier) => dispatch(setActiveInteractionId(interactionIdentifier));
+  const handleInstantiateWorkflow = (did) => instantiateWorkflow(activeInteractionId, did);
+  const handleCancelWorkflow = (did) => {
+      debugger
+  };
   return (
       <section>
           <form className={classes.form} onSubmit={addInteractionFormik.handleSubmit}>
@@ -72,7 +81,8 @@ function Debugging({ dispatch, interactions }){
               />
               <Button
                   type="submit"
-                  variant="contained"
+                  size="small"
+                  variant="outlined"
                   color="secondary"
                   className={classes.submitButton}
               >
@@ -107,7 +117,8 @@ function Debugging({ dispatch, interactions }){
 
                           <Button onClick={() => handleOnRemovingInteraction(removeInteractionFormik.values.removeInteractionIdentifier)}
                               type="button"
-                              variant="contained"
+                              size="small"
+                              variant="outlined"
                               color="primary"
                               className={classes.submitButton}
                           >
@@ -116,7 +127,8 @@ function Debugging({ dispatch, interactions }){
 
                           <Button onClick={() => handleSetInteractionActive(removeInteractionFormik.values.removeInteractionIdentifier)}
                               type="button"
-                              variant="contained"
+                              size="small"
+                              variant="outlined"
                               color="secondary"
                               className={classes.submitButton}
                           >
@@ -127,12 +139,40 @@ function Debugging({ dispatch, interactions }){
                 : null
           }
 
+          {
+              Array.isArray(availableWorkflows)
+                ? (
+                      <List subheader={<ListSubheader>Available workflows</ListSubheader>}
+                            className={classes.root}>
+                          {
+                              availableWorkflows.map((currentWorkflow) => (
+                                  <ListItem key={currentWorkflow}>
+                                      <ListItemText primary={currentWorkflow} />
+                                      <ListItemSecondaryAction className={classes.listSecondaryItem}>
+                                          <Button size="small" onClick={() => handleInstantiateWorkflow(currentWorkflow)} color="secondary">Instantiate</Button>
+                                          <Button size="small" onClick={() => handleCancelWorkflow(currentWorkflow)} color="primary">Cancel</Button>
+                                      </ListItemSecondaryAction>
+                                  </ListItem>
+                              ))
+                          }
+                      </List>
+                  )
+                : null
+          }
+
       </section>
   );
 }
 
-const mapStateToProps = ({ rexFlow: { interactions } }) => ({
+const mapStateToProps = ({ rexFlow: { interactions, activeInteractionId , workflows: { available } } }) => ({
     interactions: Object.keys(interactions),
+    availableWorkflows: available,
+    activeInteractionId,
 });
 
-export default connect(mapStateToProps)(Debugging);
+const mapDispatchToProps = (dispatch) => ({
+   instantiateWorkflow: (interactionId, did) => dispatch(instantiateWorkflow(interactionId, did)),
+    dispatch,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Debugging);
