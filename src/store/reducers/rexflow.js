@@ -198,6 +198,17 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
         }
       }
     }
+    case rexFlowActionTypes.ADD_TASK: {
+      const { interactionId, workflowIID, task } = payload;
+    }
+    case rexFlowActionTypes.UPDATE_TASK: {
+      const { interactionId, workflowIID, taskId, newTask} = payload;
+
+    }
+    case rexFlowActionTypes.REMOVE_TASK: {
+      const { interactionId, workflowIID, taskId } = payload;
+
+    }
     default:
       return state;
   }

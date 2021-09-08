@@ -1,7 +1,6 @@
 export const rexFlowActionTypes = {
   ADD_INTERACTION: "ADD_INTERACTION",
   REMOVE_INTERACTION: "REMOVE_INTERACTION",
-
   SET_ACTIVE_INTERACTION_ID: "SET_ACTIVE_INTERACTION_ID",
 
   SET_AVAILABLE_WORKFLOWS_FETCH_STATE: "SET_AVAILABLE_WORKFLOWS_FETCH_STATE",
@@ -13,6 +12,10 @@ export const rexFlowActionTypes = {
   SET_INSTANTIATED_WORKFLOW_MESSAGE: "SET_INSTANTIATED_WORKFLOW_MESSAGE",
   UPDATE_INSTANTIATED_WORKFLOW: "UPDATE_INSTANTIATED_WORKFLOW",
   REMOVE_INSTANTIATED_WORKFLOW: "REMOVE_INSTANTIATED_WORKFLOW",
+
+  ADD_TASK: "ADD_TASK",
+  REMOVE_TASK: "REMOVE_TASK",
+  UPDATE_TASK: "UPDATE_TASK",
 };
 
 export const addInteraction = (interactionIdentifier) => ({
@@ -88,5 +91,33 @@ export const removeInstantiatedWorkflow = (interactionId, workflowIID) => ({
   payload: {
     interactionId,
     workflowIID
+  },
+});
+
+export const addTask = (interactionId, workflowIID, task) => ({
+  type: rexFlowActionTypes.ADD_TASK,
+  payload: {
+    interactionId,
+    workflowIID,
+    task
+  },
+});
+
+export const removeTask = (interactionId, workflowIID, taskId) => ({
+  type: rexFlowActionTypes.REMOVE_TASK,
+  payload: {
+    interactionId,
+    workflowIID,
+    taskId
+  },
+});
+
+export const updateTask = (interactionId, workflowIID, taskId, newTask) => ({
+  type: rexFlowActionTypes.UPDATE_TASK,
+  payload: {
+    interactionId,
+    workflowIID,
+    taskId,
+    newTask
   },
 });
