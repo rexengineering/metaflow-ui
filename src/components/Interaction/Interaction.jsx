@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import Workflow from "../Workflow";
 
 function Interaction({ identifier, isActive, instantiatedWorkflows }){
@@ -10,8 +10,8 @@ function Interaction({ identifier, isActive, instantiatedWorkflows }){
         <section>
             <p>This is {identifier} interaction</p>
             {
-                Array.isArray(instantiatedWorkflows) && instantiatedWorkflows.map(({ name }) => (
-                    <Workflow key={name} identifier={name}/>
+                Array.isArray(instantiatedWorkflows) && instantiatedWorkflows.map(({ requestId, iid }) => (
+                    <Workflow key={requestId} identifier={iid} interactionId={identifier} />
                 ))
             }
         </section>
@@ -24,7 +24,7 @@ Interaction.propTypes = {
 }
 
 const mapStateToProps = ( { rexFlow: { interactions } }, { identifier } ) => ({
-    instantiatedWorkflows: interactions[identifier].workflows?.instantiated ?? []
+    instantiatedWorkflows: interactions[identifier].workflows ?? []
 });
 
 export default connect(mapStateToProps)(Interaction);

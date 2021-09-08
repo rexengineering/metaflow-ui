@@ -9,8 +9,9 @@ export const rexFlowActionTypes = {
   SET_AVAILABLE_WORKFLOWS: "SET_AVAILABLE_WORKFLOWS",
 
   SET_INSTANTIATED_WORKFLOW_FETCH_STATE: "SET_INSTANTIATED_WORKFLOW_FETCH_STATE",
+  ADD_NEW_INSTANTIATED_WORKFLOW: "ADD_NEW_INSTANTIATED_WORKFLOW",
   SET_INSTANTIATED_WORKFLOW_MESSAGE: "SET_INSTANTIATED_WORKFLOW_MESSAGE",
-  ADD_INSTANTIATED_WORKFLOW: "ADD_INSTANTIATED_WORKFLOW",
+  UPDATE_INSTANTIATED_WORKFLOW: "UPDATE_INSTANTIATED_WORKFLOW",
   REMOVE_INSTANTIATED_WORKFLOW: "REMOVE_INSTANTIATED_WORKFLOW",
 };
 
@@ -47,26 +48,45 @@ export const setActiveInteractionId = (interactionId) => ({
 });
 
 
-export const setInstantiatedWorkflowFetchState = (interactionId, fetchState) => ({
+export const setInstantiatedWorkflowFetchState = (interactionId, requestId, fetchState) => ({
   type: rexFlowActionTypes.SET_INSTANTIATED_WORKFLOW_FETCH_STATE,
   payload: {
     interactionId,
+    requestId,
     fetchState
   },
 });
 
-export const setInstantiatedWorkflowMessage = (interactionId, message) => ({
-  type: rexFlowActionTypes.SET_INSTANTIATED_WORKFLOW_MESSAGE,
+export const addNewInstantiatedWorkflow = (interactionId, requestId) => ({
+  type: rexFlowActionTypes.ADD_NEW_INSTANTIATED_WORKFLOW,
   payload: {
     interactionId,
-    message
+    requestId
   },
 });
 
-export const addInstantiatedWorkflow = (interactionId, workflow) => ({
-  type: rexFlowActionTypes.ADD_INSTANTIATED_WORKFLOW,
+export const setInstantiatedWorkflowMessage = (interactionId, message, requestId) => ({
+  type: rexFlowActionTypes.SET_INSTANTIATED_WORKFLOW_MESSAGE,
   payload: {
     interactionId,
-    workflow
+    message,
+    requestId
+  },
+});
+
+export const updateInstantiatedWorkflow = (interactionId, workflow, requestId) => ({
+  type: rexFlowActionTypes.UPDATE_INSTANTIATED_WORKFLOW,
+  payload: {
+    interactionId,
+    workflow,
+    requestId
+  },
+});
+
+export const removeInstantiatedWorkflow = (interactionId, workflowIID) => ({
+  type: rexFlowActionTypes.REMOVE_INSTANTIATED_WORKFLOW,
+  payload: {
+    interactionId,
+    workflowIID
   },
 });

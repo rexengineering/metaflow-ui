@@ -58,8 +58,8 @@ function App({ interactions, getAvailableWorkflows, activeInteractionId }) {
         </section>
         <section className={clsx(classes.tray, classes.tray2)} data-testid="tray2">
           {
-            Array.isArray(interactions) && interactions.map(({ id }) => (
-                <Interaction key={id} identifier={id} isActive={activeInteractionId === id} />
+            Array.isArray(interactions) && interactions.map((currentInteractionID) => (
+                <Interaction key={currentInteractionID} identifier={currentInteractionID} isActive={activeInteractionId === currentInteractionID} />
             ))
           }
         </section>
@@ -68,20 +68,10 @@ function App({ interactions, getAvailableWorkflows, activeInteractionId }) {
   );
 }
 
-const mapStateToProps = ({ rexFlow: { interactions, activeInteractionId }}) => {
-  const interactionsIDs = Object.keys(interactions);
-  const mappedInteractions = interactionsIDs.map((currentInteractionId) => {
-    const interaction = interactions[currentInteractionId];
-    return {
-      ...interaction,
-      id: currentInteractionId
-    }
-  })
-  return {
-    activeInteractionId,
-    interactions: mappedInteractions,
-  };
-};
+const mapStateToProps = ({ rexFlow: { interactions, activeInteractionId }}) => ({
+  activeInteractionId,
+  interactions: Object.keys(interactions),
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getAvailableWorkflows: () => dispatch(fetchAvailableWorkflows()),

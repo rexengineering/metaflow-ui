@@ -155,7 +155,12 @@ export const initWorkflowByName = (workflowName) => gql`
         did
         workflow {
           iid
+          did
           name
+          metadata {
+            key
+            value
+          }
         }
       }
     }

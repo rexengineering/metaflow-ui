@@ -1,35 +1,22 @@
-import { setInstantiatedWorkflowFetchState, setInstantiatedWorkflowMessage, addInstantiatedWorkflow } from "../actions";
+import {
+  setInstantiatedWorkflowFetchState,
+  setInstantiatedWorkflowMessage,
+  updateInstantiatedWorkflow,
+  addNewInstantiatedWorkflow
+} from "../actions";
 import { startWorkflow } from "../queries";
 import { apolloClient } from "./";
 import { FAILURE, REQUEST, SUCCESS } from "../../constants/networkStates";
+import { formatWorkflow } from "../../utils/thunks";
+import { v4 as generateUUID } from "uuid";
 
-const formatWorkflows = (workflows) => workflows.map(({ iid, metadata, name, did }) => {
-    const workflow = { iid, name, did };
-    if (!Array.isArray(metadata))
-      return workflow;
-    const formattedMetadata = metadata.reduce((previousMetadata, currentMetadata) => {
-      const { key, value } = currentMetadata;
-      return {
-        ...previousMetadata,
-        [key]: value
-      }
-    }, {});
-    return {
-      ...workflow,
-      metadata: formattedMetadata,
-    }
-})
-
-const instantiateWorkflow = (interactionId, did) => async (dispatch, getState) => {
-
-  const { rexFlow: { interactions } } = getState();
-  if (!interactionId || !did || !interactions[interactionId]){
-    return;
-  }
-
+const instantiateWorkflow = (interactionId, did) => async (dispatch) => {
+  const requestId = generateUUID();
+  dispatch(addNewInstantiatedWorkflow(interactionId, requestId));
 
   try {
-    dispatch(setInstantiatedWorkflowFetchState(interactionId, REQUEST));
+
+    dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, REQUEST));
 
     const response = await apolloClient.mutate({
       mutation: startWorkflow,
@@ -49,15 +36,16 @@ const instantiateWorkflow = (interactionId, did) => async (dispatch, getState) =
         }
       }
     } = response;
-    const [ formattedWorkflow ] = formatWorkflows([workflow]);
+    const formattedWorkflow = formatWorkflow(workflow);
 
-    dispatch(setInstantiatedWorkflowFetchState(interactionId, SUCCESS));
-    dispatch(addInstantiatedWorkflow(interactionId, formattedWorkflow));
+    dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, SUCCESS));
+    dispatch(updateInstantiatedWorkflow(interactionId, formattedWorkflow, requestId));
 
   } catch (error) {
-    dispatch(setInstantiatedWorkflowFetchState(interactionId, FAILURE));
-    dispatch(setInstantiatedWorkflowMessage(interactionId, error?.message ?? error));
+    dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, FAILURE));
+    dispatch(setInstantiatedWorkflowMessage(interactionId, error?.message ?? error, requestId));
   }
+
 };
 
 export default instantiateWorkflow;
