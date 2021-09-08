@@ -152,20 +152,20 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       const workflowIndex = workflows.findIndex(({ iid: currentIid }) => iid === currentIid);
       const isDuplicated = workflowIndex !== -1;
       const updatedWorkflows = isDuplicated
-                               ? [...workflows].splice(workflowIndex, 1)
-                               : workflows.map((currentWorkflow) => {
-                                    const { requestId: currentRequestId } = currentWorkflow;
-                                    if (requestId === currentRequestId){
-                                      return {
-                                        ...currentWorkflow,
-                                        name,
-                                        did,
-                                        metadata,
-                                        iid
-                                      }
-                                    }
-                                    return currentWorkflow;
-                                  });
+         ? [...workflows].splice(workflowIndex, 1)
+         : workflows.map((currentWorkflow) => {
+              const { requestId: currentRequestId } = currentWorkflow;
+              if (requestId === currentRequestId){
+                return {
+                  ...currentWorkflow,
+                  name,
+                  did,
+                  metadata,
+                  iid
+                }
+              }
+              return currentWorkflow;
+            });
       return {
         ...state,
         interactions: {
@@ -178,10 +178,10 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       }
     }
     case rexFlowActionTypes.REMOVE_INSTANTIATED_WORKFLOW: {
-      const { interactionId, workflowIID } = payload;
+      const { interactionId, workflowIid } = payload;
       const interactionState = state.interactions[interactionId];
       const { workflows } = interactionState;
-      const canceledWorkflowIndex = workflows.findIndex(({ iid }) => iid === workflowIID);
+      const canceledWorkflowIndex = workflows.findIndex(({ iid }) => iid === workflowIid);
       if (canceledWorkflowIndex < 0){
         return state;
       }
