@@ -86,11 +86,11 @@ export const updateInstantiatedWorkflow = (interactionId, workflow, requestId) =
   },
 });
 
-export const removeInstantiatedWorkflow = (interactionId, workflowIID) => ({
+export const removeInstantiatedWorkflow = (interactionId, workflowIid) => ({
   type: rexFlowActionTypes.REMOVE_INSTANTIATED_WORKFLOW,
   payload: {
     interactionId,
-    workflowIID
+    workflowIid
   },
 });
 
