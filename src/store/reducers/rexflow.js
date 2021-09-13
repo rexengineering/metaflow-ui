@@ -16,7 +16,7 @@ const INITIAL_INTERACTION_STATE = {
   activeWorkflowId: "",
 };
 
-const INITIAL_WORKFLOW_STATE = {
+export const INITIAL_WORKFLOW_STATE = {
   requestId: "",
   fetchState: INITIAL,
   message: "",
@@ -199,15 +199,103 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       }
     }
     case rexFlowActionTypes.ADD_TASK: {
-      const { interactionId, workflowIID, task } = payload;
+      const { interactionId, workflowIid, task } = payload;
+      const interactionState = state.interactions[interactionId];
+      const { workflows } = interactionState;
+      const updatedWorkflows = workflows.map((currentWorkflow) => {
+        const { iid } = currentWorkflow;
+        if (iid === workflowIid){
+          const { tasks } = currentWorkflow;
+          return {
+            ...currentWorkflow,
+            tasks: [...tasks, task]
+          }
+        }
+        return currentWorkflow;
+      });
+      return {
+        ...state,
+        interactions: {
+          ...state.interactions,
+          [interactionId]: {
+            ...interactionState,
+            workflows: updatedWorkflows
+          }
+        }
+      }
     }
     case rexFlowActionTypes.UPDATE_TASK: {
-      const { interactionId, workflowIID, taskId, newTask} = payload;
+      const { interactionId, workflowIid, taskId, updatedTask } = payload;
+      const interactionState = state.interactions[interactionId];
+      const { workflows } = interactionState;
 
+      const updatedWorkflows = workflows.map((currentWorkflow) => {
+        const { iid } = currentWorkflow;
+        if (iid === workflowIid){
+          const { tasks } = currentWorkflow;
+          const updatedTasks = tasks.map((currentTask) => {
+            const { tid } = currentTask;
+            if (tid !== taskId){
+              return currentTask;
+            }
+            return {
+              ...updatedTask,
+              tid,
+            }
+          });
+          return {
+            ...currentWorkflow,
+            tasks: updatedTasks
+          }
+        }
+        return currentWorkflow;
+      });
+
+      return {
+        ...state,
+        interactions: {
+          ...state.interactions,
+          [interactionId]: {
+            ...interactionState,
+            workflows: updatedWorkflows
+          }
+        }
+      }
     }
     case rexFlowActionTypes.REMOVE_TASK: {
-      const { interactionId, workflowIID, taskId } = payload;
 
+      const { interactionId, workflowIid, taskId } = payload;
+      const interactionState = state.interactions[interactionId];
+      const { workflows } = interactionState;
+
+      const updatedWorkflows = workflows.map((currentWorkflow) => {
+        const { iid } = currentWorkflow;
+        if (iid === workflowIid){
+          const { tasks } = currentWorkflow;
+          const updatedTasks = [...tasks];
+          const taskIndex = updatedTasks.findIndex(({ tid }) => taskId === tid);
+          if (taskIndex === -1){
+            return currentWorkflow;
+          }
+          updatedTasks.splice(taskIndex, 1);
+          return {
+            ...currentWorkflow,
+            tasks: updatedTasks
+          }
+        }
+        return currentWorkflow;
+      });
+
+      return {
+        ...state,
+        interactions: {
+          ...state.interactions,
+          [interactionId]: {
+            ...interactionState,
+            workflows: updatedWorkflows
+          }
+        }
+      }
     }
     default:
       return state;

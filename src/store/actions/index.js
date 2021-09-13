@@ -94,30 +94,30 @@ export const removeInstantiatedWorkflow = (interactionId, workflowIid) => ({
   },
 });
 
-export const addTask = (interactionId, workflowIID, task) => ({
+export const addTask = (interactionId, workflowIid, task) => ({
   type: rexFlowActionTypes.ADD_TASK,
   payload: {
     interactionId,
-    workflowIID,
+    workflowIid,
     task
   },
 });
 
-export const removeTask = (interactionId, workflowIID, taskId) => ({
+export const removeTask = (interactionId, workflowIid, taskId) => ({
   type: rexFlowActionTypes.REMOVE_TASK,
   payload: {
     interactionId,
-    workflowIID,
+    workflowIid,
     taskId
   },
 });
 
-export const updateTask = (interactionId, workflowIID, taskId, newTask) => ({
+export const updateTask = (interactionId, workflowIid, taskId, updatedTask) => ({
   type: rexFlowActionTypes.UPDATE_TASK,
   payload: {
     interactionId,
-    workflowIID,
+    workflowIid,
     taskId,
-    newTask
+    updatedTask
   },
 });
