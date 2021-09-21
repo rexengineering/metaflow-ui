@@ -1,5 +1,6 @@
 import { INITIAL } from "../../constants/networkStates";
 import { rexFlowActionTypes } from "../actions";
+import deepMerge from "../../utils/objectManipulation";
 
 export const INITIAL_STATE = {
   workflows: {
@@ -224,31 +225,43 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
         }
       }
     }
+
     case rexFlowActionTypes.UPDATE_TASK: {
+
       const { interactionId, workflowIid, taskId, updatedTask } = payload;
       const interactionState = state.interactions[interactionId];
-      const { workflows } = interactionState;
+      const { workflows } = { ...interactionState };
 
+      const workflow = workflows.find(({ iid }) => iid === workflowIid);
+      if (!workflow){
+        return state;
+      }
+      const { tasks } = workflow;
+      const oldTask = tasks.find(({ tid }) => tid === taskId);
+      const {
+          iid,
+          tid,
+          ...oldTaskChanges
+      } = oldTask;
+
+      const newTask = deepMerge(oldTaskChanges, updatedTask, 'dataId');
       const updatedWorkflows = workflows.map((currentWorkflow) => {
-        const { iid } = currentWorkflow;
-        if (iid === workflowIid){
-          const { tasks } = currentWorkflow;
-          const updatedTasks = tasks.map((currentTask) => {
-            const { tid } = currentTask;
-            if (tid !== taskId){
-              return currentTask;
-            }
-            return {
-              ...updatedTask,
-              tid,
-            }
-          });
-          return {
-            ...currentWorkflow,
-            tasks: updatedTasks
-          }
+        const { iid, tasks } = currentWorkflow;
+        if (iid !== workflowIid){
+          return currentWorkflow;
         }
-        return currentWorkflow;
+
+        return {
+          ...currentWorkflow,
+          tasks: tasks.map((currentTask) => {
+            const { tid } = currentTask;
+            if (tid === taskId){
+              return newTask;
+            }
+            return currentTask;
+          })
+        }
+
       });
 
       return {
@@ -261,7 +274,9 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
           }
         }
       }
+
     }
+
     case rexFlowActionTypes.REMOVE_TASK: {
 
       const { interactionId, workflowIid, taskId } = payload;
@@ -296,6 +311,7 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
           }
         }
       }
+
     }
     default:
       return state;
