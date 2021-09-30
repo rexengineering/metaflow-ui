@@ -5,12 +5,12 @@ import {
   addNewInstantiatedWorkflow
 } from "../actions";
 import { startWorkflow } from "../queries";
-import { apolloClient } from "./";
-import { FAILURE, REQUEST, SUCCESS } from "../../constants/networkStates";
-import { formatWorkflow } from "../../utils/thunks";
+import { apolloClient } from "./index";
+import { FAILURE, REQUEST, SUCCESS } from "../../../constants/networkStates";
+import { formatWorkflow } from "../../../utils/thunks";
 import { v4 as generateUUID } from "uuid";
 
-const instantiateWorkflow = (interactionId, did) => async (dispatch) => {
+const instantiateWorkflow = async (dispatch, interactionId, did) => {
   const requestId = generateUUID();
   dispatch(addNewInstantiatedWorkflow(interactionId, requestId));
 

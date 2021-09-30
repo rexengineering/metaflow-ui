@@ -1,7 +1,7 @@
 import React from "react";
 import { Button,  makeStyles, Typography } from "@material-ui/core";
 import WorkflowInstantiator from "../../components/WorkflowInstantiator";
-import { fetchTasks } from "../../store/thunks/thunks";
+import { fetchTasks } from "../../rexui/store/thunks/thunks";
 import {connect} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({

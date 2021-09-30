@@ -1,15 +1,15 @@
 import { apolloClient } from "./index";
 import { cancelAllWorkflows } from "../queries";
 import {
-    removeInstantiatedWorkflow,
+    removeInstantiatedWorkflow, rexFlowActionTypes,
     setInstantiatedWorkflowFetchState,
     setInstantiatedWorkflowMessage
 } from "../actions";
-import { FAILURE, REQUEST, SUCCESS } from "../../constants/networkStates";
+import { FAILURE, REQUEST, SUCCESS } from "../../../constants/networkStates";
 
-const cancelWorkflow = (interactionId, workflowIid) => async (dispatch, getState) => {
+const cancelWorkflow = async (dispatch, state, interactionId, workflowIid) => {
 
-const { rexFlow: { interactions } } = getState();
+const { interactions } = state;
 const { workflows } = interactions[interactionId] ?? {};
 const workflow = workflows.find(({ iid }) => iid === workflowIid);
 const { requestId } = workflow;

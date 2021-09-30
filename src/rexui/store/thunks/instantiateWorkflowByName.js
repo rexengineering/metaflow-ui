@@ -1,17 +1,17 @@
 import { initWorkflowByName } from "../queries";
-import { apolloClient } from "./";
+import { apolloClient } from "./index";
 import {
     updateInstantiatedWorkflow,
     addNewInstantiatedWorkflow,
     setInstantiatedWorkflowFetchState,
     setInstantiatedWorkflowMessage
 } from "../actions";
-import { FAILURE, REQUEST, SUCCESS } from "../../constants/networkStates";
-import { formatWorkflow } from "../../utils/thunks";
+import { FAILURE, REQUEST, SUCCESS } from "../../../constants/networkStates";
+import { formatWorkflow } from "../../../utils/thunks";
 import { v4 as generateUUID } from "uuid";
 
 
-const instantiateWorkflowByName = (interactionId, workflowName) => async (dispatch) => {
+const instantiateWorkflowByName = async (dispatch, interactionId, workflowName) => {
     const requestId = generateUUID();
     dispatch(addNewInstantiatedWorkflow(interactionId, requestId));
 

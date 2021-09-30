@@ -1,11 +1,11 @@
-import { apolloClient } from "./";
+import { apolloClient } from "./index";
 import {
   setAvailableWorkflows,
   setAvailableWorkflowsFetchState,
   setAvailableWorkflowsMessage,
 } from "../actions";
 import { getAvailableDeployments } from "../queries";
-import { FAILURE, REQUEST, SUCCESS } from "../../constants/networkStates";
+import { FAILURE, REQUEST, SUCCESS } from "../../../constants/networkStates";
 import { INITIAL_STATE } from "../reducers/rexflow";
 
 const fetchAvailableWorkflows = () => async (dispatch) => {

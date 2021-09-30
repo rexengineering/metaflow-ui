@@ -3,7 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import userEvent from "@testing-library/user-event";
 import DebugHelpers from "./DebugHelpers";
-import getStore from "../../store";
+import getStore from "../../rexui/store";
 
 describe("<DebugHelpers />", () => {
   const wrappedDebugHelpers = (props, store = getStore({})) => (

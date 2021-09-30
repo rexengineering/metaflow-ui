@@ -5,16 +5,20 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import reportWebVitals from "./reportWebVitals";
 import buildTheme from "./theme";
-import getStore from "./store";
+import getStore from "./rexui/store";
 import App from "./containers/App";
+import RexFlowContextProvider from "./rexui/Context";
 
 const theme = buildTheme();
 const store = getStore({});
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <App />
+          <RexFlowContextProvider>
+              <App />
+          </RexFlowContextProvider>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,

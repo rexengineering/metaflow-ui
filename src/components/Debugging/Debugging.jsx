@@ -1,5 +1,4 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, {useContext} from "react";
 import { useFormik } from "formik";
 import {
     Button,
@@ -11,9 +10,8 @@ import {
     TextField
 } from "@material-ui/core";
 import { object, string } from "yup";
-import {addInteraction, removeInteraction, setActiveInteractionId} from "../../store/actions";
-import instantiateWorkflow from "../../store/thunks/instantiateWorkflow";
-import instantiateWorkflowByName from "../../store/thunks/instantiateWorkflowByName";
+import { addInteraction, removeInteraction, setActiveInteractionId } from "../../rexui/store/actions";
+import { Context } from "../../rexui/Context";
 
 const validationSchema = {
     addInteraction: object({
@@ -53,7 +51,26 @@ const useStyles = makeStyles((theme) => ({
 
 const workflowNames = [ "CallWorkflow",  "bookshowing",  "buying",  "conclude",  "intro",  "questions",  "selling"];
 
-function Debugging({ dispatch, interactions, availableWorkflows, instantiateWorkflow, activeInteractionId, instantiateWorkflowByName }){
+function Debugging(){
+
+    const {
+        dispatch,
+        state: {
+            interactions: interactionsObject,
+            activeInteractionId,
+            workflows: {
+                available: availableWorkflows
+            }
+        },
+        thunks: {
+            instantiateWorkflowByName,
+            instantiateWorkflow
+        }
+    } = useContext(Context);
+
+    const interactions = Object.keys(interactionsObject);
+
+
   const classes = useStyles();
   const handleOnAddingInteraction = ({ addInteractionIdentifier }) => dispatch(addInteraction(addInteractionIdentifier));
   const handleOnRemovingInteraction = ( removeInteractionIdentifier ) => { dispatch(removeInteraction(removeInteractionIdentifier)) };
@@ -210,16 +227,4 @@ function Debugging({ dispatch, interactions, availableWorkflows, instantiateWork
   );
 }
 
-const mapStateToProps = ({ rexFlow: { interactions, activeInteractionId , workflows: { available } } }) => ({
-    interactions: Object.keys(interactions),
-    availableWorkflows: available,
-    activeInteractionId,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-   instantiateWorkflow: (interactionId, did) => dispatch(instantiateWorkflow(interactionId, did)),
-   instantiateWorkflowByName: (interactionId, workflowName) => dispatch(instantiateWorkflowByName(interactionId, workflowName)),
-    dispatch,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Debugging);
+export default Debugging;

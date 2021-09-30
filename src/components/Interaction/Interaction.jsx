@@ -1,9 +1,19 @@
-import React from "react";
+import React, {useContext} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Workflow from "../Workflow";
+import Workflow from "../../rexui/components/Workflow";
+import {Context} from "../../rexui/Context";
 
-function Interaction({ identifier, isActive, instantiatedWorkflows }){
+function Interaction({ identifier, isActive}){
+
+    const {
+        state: {
+            interactions,
+        }
+    } = useContext(Context);
+
+    const instantiatedWorkflows = interactions[identifier].workflows ?? [];
+
     if (!isActive)
         return null;
     return (
@@ -23,8 +33,4 @@ Interaction.propTypes = {
  isActive: PropTypes.bool.isRequired,
 }
 
-const mapStateToProps = ( { rexFlow: { interactions } }, { identifier } ) => ({
-    instantiatedWorkflows: interactions[identifier].workflows ?? []
-});
-
-export default connect(mapStateToProps)(Interaction);
+export default Interaction;

@@ -1,6 +1,6 @@
-import { INITIAL } from "../../constants/networkStates";
+import { INITIAL } from "../../../constants/networkStates";
 import { rexFlowActionTypes } from "../actions";
-import deepMerge from "../../utils/objectManipulation";
+import deepMerge from "../../../utils/objectManipulation";
 
 export const INITIAL_STATE = {
   workflows: {

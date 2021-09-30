@@ -16,6 +16,7 @@ export const rexFlowActionTypes = {
   ADD_TASK: "ADD_TASK",
   REMOVE_TASK: "REMOVE_TASK",
   UPDATE_TASK: "UPDATE_TASK",
+  SET_IS_TASK_COMPLETED: "SET_IS_TASK_COMPLETED",
 };
 
 export const addInteraction = (interactionIdentifier) => ({
@@ -120,4 +121,9 @@ export const updateTask = (interactionId, workflowIid, taskId, updatedTask) => (
     taskId,
     updatedTask
   },
+});
+
+export const setIsTaskCompleted = (taskId, isTaskCompleted) => ({
+  type: rexFlowActionTypes.SET_IS_TASK_COMPLETED,
+  payload: { taskId, isTaskCompleted },
 });

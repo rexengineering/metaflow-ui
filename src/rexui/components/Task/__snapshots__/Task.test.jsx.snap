@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Task /> should match snapshot 1`] = `
+<DocumentFragment>
+  <form
+    class="makeStyles-form-6"
+  >
+    <div
+      class="makeStyles-field-8"
+    >
+      <div
+        class="MuiFormControl-root MuiTextField-root"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-filled MuiFormLabel-filled"
+          data-shrink="true"
+        >
+          Name
+        </label>
+        <div
+          class="MuiInputBase-root MuiFilledInput-root MuiFilledInput-underline MuiInputBase-formControl"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiFilledInput-input"
+            name="name"
+            type="text"
+            value="Gabriel"
+          />
+        </div>
+      </div>
+    </div>
+    <div>
+      <p
+        class="MuiTypography-root MuiTypography-body1"
+      >
+        some copy
+      </p>
+    </div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-submitButton-7 MuiButton-containedSecondary"
+      tabindex="0"
+      type="submit"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        Submit
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+  </form>
+</DocumentFragment>
+`;

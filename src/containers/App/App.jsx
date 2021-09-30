@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import {
   CssBaseline,
   makeStyles,
@@ -7,7 +7,8 @@ import clsx from "clsx";
 import Debugging from "../../components/Debugging";
 import {connect} from "react-redux";
 import Interaction from "../../components/Interaction";
-import fetchAvailableWorkflows  from "../../store/thunks/fetchAvailableWorkflows";
+import fetchAvailableWorkflows  from "../../rexui/store/thunks/fetchAvailableWorkflows";
+import {Context} from "../../rexui/Context";
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -44,7 +45,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App({ interactions, getAvailableWorkflows, activeInteractionId }) {
+function App({ getAvailableWorkflows }) {
+
+  const {
+    state: {
+      interactions: interactionsObject,
+      activeInteractionId,
+    }
+  } = useContext(Context);
+
+  const interactions = Object.keys(interactionsObject);
+
   const classes = useStyles();
 
   useEffect(() => getAvailableWorkflows(), []);
