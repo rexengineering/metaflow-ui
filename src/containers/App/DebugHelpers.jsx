@@ -2,7 +2,7 @@ import React from "react";
 import { Button,  makeStyles, Typography } from "@material-ui/core";
 import WorkflowInstantiator from "../../components/WorkflowInstantiator";
 import { fetchTasks } from "../../store/thunks/thunks";
-import { useDispatch } from "react-redux";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,10 +20,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DebugHelpers({ deployments, isAutomaticState, setIsAutomaticState }) {
+function DebugHelpers({ deployments, isAutomaticState, setIsAutomaticState, dispatch }) {
   const classes = useStyles();
   const isDeploymentsAvailable = Array.isArray(deployments) && !!deployments.length;
-  const dispatch = useDispatch();
 
   return (
     <div className={classes.root}>
@@ -74,4 +73,4 @@ function DebugHelpers({ deployments, isAutomaticState, setIsAutomaticState }) {
   );
 }
 
-export default DebugHelpers;
+export default connect()(DebugHelpers);

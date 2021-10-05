@@ -24,9 +24,10 @@ export function isInputType(field) {
 // Info
 export const TABLE = "TABLE";
 export const COPY = "COPY";
+export const WORKFLOW_INSTANTIATOR = "WORKFLOW";
 
 export function isInfoType(type) {
-  return [TABLE, COPY].includes(type);
+  return [TABLE, COPY, WORKFLOW_INSTANTIATOR].includes(type);
 }
 
 const numberValidationMessage = "Please enter a number";
@@ -55,6 +56,7 @@ const taskTypes = {
   FLOAT,
   TABLE,
   COPY,
+  WORKFLOW_INSTANTIATOR,
 };
 
 export default taskTypes;

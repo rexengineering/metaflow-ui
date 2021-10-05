@@ -11,6 +11,19 @@ export const rexFlowActionTypes = {
   SAVE_TASK_DATA_EXCEPTION: "SAVE_TASK_DATA_EXCEPTION",
   IS_TASK_COMPLETED: "IS_TASK_COMPLETED",
   SET_DEPLOYMENT_ID: "SET_DEPLOYMENT_ID",
+  IS_FLEX_TASK_ACTIVE: "IS_FLEX_TASK_ACTIVE",
+  SET_IS_FLEX_TASK_ACTIVE: "SET_IS_FLEX_TASK_ACTIVE",
+  IS_TALK_TRACK_BEING_FETCHED: "IS_TALK_TRACK_BEING_FETCHED",
+  SET_IS_TALK_TRACK_BEING_FETCHED: "SET_IS_TALK_TRACK_BEING_FETCHED",
+  SET_AVAILABLE_TALK_TRACKS: "SET_AVAILABLE_TALK_TRACKS",
+  IS_FLEX_TASK_ACCEPTED: "IS_TASK_ACCEPTED",
+  SET_IS_FLEX_TASK_ACCEPTED: "SET_IS_TASK_ACCEPTED",
+  SET_BUTTONS_STATE: "SET_BUTTONS_STATE",
+  DELETE_WORKFLOWS: "DELETE_WORKFLOWS",
+  SET_ACTIVE_TALK_TRACK: "SET_ACTIVE_TALK_TRACK",
+  RESET_TASKS: "RESET_TASKS",
+  RESET_WORKFLOW_TASK: "RESET_WORKFLOW_TASK",
+  SET_WORKFLOWS_FINISHED: "SET_WORKFLOWS_FINISHED",
 };
 
 export const initWorkflowSuccessful = (workflows) => ({
@@ -66,4 +79,53 @@ export const saveTaskDataException = (taskId, errorMessage) => ({
 export const setDeploymentId = (deployments) => ({
   type: rexFlowActionTypes.SET_DEPLOYMENT_ID,
   payload: { deployments },
+});
+
+export const setIsFlexTaskActive = (isFlexTaskActive) => ({
+  type: rexFlowActionTypes.SET_IS_FLEX_TASK_ACTIVE,
+  payload: { isFlexTaskActive },
+});
+
+export const setIsATalkTrackBeingFetched = (isATalkTrackBeingFetched) => ({
+  type: rexFlowActionTypes.SET_IS_TALK_TRACK_BEING_FETCHED,
+  payload: { isATalkTrackBeingFetched },
+});
+
+export const setAvailableTalkTracks = (availableTalkTracks) => ({
+  type: rexFlowActionTypes.SET_AVAILABLE_TALK_TRACKS,
+  payload: { availableTalkTracks },
+});
+
+export const setIsFlexTaskAccepted = (isFlexTaskAccepted) => ({
+  type: rexFlowActionTypes.SET_IS_FLEX_TASK_ACCEPTED,
+  payload: { isFlexTaskAccepted },
+});
+
+export const setButtonState = (buttonName, buttonState) => ({
+  type: rexFlowActionTypes.SET_BUTTONS_STATE,
+  payload: { buttonName, buttonState },
+});
+
+export const setActiveTalkTrack = (activeTalkTrack) => ({
+  type: rexFlowActionTypes.SET_ACTIVE_TALK_TRACK,
+  payload: { activeTalkTrack },
+});
+
+export const deleteWorkflows = (canceledWorkflows) => ({
+  type: rexFlowActionTypes.DELETE_WORKFLOWS,
+  payload: { canceledWorkflows },
+});
+
+export const resetTasks = () => ({
+  type: rexFlowActionTypes.RESET_TASKS
+});
+
+export const resetWorkflowTask = (workflowId) => ({
+  type: rexFlowActionTypes.RESET_WORKFLOW_TASK,
+  payload: { workflowId }
+});
+
+export const setWorkflowsFinished = (finishedWorkflowsIdentifiers) => ({
+  type: rexFlowActionTypes.SET_WORKFLOWS_FINISHED,
+  payload: { finishedWorkflowsIdentifiers }
 });

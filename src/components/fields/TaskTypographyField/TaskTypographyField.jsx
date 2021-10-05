@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Typography } from "@material-ui/core";
 
 function TaskTypographyField({ data, variant }) {
-  return <Typography variant={variant}>{data}</Typography>;
+  return <Typography variant={variant.toLocaleLowerCase()}>{data}</Typography>;
 }
 
 TaskTypographyField.propTypes = {

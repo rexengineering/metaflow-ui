@@ -1,13 +1,15 @@
 const query = jest.fn();
-const mutation = jest.fn();
+const mutate = jest.fn().mockImplementation(() => ({
+  data: {}
+}));
 const gql = jest.fn();
 
 module.exports = {
   ApolloClient: jest.fn().mockImplementation(() => ({
     query,
-    mutation,
+    mutate,
   })),
   gql,
   query,
-  mutation,
+  mutate,
 };

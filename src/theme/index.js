@@ -1,6 +1,5 @@
 import getTypographyTheme from "./typography";
-
-const { createMuiTheme } = require("@material-ui/core");
+import { createMuiTheme } from "@material-ui/core";
 
 const buildTheme = () => {
   const theme = createMuiTheme({
@@ -12,6 +11,7 @@ const buildTheme = () => {
         main: "#FF685F",
         light: "#FF8B84",
         dark: "#E65E55",
+        contrastText: "#FFF",
       },
       secondary: {
         main: "#807DFB",

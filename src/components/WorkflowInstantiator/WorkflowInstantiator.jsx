@@ -1,21 +1,16 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { initWorkflow } from "../../store/thunks/thunks";
 import ActionButton from "../ActionButton";
-import { selectIsWorkflowBeingInitialized } from "../../store/selectors";
 
-function WorkflowInstantiator({ deploymentID }) {
-  const isWorkflowBeingInitialized = useSelector(
-    selectIsWorkflowBeingInitialized(deploymentID)
-  );
-  const dispatch = useDispatch();
+function WorkflowInstantiator({ deploymentID, isWorkflowBeingInitialized, dispatch }) {
   const handleStartWorkflow = () => dispatch(initWorkflow(deploymentID));
 
   return (
     <ActionButton
       onClick={handleStartWorkflow}
-      isLoading={Boolean(isWorkflowBeingInitialized || !deploymentID)}
+      isLoading={!!(isWorkflowBeingInitialized || !deploymentID)}
     >
       Start workflow
     </ActionButton>
@@ -26,4 +21,8 @@ WorkflowInstantiator.propTypes = {
   deploymentID: PropTypes.string.isRequired,
 };
 
-export default WorkflowInstantiator;
+const mapStateToProps = ({ rexFlow: { isWorkflowBeingInitialized } }, { deploymentID }) => ({
+  isWorkflowBeingInitialized: isWorkflowBeingInitialized[deploymentID] ?? false
+});
+
+export default connect(mapStateToProps)(WorkflowInstantiator);

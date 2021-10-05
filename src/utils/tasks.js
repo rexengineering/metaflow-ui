@@ -1,4 +1,4 @@
-import { validationSchemaMapping } from "../constants/taskTypes";
+import {validationSchemaMapping} from "../constants/taskTypes";
 
 const mapBooleanToString = (booleanValue) => (booleanValue ? "True" : "False");
 
@@ -52,4 +52,16 @@ export const convertValidationErrorsTo = (errors) => {
 export const parseFieldNumberValue = (value) => {
   const parsedValue = Number.parseFloat(value);
   return Number.isNaN(parsedValue) ? null : parsedValue;
+};
+
+export const calculateWorkFlowNameFromDeploymentID = (dID) => {
+  const words = dID.split("-");
+  return words[0] ?? null;
+};
+
+export const buildTaskIdentifier = ({iid, tid}) => {
+  if (!iid || !tid) {
+    return "";
+  }
+  return `${iid}-${tid}`;
 };
