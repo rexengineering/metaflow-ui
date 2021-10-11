@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TwilioFlex /> should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="makeStyles-container-4"
+  >
+    <iframe
+      class="makeStyles-iframe-3"
+      src="https://flex.twilio.com/agent-desktop/"
+      title="twilioFlex"
+    />
+  </section>
+</DocumentFragment>
+`;
