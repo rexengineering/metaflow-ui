@@ -14,7 +14,7 @@ import {
 } from "../actions";
 import { getTasks, startWorkflow, finishTask } from "../queries";
 import { convertFormToQueryPayload } from "../../utils/tasks";
-import { buildTaskIdentifier } from "../selectors";
+import { buildTaskIdentifier } from "../selectors/rexflow";
 
 const defaultOptions = {
   query: {

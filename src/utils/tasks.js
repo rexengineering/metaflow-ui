@@ -53,3 +53,8 @@ export const parseFieldNumberValue = (value) => {
   const parsedValue = Number.parseFloat(value);
   return Number.isNaN(parsedValue) ? null : parsedValue;
 };
+
+export const calculateWorkFlowNameFromDeploymentID = (dID) => {
+  const words = dID.split("-");
+  return words?.[0] ?? null;
+};

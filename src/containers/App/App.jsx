@@ -15,7 +15,7 @@ import getDeploymentId from "../../store/thunks/getDeploymentId";
 import {
   selectActiveWorkflows,
   selectDeployments,
-} from "../../store/selectors";
+} from "../../store/selectors/rexflow";
 import SideBar from "../../components/Sidebar";
 import Notes from "../../components/Notes";
 import TalkTracks from "../../components/TalkTracks";
