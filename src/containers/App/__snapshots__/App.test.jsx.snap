@@ -3,22 +3,22 @@
 exports[`<App /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="makeStyles-app-25"
+    class="makeStyles-app-35"
   >
     <div
-      class="MuiDrawer-root MuiDrawer-docked makeStyles-nav-32"
+      class="MuiDrawer-root MuiDrawer-docked makeStyles-nav-42"
       component="nav"
     >
       <div
-        class="MuiPaper-root MuiDrawer-paper makeStyles-drawer-33 MuiDrawer-paperAnchorLeft MuiDrawer-paperAnchorDockedLeft MuiPaper-elevation0"
+        class="MuiPaper-root MuiDrawer-paper makeStyles-drawer-43 MuiDrawer-paperAnchorLeft MuiDrawer-paperAnchorDockedLeft MuiPaper-elevation0"
       >
         <img
           alt="Prism"
-          class="makeStyles-logo-34"
+          class="makeStyles-logo-44"
           src="prism.svg"
         />
         <ul
-          class="MuiList-root makeStyles-list-35 MuiList-padding"
+          class="MuiList-root makeStyles-list-45 MuiList-padding"
         >
           <div
             aria-disabled="false"
@@ -28,11 +28,11 @@ exports[`<App /> should match snapshot 1`] = `
             tabindex="0"
           >
             <div
-              class="MuiListItemIcon-root makeStyles-icon-36"
+              class="MuiListItemIcon-root makeStyles-icon-46"
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-comment-alt fa-w-16 makeStyles-activeItem-37"
+                class="svg-inline--fa fa-comment-alt fa-w-16 makeStyles-activeItem-47"
                 data-icon="comment-alt"
                 data-prefix="fal"
                 focusable="false"
@@ -54,74 +54,74 @@ exports[`<App /> should match snapshot 1`] = `
       </div>
     </div>
     <section
-      class="makeStyles-pane-26"
+      class="makeStyles-pane-36"
     >
       <section
-        class="makeStyles-tray-27 makeStyles-tray1-28"
+        class="makeStyles-tray-37 makeStyles-tray1-38"
       >
         <div>
           <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
             style="height: 19px;"
           />
           <div
-            class="makeStyles-leadingWrapper-38"
+            class="makeStyles-leadingWrapper-48"
           >
             <span
-              class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+              class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
               style="height: 50px;"
             />
           </div>
           <div
-            class="makeStyles-leadingWrapper-38"
+            class="makeStyles-leadingWrapper-48"
           >
             <hr
               class="MuiDivider-root"
             />
           </div>
           <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
             style="height: 19px;"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
             style="height: 60px;"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
             style="height: 19px;"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
             style="height: 60px;"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
             style="height: 19px;"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
             style="height: 60px;"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
             style="height: 19px;"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
             style="height: 60px;"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
             style="height: 19px;"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
+            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-50"
             style="height: 60px;"
           />
         </div>
         <div
-          class="makeStyles-finalWrapper-39"
+          class="makeStyles-finalWrapper-49"
         >
           <button
             class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary Mui-disabled MuiButton-fullWidth Mui-disabled"
@@ -138,14 +138,14 @@ exports[`<App /> should match snapshot 1`] = `
         </div>
       </section>
       <section
-        class="makeStyles-tray-27 makeStyles-tray2-29"
+        class="makeStyles-tray-37 makeStyles-tray2-39"
         data-testid="tray2"
       >
         <div
           class="MuiPaper-root MuiCard-root MuiPaper-elevation1 MuiPaper-rounded"
         >
           <div
-            class="MuiCardHeader-root"
+            class="MuiCardHeader-root makeStyles-card-51"
           >
             <div
               class="MuiCardHeader-content"
@@ -202,11 +202,32 @@ exports[`<App /> should match snapshot 1`] = `
           <div
             class="MuiCardContent-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body1"
-            >
-              There are no active talk tracks.
-            </p>
+            <section>
+              <section
+                class="makeStyles-talkTracks-52"
+              >
+                <div
+                  class="MuiTabs-root makeStyles-tabs-53 MuiTabs-vertical"
+                >
+                  <div
+                    class="MuiTabs-scroller MuiTabs-fixed"
+                    style="overflow: hidden;"
+                  >
+                    <div
+                      class="MuiTabs-flexContainer MuiTabs-flexContainerVertical"
+                      role="tablist"
+                    />
+                    <span
+                      class="PrivateTabIndicator-root-65 PrivateTabIndicator-colorSecondary-67 MuiTabs-indicator makeStyles-tabsIndicator-55 PrivateTabIndicator-vertical-68"
+                      style="top: 0px; height: 0px;"
+                    />
+                  </div>
+                </div>
+                <section
+                  class="makeStyles-tabsPanel-54"
+                />
+              </section>
+            </section>
           </div>
         </div>
       </section>
@@ -215,7 +236,7 @@ exports[`<App /> should match snapshot 1`] = `
         data-testid="misc-drawer"
       >
         <div
-          class="MuiPaper-root MuiDrawer-paper makeStyles-miscDrawerPaper-31 MuiDrawer-paperAnchorRight MuiDrawer-paperAnchorDockedRight MuiPaper-elevation0"
+          class="MuiPaper-root MuiDrawer-paper makeStyles-miscDrawerPaper-41 MuiDrawer-paperAnchorRight MuiDrawer-paperAnchorDockedRight MuiPaper-elevation0"
           style="visibility: hidden; webkit-transform: translateX(1024px) translateX(0px); transform: translateX(1024px) translateX(0px);"
         >
           <h5
@@ -224,7 +245,7 @@ exports[`<App /> should match snapshot 1`] = `
             Notes
           </h5>
           <div
-            class="makeStyles-notesContainer-43"
+            class="makeStyles-notesContainer-59"
           />
           <form
             class="MuiPaper-root MuiCard-root MuiPaper-elevation1 MuiPaper-rounded"
@@ -281,7 +302,7 @@ exports[`<App /> should match snapshot 1`] = `
             </div>
           </form>
           <div
-            class="makeStyles-root-45"
+            class="makeStyles-root-61"
           >
             <h5
               class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter"
@@ -299,7 +320,7 @@ exports[`<App /> should match snapshot 1`] = `
               State Helpers
             </h5>
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-48 MuiButton-containedSecondary"
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-64 MuiButton-containedSecondary"
               data-testid="update-state-button"
               tabindex="0"
               type="button"
@@ -314,7 +335,7 @@ exports[`<App /> should match snapshot 1`] = `
               />
             </button>
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-48"
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-64"
               data-testid="toggle-state-button"
               tabindex="0"
               type="button"
