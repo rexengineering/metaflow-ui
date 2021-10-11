@@ -7,16 +7,15 @@ import {
 } from "../actions";
 import { FAILURE, REQUEST, SUCCESS } from "../../constants/networkStates";
 
-const cancelWorkflow = (interactionId, workflowIid) => async (dispatch, getState) => {
+const cancelWorkflow = (workflowIid) => async (dispatch, getState) => {
 
-const { rexFlow: { interactions } } = getState();
-const { workflows } = interactions[interactionId] ?? {};
-const workflow = workflows.find(({ iid }) => iid === workflowIid);
+const { rexFlow: { instantiatedWorkflows } } = getState();
+const workflow = instantiatedWorkflows.find(({ iid }) => iid === workflowIid);
 const { requestId } = workflow;
 
 try {
 
-    dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, REQUEST));
+    dispatch(setInstantiatedWorkflowFetchState(requestId, REQUEST));
 
     const response = await apolloClient.mutate({
         mutation: cancelAllWorkflows,
@@ -41,12 +40,12 @@ try {
         throw new Error(`Workflow ${workflowIid} was not canceled, it is not part of the canceled workflow list`);
     }
 
-    dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, SUCCESS));
-    dispatch(removeInstantiatedWorkflow(interactionId, workflowIid));
+    dispatch(setInstantiatedWorkflowFetchState(requestId, SUCCESS));
+    dispatch(removeInstantiatedWorkflow(workflowIid));
 
 }catch (error){
-    dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, FAILURE));
-    dispatch(setInstantiatedWorkflowMessage(interactionId, error?.message ?? error, requestId));
+    dispatch(setInstantiatedWorkflowFetchState(requestId, FAILURE));
+    dispatch(setInstantiatedWorkflowMessage(error?.message ?? error, requestId));
 }
 
 }

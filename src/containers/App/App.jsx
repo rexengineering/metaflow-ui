@@ -6,8 +6,10 @@ import {
 import clsx from "clsx";
 import Debugging from "../../components/Debugging";
 import {connect} from "react-redux";
-import Interaction from "../../components/Interaction";
 import fetchAvailableWorkflows  from "../../store/thunks/fetchAvailableWorkflows";
+import eventBroadcast from "../../store/thunks/subscription/eventBroadcast";
+import Workflow from "../../components/Workflow";
+import keepAlive from "../../store/thunks/subscription/keepAlive";
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -44,10 +46,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App({ interactions, getAvailableWorkflows, activeInteractionId }) {
+function App({ instantiatedWorkflows, getAvailableWorkflows, keepAliveSubscription, dispatch }) {
   const classes = useStyles();
 
   useEffect(() => getAvailableWorkflows(), []);
+  useEffect(() => eventBroadcast(dispatch), []);
+  useEffect(() => {
+    const interval = setInterval(() => keepAliveSubscription(), 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className={classes.app}>
@@ -58,8 +65,8 @@ function App({ interactions, getAvailableWorkflows, activeInteractionId }) {
         </section>
         <section className={clsx(classes.tray, classes.tray2)} data-testid="tray2">
           {
-            Array.isArray(interactions) && interactions.map((currentInteractionID) => (
-                <Interaction key={currentInteractionID} identifier={currentInteractionID} isActive={activeInteractionId === currentInteractionID} />
+            Array.isArray(instantiatedWorkflows) && instantiatedWorkflows.map(({ iid }) => (
+                <Workflow identifier={iid} key={iid} />
             ))
           }
         </section>
@@ -68,13 +75,14 @@ function App({ interactions, getAvailableWorkflows, activeInteractionId }) {
   );
 }
 
-const mapStateToProps = ({ rexFlow: { interactions, activeInteractionId }}) => ({
-  activeInteractionId,
-  interactions: Object.keys(interactions),
+const mapStateToProps = ({ rexFlow: { instantiatedWorkflows }}) => ({
+  instantiatedWorkflows
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getAvailableWorkflows: () => dispatch(fetchAvailableWorkflows()),
+  keepAliveSubscription: () => dispatch(keepAlive()),
+  dispatch,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -7,16 +7,16 @@ import {
 import { startWorkflow } from "../queries";
 import { apolloClient } from "./";
 import { FAILURE, REQUEST, SUCCESS } from "../../constants/networkStates";
-import { formatWorkflow } from "../../utils/thunks";
 import { v4 as generateUUID } from "uuid";
 
-const instantiateWorkflow = (interactionId, did) => async (dispatch) => {
+const instantiateWorkflow = (did) => async (dispatch) => {
+
   const requestId = generateUUID();
-  dispatch(addNewInstantiatedWorkflow(interactionId, requestId));
+  dispatch(addNewInstantiatedWorkflow( { requestId, did } ));
 
   try {
 
-    dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, REQUEST));
+    dispatch(setInstantiatedWorkflowFetchState(requestId, REQUEST));
 
     const response = await apolloClient.mutate({
       mutation: startWorkflow,
@@ -31,19 +31,18 @@ const instantiateWorkflow = (interactionId, did) => async (dispatch) => {
       data: {
         workflow: {
           start: {
-            workflow
+            workflow: { iid }
           }
         }
       }
     } = response;
-    const formattedWorkflow = formatWorkflow(workflow);
 
-    dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, SUCCESS));
-    dispatch(updateInstantiatedWorkflow(interactionId, formattedWorkflow, requestId));
+    dispatch(setInstantiatedWorkflowFetchState(requestId, SUCCESS));
+    dispatch(updateInstantiatedWorkflow( { iid }, requestId, 'requestId' ));
 
   } catch (error) {
-    dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, FAILURE));
-    dispatch(setInstantiatedWorkflowMessage(interactionId, error?.message ?? error, requestId));
+    dispatch(setInstantiatedWorkflowFetchState(requestId, FAILURE));
+    dispatch(setInstantiatedWorkflowMessage(error?.message ?? error, requestId));
   }
 
 };

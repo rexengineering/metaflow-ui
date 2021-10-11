@@ -7,34 +7,34 @@ import {
     setInstantiatedWorkflowMessage
 } from "../actions";
 import { FAILURE, REQUEST, SUCCESS } from "../../constants/networkStates";
-import { formatWorkflow } from "../../utils/thunks";
 import { v4 as generateUUID } from "uuid";
 
 
-const instantiateWorkflowByName = (interactionId, workflowName) => async (dispatch) => {
+const instantiateWorkflowByName = (workflowName) => async (dispatch) => {
     const requestId = generateUUID();
-    dispatch(addNewInstantiatedWorkflow(interactionId, requestId));
+    dispatch(addNewInstantiatedWorkflow({ requestId, name: workflowName }));
 
     try {
-        dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, REQUEST));
+       dispatch(setInstantiatedWorkflowFetchState(requestId, REQUEST));
 
         const mutation = initWorkflowByName(workflowName);
-        const result = await apolloClient.mutate({ mutation });
+        const response = await apolloClient.mutate({ mutation });
         const {
             data: {
                 workflow: {
-                    startByName : { workflow }
+                    start: {
+                        workflow: { iid }
+                    }
                 }
             }
-        } = result;
+        } = response;
 
-        const formattedWorkflow = formatWorkflow(workflow);
+        dispatch(setInstantiatedWorkflowFetchState(requestId, SUCCESS));
+        dispatch(updateInstantiatedWorkflow( { iid }, requestId, 'requestId' ));
 
-        dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, SUCCESS));
-        dispatch(updateInstantiatedWorkflow(interactionId, formattedWorkflow, requestId));
     }catch (error){
-        dispatch(setInstantiatedWorkflowFetchState(interactionId, requestId, FAILURE));
-        dispatch(setInstantiatedWorkflowMessage(interactionId, error?.message ?? error, requestId));
+        dispatch(setInstantiatedWorkflowFetchState(requestId, FAILURE));
+        dispatch(setInstantiatedWorkflowMessage(error?.message ?? error, requestId));
     }
 
 };

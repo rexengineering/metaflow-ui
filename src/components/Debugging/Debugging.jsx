@@ -8,10 +8,8 @@ import {
     makeStyles,
     MenuItem,
     Select,
-    TextField
 } from "@material-ui/core";
 import { object, string } from "yup";
-import {addInteraction, removeInteraction, setActiveInteractionId} from "../../store/actions";
 import instantiateWorkflow from "../../store/thunks/instantiateWorkflow";
 import instantiateWorkflowByName from "../../store/thunks/instantiateWorkflowByName";
 
@@ -53,104 +51,20 @@ const useStyles = makeStyles((theme) => ({
 
 const workflowNames = [ "CallWorkflow",  "bookshowing",  "buying",  "conclude",  "intro",  "questions",  "selling"];
 
-function Debugging({ dispatch, interactions, availableWorkflows, instantiateWorkflow, activeInteractionId, instantiateWorkflowByName }){
+function Debugging({ availableWorkflows, instantiateWorkflow, instantiateWorkflowByName }){
   const classes = useStyles();
-  const handleOnAddingInteraction = ({ addInteractionIdentifier }) => dispatch(addInteraction(addInteractionIdentifier));
-  const handleOnRemovingInteraction = ( removeInteractionIdentifier ) => { dispatch(removeInteraction(removeInteractionIdentifier)) };
-  const handleInstantiateWorkflowByName = ({ workflowName }) => instantiateWorkflowByName(activeInteractionId, workflowName);
 
-    const addInteractionFormik = useFormik({
-      initialValues: initialValues.addInteraction,
-      validationSchema: validationSchema.addInteraction,
-      onSubmit: handleOnAddingInteraction,
-  });
-  const removeInteractionFormik = useFormik({
-      initialValues: initialValues.removeInteraction,
-      validationSchema: validationSchema.removeInteraction,
-      onSubmit: handleOnRemovingInteraction,
-  });
+  const handleInstantiateWorkflowByName = ({ workflowName }) => instantiateWorkflowByName(workflowName);
   const instantiateByNameFormik = useFormik({
       initialValues: initialValues.instantiateByName,
       validationSchema: validationSchema.instantiateByName,
       onSubmit: handleInstantiateWorkflowByName,
   });
-  const handleSetInteractionActive = (interactionIdentifier) => dispatch(setActiveInteractionId(interactionIdentifier));
-  const handleInstantiateWorkflow = (did) => instantiateWorkflow(activeInteractionId, did);
+
+  const handleInstantiateWorkflow = (did) => instantiateWorkflow(did);
 
   return (
       <section>
-          <form className={classes.form} onSubmit={addInteractionFormik.handleSubmit}>
-              <TextField
-                  InputProps={{
-                    className: classes.inputField
-                  }}
-                  label="Interaction identifier"
-                  name="addInteractionIdentifier"
-                  error={addInteractionFormik.touched.addInteractionIdentifier && !!addInteractionFormik.errors.addInteractionIdentifier}
-                  helperText={addInteractionFormik.touched.addInteractionIdentifier && addInteractionFormik.errors.addInteractionIdentifier}
-                  value={addInteractionFormik.values.addInteractionIdentifier}
-                  onChange={addInteractionFormik.handleChange}
-              />
-              <Button
-                  type="submit"
-                  size="small"
-                  variant="outlined"
-                  color="secondary"
-                  className={classes.submitButton}
-              >
-                  Add Interaction
-              </Button>
-          </form>
-
-          {
-              Array.isArray(interactions) && interactions.length
-                ? (
-                      <form className={classes.form} >
-                          <FormControl>
-                              <InputLabel id="interactions">Interactions</InputLabel>
-                              <Select
-                                  className={classes.inputField}
-                                  id="interactions"
-                                  label="Remove Interaction"
-                                  name="removeInteractionIdentifier"
-                                  value={removeInteractionFormik.values.removeInteractionIdentifier}
-                                  error={removeInteractionFormik.touched.removeInteractionIdentifier && !!removeInteractionFormik.errors.removeInteractionIdentifier}
-                                  onChange={removeInteractionFormik.handleChange}
-                              >
-                                  {
-                                      interactions.map((interaction) => (
-                                          <MenuItem value={interaction} key={interaction}>
-                                                {interaction}
-                                          </MenuItem>
-                                      ))
-                                  }
-                              </Select>
-                          </FormControl>
-
-                          <Button onClick={() => handleOnRemovingInteraction(removeInteractionFormik.values.removeInteractionIdentifier)}
-                              type="button"
-                              size="small"
-                              variant="outlined"
-                              color="primary"
-                              className={classes.submitButton}
-                          >
-                              Remove Interaction
-                          </Button>
-
-                          <Button onClick={() => handleSetInteractionActive(removeInteractionFormik.values.removeInteractionIdentifier)}
-                              type="button"
-                              size="small"
-                              variant="outlined"
-                              color="secondary"
-                              className={classes.submitButton}
-                          >
-                              Set interaction active
-                          </Button>
-                      </form>
-                  )
-                : null
-          }
-
           {
               Array.isArray(availableWorkflows)
                 ? (
@@ -210,16 +124,13 @@ function Debugging({ dispatch, interactions, availableWorkflows, instantiateWork
   );
 }
 
-const mapStateToProps = ({ rexFlow: { interactions, activeInteractionId , workflows: { available } } }) => ({
-    interactions: Object.keys(interactions),
+const mapStateToProps = ({ rexFlow: { workflows: { available } } }) => ({
     availableWorkflows: available,
-    activeInteractionId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-   instantiateWorkflow: (interactionId, did) => dispatch(instantiateWorkflow(interactionId, did)),
-   instantiateWorkflowByName: (interactionId, workflowName) => dispatch(instantiateWorkflowByName(interactionId, workflowName)),
-    dispatch,
+   instantiateWorkflow: (did) => dispatch(instantiateWorkflow(did)),
+   instantiateWorkflowByName: (workflowName) => dispatch(instantiateWorkflowByName(workflowName)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Debugging);

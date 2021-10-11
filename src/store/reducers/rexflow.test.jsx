@@ -1,29 +1,24 @@
 import rexFlowReducer, {INITIAL_WORKFLOW_STATE} from "./rexflow";
 import {
-    addInteraction,
     addNewInstantiatedWorkflow,
     addTask,
     removeTask,
-    updateInstantiatedWorkflow,
     updateTask
 } from "../actions";
 import { v4 as generateUUID } from "uuid";
 
 describe("Task Reducer", () => {
 
-    const interactionId = "184523659";
     const requestId = generateUUID();
 
     const mockState = () => {
-      const stateWithInteraction = rexFlowReducer(undefined, addInteraction(interactionId));
-      const stateWithWorkflow = rexFlowReducer(stateWithInteraction, addNewInstantiatedWorkflow(interactionId, requestId));
-      const instantiatedWorkflow = {
-          ...INITIAL_WORKFLOW_STATE,
-          requestId,
-          iid: requestId,
-          name: "exampleWorkflow"
-      }
-      return  rexFlowReducer(stateWithWorkflow, updateInstantiatedWorkflow(interactionId, instantiatedWorkflow, requestId));
+        const instantiatedWorkflow = {
+            ...INITIAL_WORKFLOW_STATE,
+            requestId,
+            iid: requestId,
+            name: "exampleWorkflow"
+        }
+        return rexFlowReducer(undefined, addNewInstantiatedWorkflow(instantiatedWorkflow));
     };
 
     it("should update the state with a new task", () => {
@@ -31,9 +26,8 @@ describe("Task Reducer", () => {
         const data = "This is the new task";
         const task = { data };
         const state = mockState();
-        const { interactions } = rexFlowReducer(state, addTask(interactionId, requestId, task));
-        const { workflows } = interactions[interactionId];
-        const [ workflow ] = workflows;
+        const { instantiatedWorkflows } = rexFlowReducer(state, addTask(requestId, task));
+        const [ workflow ] = instantiatedWorkflows;
         const [ updatedTask ] = workflow.tasks;
 
         expect(updatedTask.data === data).toBeTruthy();
@@ -43,11 +37,10 @@ describe("Task Reducer", () => {
         const data = "This is the new task";
         const tid = "newTaskID";
         const taskInfo = { data, tid };
-        const updatedState = rexFlowReducer(mockState(), addTask(interactionId, requestId, taskInfo));
-        const removedTaskState = rexFlowReducer(updatedState, removeTask(interactionId, requestId, tid));
-        const { interactions } = removedTaskState;
-        const { workflows } = interactions[interactionId];
-        const [ workflow ] = workflows;
+        const updatedState = rexFlowReducer(mockState(), addTask(requestId, taskInfo));
+        const removedTaskState = rexFlowReducer(updatedState, removeTask(requestId, tid));
+        const { instantiatedWorkflows } = removedTaskState;
+        const [ workflow ] = instantiatedWorkflows;
         const { tasks } = workflow;
         expect(tasks.length === 0 ).toBeTruthy();
     });
@@ -55,14 +48,13 @@ describe("Task Reducer", () => {
     it("should update state with updated props", () => {
         const data = "This is the new task";
         const tid = "newTaskID";
-        const taskInfo = { data, tid };
-        const state = rexFlowReducer(mockState(), addTask(interactionId, requestId, taskInfo));
         const info = "New information";
+        const taskInfo = { data, tid };
+        const state = rexFlowReducer(mockState(), addTask(requestId, taskInfo));
         const updatedTaskInfo = { data: [ info ], tid };
-        const updatedState = rexFlowReducer(state, updateTask(interactionId, requestId, tid, updatedTaskInfo));
-        const { interactions } = updatedState;
-        const { workflows } = interactions[interactionId];
-        const [ workflow ] = workflows;
+        const updatedState = rexFlowReducer(state, updateTask(requestId, tid, updatedTaskInfo));
+        const { instantiatedWorkflows } = updatedState;
+        const [ workflow ] = instantiatedWorkflows;
         const { tasks } = workflow;
         const [ task ] = tasks;
         const [ updatedInfo ] = task.data;

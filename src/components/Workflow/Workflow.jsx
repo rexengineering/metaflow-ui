@@ -3,8 +3,8 @@ import cancelWorkflow from "../../store/thunks/cancelWorkflow";
 import { connect } from "react-redux";
 import { Button } from "@material-ui/core";
 
-function Workflow({ identifier, interactionId, cancelWorkflow }){
- const handleCancelWorkflow = () => cancelWorkflow(interactionId, identifier );
+function Workflow({ identifier, cancelWorkflow }){
+ const handleCancelWorkflow = () => cancelWorkflow( identifier );
  return (
      <section>
        <p>Workflow: {identifier}</p>
@@ -14,7 +14,7 @@ function Workflow({ identifier, interactionId, cancelWorkflow }){
 }
 
 const mapDispatchToProps = (dispatch) => ({
- cancelWorkflow: (interactionId, workflowId) => dispatch(cancelWorkflow(interactionId, workflowId)),
+ cancelWorkflow: (workflowId) => dispatch(cancelWorkflow(workflowId)),
 })
 
 export default connect(undefined, mapDispatchToProps)(Workflow);

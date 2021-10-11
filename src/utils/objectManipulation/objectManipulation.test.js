@@ -1,4 +1,4 @@
-import {deepMerge} from "./objectManipulation";
+import deepMerge from "./objectManipulation";
 
 describe("ObjectManipulation", () => {
 

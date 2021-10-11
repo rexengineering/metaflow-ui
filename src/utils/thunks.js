@@ -1,5 +1,5 @@
-export const formatWorkflow = ({ iid, metadata, name, did }) => {
-    const workflow = { iid, name, did };
+export const formatWorkflow = ({ iid, metadata, name, did, tasks }) => {
+    const workflow = { iid, name, did, tasks };
     if (!Array.isArray(metadata))
         return workflow;
     const formattedMetadata = metadata.reduce((previousMetadata, currentMetadata) => {

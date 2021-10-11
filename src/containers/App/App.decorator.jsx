@@ -4,17 +4,17 @@ import buildTheme from "../../theme";
 import PropTypes from "prop-types";
 import App from "./App";
 
-function AppDecorator({ key }){
+function AppDecorator({ keyValue }){
     const theme = buildTheme();
     return (
-        <ThemeProvider key={key} theme={theme}>
+        <ThemeProvider key={keyValue} theme={theme}>
             <App />
         </ThemeProvider>
     )
 }
 
 AppDecorator.propTypes= {
- key: PropTypes.string.isRequired,
+    keyValue: PropTypes.string.isRequired,
 }
 
 export default AppDecorator;

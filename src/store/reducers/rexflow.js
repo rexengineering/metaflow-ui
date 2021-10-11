@@ -9,11 +9,7 @@ export const INITIAL_STATE = {
     available: [],
   },
   activeInteractionId: "",
-  interactions: {},
-};
-
-const INITIAL_INTERACTION_STATE = {
-  workflows: [],
+  instantiatedWorkflows: [],
   activeWorkflowId: "",
 };
 
@@ -28,12 +24,10 @@ export const INITIAL_WORKFLOW_STATE = {
   metadata: {},
 };
 
-const updateInstantiatedWorkflowProp = (interactionsState, interactionId, requestId, propKey, propValue) => {
-  const interactionState = interactionsState[interactionId];
-  const { workflows } = interactionState;
-  return workflows.map((currentWorkflow) => {
-    const { requestId: currentRequestId } = currentWorkflow;
-    if (requestId === currentRequestId){
+const updateInstantiatedWorkflowProp = (state, identifierProp, workflowIdentifier, propKey, propValue) => {
+  const { instantiatedWorkflows } = state;
+  return instantiatedWorkflows.map((currentWorkflow) => {
+    if (workflowIdentifier === currentWorkflow[identifierProp]){
       return {
         ...currentWorkflow,
         [propKey]: propValue
@@ -45,165 +39,101 @@ const updateInstantiatedWorkflowProp = (interactionsState, interactionId, reques
 
 const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
-    case rexFlowActionTypes.ADD_INTERACTION: {
-      const { interactionIdentifier } = payload;
-      return {
-        ...state,
-        interactions: {
-          ...state.interactions,
-          [interactionIdentifier]: INITIAL_INTERACTION_STATE,
-        }
-      }
-    }
     case rexFlowActionTypes.SET_AVAILABLE_WORKFLOWS_FETCH_STATE: {
+      const { fetchState } = payload;
       return {
         ...state,
         workflows: {
           ...state.workflows,
-          fetchState: payload,
+          fetchState,
         }
       }
     }
     case rexFlowActionTypes.SET_AVAILABLE_WORKFLOWS_MESSAGE: {
+      const { message } = payload;
       return {
         ...state,
         workflows: {
           ...state.workflows,
-          message: payload,
+          message,
         }
       }
     }
     case rexFlowActionTypes.SET_AVAILABLE_WORKFLOWS: {
+      const { workflows } = payload;
       return {
         ...state,
         workflows: {
           ...state.workflows,
-          available: payload,
+          available: workflows,
         }
-      }
-    }
-    case rexFlowActionTypes.REMOVE_INTERACTION: {
-      const { interactionIdentifier } = payload;
-      const updatedInteractions = { ...state.interactions };
-      delete updatedInteractions[interactionIdentifier];
-      return {
-        ...state,
-        interactions: updatedInteractions,
-      }
-    }
-    case rexFlowActionTypes.SET_ACTIVE_INTERACTION_ID: {
-      return {
-        ...state,
-        activeInteractionId: payload
       }
     }
     case rexFlowActionTypes.ADD_NEW_INSTANTIATED_WORKFLOW: {
-      const { interactionId, requestId } = payload;
-      const interactionState = state.interactions[interactionId];
-      const newWorkflow = {...INITIAL_WORKFLOW_STATE, requestId };
+      const { workflow } = payload;
+      const newWorkflow = {...INITIAL_WORKFLOW_STATE, ...workflow };
       return {
         ...state,
-        interactions: {
-          ...state.interactions,
-          [interactionId]: {
-            ...interactionState,
-            workflows: [
-              ...interactionState.workflows,
-              newWorkflow
-            ]
-          }
-        }
+        instantiatedWorkflows: [
+          ...state.instantiatedWorkflows,
+          newWorkflow
+        ]
       }
     }
     case rexFlowActionTypes.SET_INSTANTIATED_WORKFLOW_FETCH_STATE: {
-      const { interactionId, fetchState, requestId } = payload;
-      const updatedWorkflows = updateInstantiatedWorkflowProp(state.interactions, interactionId, requestId, 'fetchState', fetchState);
-      const interactionState = state.interactions[interactionId];
+      const { requestId, fetchState } = payload;
+      const updatedWorkflows = updateInstantiatedWorkflowProp(state, "requestId", requestId, 'fetchState', fetchState);
       return {
         ...state,
-        interactions: {
-          ...state.interactions,
-          [interactionId]: {
-            ...interactionState,
-            workflows: updatedWorkflows
-          }
-        }
+        instantiatedWorkflows: updatedWorkflows
       }
     }
     case rexFlowActionTypes.SET_INSTANTIATED_WORKFLOW_MESSAGE: {
-      const { interactionId, message, requestId } = payload;
-      const updatedWorkflows = updateInstantiatedWorkflowProp(state.interactions, interactionId, requestId, 'message', message);
-      const interactionState = state.interactions[interactionId];
+      const { message, requestId } = payload;
+      const updatedWorkflows = updateInstantiatedWorkflowProp(state, "requestId", requestId, 'message', message);
       return {
         ...state,
-        interactions: {
-          ...state.interactions,
-          [interactionId]: {
-            ...interactionState,
-            workflows: updatedWorkflows
-          }
-        }
+        instantiatedWorkflows: updatedWorkflows
       }
     }
     case rexFlowActionTypes.UPDATE_INSTANTIATED_WORKFLOW: {
-      const { interactionId, workflow, requestId } = payload;
-      const interactionState = state.interactions[interactionId];
-      const { iid, name, did, metadata } = workflow;
-      const { workflows } = interactionState;
-      const workflowIndex = workflows.findIndex(({ iid: currentIid }) => iid === currentIid);
-      const isDuplicated = workflowIndex !== -1;
+      const { workflow: updatedWorkflow, workflowIdentifier,  searchBy} = payload;
+      const { instantiatedWorkflows } = state;
+      const workflowIndex = instantiatedWorkflows.findIndex(( currentWorkflow ) => workflowIdentifier === currentWorkflow[searchBy]);
+      const isDuplicated = workflowIndex === -1;
+
       const updatedWorkflows = isDuplicated
-         ? [...workflows].splice(workflowIndex, 1)
-         : workflows.map((currentWorkflow) => {
-              const { requestId: currentRequestId } = currentWorkflow;
-              if (requestId === currentRequestId){
-                return {
-                  ...currentWorkflow,
-                  name,
-                  did,
-                  metadata,
-                  iid
-                }
-              }
-              return currentWorkflow;
-            });
+           ? [...instantiatedWorkflows].splice(workflowIndex, 1)
+           : instantiatedWorkflows.map((currentWorkflow) => workflowIdentifier === currentWorkflow[searchBy]
+                  ? updatedWorkflow
+                  : currentWorkflow
+             );
+
       return {
         ...state,
-        interactions: {
-          ...state.interactions,
-          [interactionId]: {
-            ...interactionState,
-            workflows: updatedWorkflows
-          }
-        }
+        instantiatedWorkflows: updatedWorkflows
       }
     }
+
     case rexFlowActionTypes.REMOVE_INSTANTIATED_WORKFLOW: {
-      const { interactionId, workflowIid } = payload;
-      const interactionState = state.interactions[interactionId];
-      const { workflows } = interactionState;
-      const canceledWorkflowIndex = workflows.findIndex(({ iid }) => iid === workflowIid);
+      const { iid } = payload;
+      const { instantiatedWorkflows } = state;
+      const canceledWorkflowIndex = instantiatedWorkflows.findIndex(({ iid: currentIid }) => iid === currentIid);
       if (canceledWorkflowIndex < 0){
         return state;
       }
-      const updatedWorkflows = [...workflows];
+      const updatedWorkflows = [...instantiatedWorkflows];
       updatedWorkflows.splice(canceledWorkflowIndex, 1);
+
       return {
         ...state,
-        interactions: {
-          ...state.interactions,
-          [interactionId]: {
-            ...interactionState,
-            workflows: updatedWorkflows
-          }
-        }
+        instantiatedWorkflows: updatedWorkflows
       }
     }
     case rexFlowActionTypes.ADD_TASK: {
-      const { interactionId, workflowIid, task } = payload;
-      const interactionState = state.interactions[interactionId];
-      const { workflows } = interactionState;
-      const updatedWorkflows = workflows.map((currentWorkflow) => {
+      const { workflowIid, task } = payload;
+      const { instantiatedWorkflows } = state;
+      const updatedWorkflows = instantiatedWorkflows.map((currentWorkflow) => {
         const { iid } = currentWorkflow;
         if (iid === workflowIid){
           const { tasks } = currentWorkflow;
@@ -214,25 +144,19 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
         }
         return currentWorkflow;
       });
+
       return {
         ...state,
-        interactions: {
-          ...state.interactions,
-          [interactionId]: {
-            ...interactionState,
-            workflows: updatedWorkflows
-          }
-        }
+        instantiatedWorkflows: updatedWorkflows
       }
     }
 
     case rexFlowActionTypes.UPDATE_TASK: {
 
-      const { interactionId, workflowIid, taskId, updatedTask } = payload;
-      const interactionState = state.interactions[interactionId];
-      const { workflows } = { ...interactionState };
+      const { workflowIid, taskId, updatedTask } = payload;
+      const { instantiatedWorkflows } = state;
 
-      const workflow = workflows.find(({ iid }) => iid === workflowIid);
+      const workflow = instantiatedWorkflows.find(({ iid }) => iid === workflowIid);
       if (!workflow){
         return state;
       }
@@ -245,7 +169,7 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       } = oldTask;
 
       const newTask = deepMerge(oldTaskChanges, updatedTask, 'dataId');
-      const updatedWorkflows = workflows.map((currentWorkflow) => {
+      const updatedWorkflows = instantiatedWorkflows.map((currentWorkflow) => {
         const { iid, tasks } = currentWorkflow;
         if (iid !== workflowIid){
           return currentWorkflow;
@@ -264,26 +188,20 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
 
       });
 
+
       return {
         ...state,
-        interactions: {
-          ...state.interactions,
-          [interactionId]: {
-            ...interactionState,
-            workflows: updatedWorkflows
-          }
-        }
+        instantiatedWorkflows: updatedWorkflows
       }
 
     }
 
     case rexFlowActionTypes.REMOVE_TASK: {
 
-      const { interactionId, workflowIid, taskId } = payload;
-      const interactionState = state.interactions[interactionId];
-      const { workflows } = interactionState;
+      const { workflowIid, taskId } = payload;
+      const { instantiatedWorkflows } = state;
 
-      const updatedWorkflows = workflows.map((currentWorkflow) => {
+      const updatedWorkflows = instantiatedWorkflows.map((currentWorkflow) => {
         const { iid } = currentWorkflow;
         if (iid === workflowIid){
           const { tasks } = currentWorkflow;
@@ -303,13 +221,7 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
 
       return {
         ...state,
-        interactions: {
-          ...state.interactions,
-          [interactionId]: {
-            ...interactionState,
-            workflows: updatedWorkflows
-          }
-        }
+        instantiatedWorkflows: updatedWorkflows
       }
 
     }
