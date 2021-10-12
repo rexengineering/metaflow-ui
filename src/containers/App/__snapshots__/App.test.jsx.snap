@@ -3,339 +3,60 @@
 exports[`<App /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="makeStyles-app-25"
+    class="makeStyles-app-9"
   >
-    <div
-      class="MuiDrawer-root MuiDrawer-docked makeStyles-nav-32"
-      component="nav"
-    >
-      <div
-        class="MuiPaper-root MuiDrawer-paper makeStyles-drawer-33 MuiDrawer-paperAnchorLeft MuiDrawer-paperAnchorDockedLeft MuiPaper-elevation0"
-      >
-        <img
-          alt="Prism"
-          class="makeStyles-logo-34"
-          src="prism.svg"
-        />
-        <ul
-          class="MuiList-root makeStyles-list-35 MuiList-padding"
-        >
-          <div
-            aria-disabled="false"
-            class="MuiButtonBase-root MuiListItem-root MuiListItem-gutters MuiListItem-button"
-            data-testid="menu-item"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="MuiListItemIcon-root makeStyles-icon-36"
-            >
-              <svg
-                aria-hidden="true"
-                class="svg-inline--fa fa-comment-alt fa-w-16 makeStyles-activeItem-37"
-                data-icon="comment-alt"
-                data-prefix="fal"
-                focusable="false"
-                role="img"
-                viewBox="0 0 512 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 7.1 5.8 12 12 12 2.4 0 4.9-.7 7.1-2.4L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm32 352c0 17.6-14.4 32-32 32H293.3l-8.5 6.4L192 460v-76H64c-17.6 0-32-14.4-32-32V64c0-17.6 14.4-32 32-32h384c17.6 0 32 14.4 32 32v288z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-            <span
-              class="MuiTouchRipple-root"
-            />
-          </div>
-        </ul>
-      </div>
-    </div>
     <section
-      class="makeStyles-pane-26"
+      class="makeStyles-pane-10"
     >
       <section
-        class="makeStyles-tray-27 makeStyles-tray1-28"
+        class="makeStyles-tray-11 makeStyles-tray1-12"
       >
-        <div>
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-            style="height: 19px;"
-          />
-          <div
-            class="makeStyles-leadingWrapper-38"
-          >
-            <span
-              class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-              style="height: 50px;"
-            />
-          </div>
-          <div
-            class="makeStyles-leadingWrapper-38"
-          >
-            <hr
-              class="MuiDivider-root"
-            />
-          </div>
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-            style="height: 19px;"
-          />
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-            style="height: 60px;"
-          />
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-            style="height: 19px;"
-          />
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-            style="height: 60px;"
-          />
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-            style="height: 19px;"
-          />
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-            style="height: 60px;"
-          />
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-            style="height: 19px;"
-          />
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-            style="height: 60px;"
-          />
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-            style="height: 19px;"
-          />
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text makeStyles-skeleton-40"
-            style="height: 60px;"
-          />
-        </div>
-        <div
-          class="makeStyles-finalWrapper-39"
-        >
-          <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary Mui-disabled MuiButton-fullWidth Mui-disabled"
-            disabled=""
-            tabindex="-1"
-            type="button"
-          >
-            <span
-              class="MuiButton-label"
-            >
-              Placeholder
-            </span>
-          </button>
-        </div>
-      </section>
-      <section
-        class="makeStyles-tray-27 makeStyles-tray2-29"
-        data-testid="tray2"
-      >
-        <div
-          class="MuiPaper-root MuiCard-root MuiPaper-elevation1 MuiPaper-rounded"
-        >
-          <div
-            class="MuiCardHeader-root"
-          >
-            <div
-              class="MuiCardHeader-content"
-            >
-              <span
-                class="MuiTypography-root MuiCardHeader-title MuiTypography-h5 MuiTypography-displayBlock"
-              >
-                Talk Tracks
-              </span>
-            </div>
-            <div
-              class="MuiCardHeader-action"
-            >
-              <button
-                class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorSecondary"
-                data-testid="drawer-toggle-button"
-                tabindex="0"
-                type="button"
-              >
-                <span
-                  class="MuiIconButton-label"
-                >
-                  <span
-                    class="MuiBadge-root"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="svg-inline--fa fa-file-alt fa-w-12 "
-                      data-icon="file-alt"
-                      data-prefix="fal"
-                      focusable="false"
-                      role="img"
-                      viewBox="0 0 384 512"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M369.9 97.9L286 14C277 5 264.8-.1 252.1-.1H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V131.9c0-12.7-5.1-25-14.1-34zm-22.6 22.7c2.1 2.1 3.5 4.6 4.2 7.4H256V32.5c2.8.7 5.3 2.1 7.4 4.2l83.9 83.9zM336 480H48c-8.8 0-16-7.2-16-16V48c0-8.8 7.2-16 16-16h176v104c0 13.3 10.7 24 24 24h104v304c0 8.8-7.2 16-16 16zm-48-244v8c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm0 64v8c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm0 64v8c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                    <span
-                      class="MuiBadge-badge MuiBadge-anchorOriginTopRightRectangle MuiBadge-colorSecondary MuiBadge-invisible"
-                    >
-                      0
-                    </span>
-                  </span>
-                </span>
-                <span
-                  class="MuiTouchRipple-root"
-                />
-              </button>
-            </div>
-          </div>
-          <div
-            class="MuiCardContent-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body1"
-            >
-              There are no active talk tracks.
-            </p>
-          </div>
-        </div>
-      </section>
-      <div
-        class="MuiDrawer-root MuiDrawer-docked"
-        data-testid="misc-drawer"
-      >
-        <div
-          class="MuiPaper-root MuiDrawer-paper makeStyles-miscDrawerPaper-31 MuiDrawer-paperAnchorRight MuiDrawer-paperAnchorDockedRight MuiPaper-elevation0"
-          style="visibility: hidden; webkit-transform: translateX(1024px) translateX(0px); transform: translateX(1024px) translateX(0px);"
-        >
-          <h5
-            class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter"
-          >
-            Notes
-          </h5>
-          <div
-            class="makeStyles-notesContainer-43"
-          />
+        <section>
           <form
-            class="MuiPaper-root MuiCard-root MuiPaper-elevation1 MuiPaper-rounded"
+            class="makeStyles-form-14"
           >
             <div
-              class="MuiCardContent-root"
+              class="MuiFormControl-root MuiTextField-root"
             >
-              <div
-                class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+              <label
+                class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+                data-shrink="false"
               >
-                <label
-                  class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-filled"
-                  data-shrink="false"
-                >
-                  New Note
-                </label>
-                <div
-                  class="MuiInputBase-root MuiFilledInput-root MuiFilledInput-underline MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-multiline MuiFilledInput-multiline"
-                >
-                  <textarea
-                    aria-invalid="false"
-                    class="MuiInputBase-input MuiFilledInput-input MuiInputBase-inputMultiline MuiFilledInput-inputMultiline"
-                    name="newNote"
-                    rows="1"
-                    style="height: 0px; overflow: hidden;"
-                  />
-                  <textarea
-                    aria-hidden="true"
-                    class="MuiInputBase-input MuiFilledInput-input MuiInputBase-inputMultiline MuiFilledInput-inputMultiline"
-                    readonly=""
-                    style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); width: 100%;"
-                    tabindex="-1"
-                  />
-                </div>
+                Interaction identifier
+              </label>
+              <div
+                class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-inputField-15 MuiInputBase-formControl MuiInput-formControl"
+              >
+                <input
+                  aria-invalid="false"
+                  class="MuiInputBase-input MuiInput-input"
+                  name="addInteractionIdentifier"
+                  type="text"
+                  value=""
+                />
               </div>
             </div>
-            <div
-              class="MuiCardActions-root MuiCardActions-spacing"
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-submitButton-16 MuiButton-containedSecondary"
+              tabindex="0"
+              type="submit"
             >
-              <button
-                class="MuiButtonBase-root MuiButton-root MuiButton-text"
-                tabindex="0"
-                type="submit"
+              <span
+                class="MuiButton-label"
               >
-                <span
-                  class="MuiButton-label"
-                >
-                  Add
-                </span>
-                <span
-                  class="MuiTouchRipple-root"
-                />
-              </button>
-            </div>
+                Add Interaction
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
           </form>
-          <div
-            class="makeStyles-root-45"
-          >
-            <h5
-              class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter"
-            >
-              Initiate Workflows
-            </h5>
-            <p
-              class="MuiTypography-root MuiTypography-body1"
-            >
-              There are no workflows available
-            </p>
-            <h5
-              class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter"
-            >
-              State Helpers
-            </h5>
-            <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-48 MuiButton-containedSecondary"
-              data-testid="update-state-button"
-              tabindex="0"
-              type="button"
-            >
-              <span
-                class="MuiButton-label"
-              >
-                Update state
-              </span>
-              <span
-                class="MuiTouchRipple-root"
-              />
-            </button>
-            <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-48"
-              data-testid="toggle-state-button"
-              tabindex="0"
-              type="button"
-            >
-              <span
-                class="MuiButton-label"
-              >
-                Toggle automatic state
-              </span>
-              <span
-                class="MuiTouchRipple-root"
-              />
-            </button>
-            <p
-              class="MuiTypography-root MuiTypography-body1"
-            >
-              Automatic state fetching is On
-            </p>
-          </div>
-        </div>
-      </div>
+        </section>
+      </section>
+      <section
+        class="makeStyles-tray-11 makeStyles-tray2-13"
+        data-testid="tray2"
+      />
     </section>
   </div>
 </DocumentFragment>
