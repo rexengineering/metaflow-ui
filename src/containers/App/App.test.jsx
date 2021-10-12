@@ -6,6 +6,7 @@ import userEvent from "@testing-library/user-event";
 jest.mock("react-redux", () => ({
   useSelector: jest.fn(),
   useDispatch: () => jest.fn(),
+  connect: () => jest.fn(),
 }));
 
 describe("<App />", () => {
@@ -43,7 +44,7 @@ describe("<App />", () => {
     await waitFor(() => {
       userEvent.click(drawerToggleButton);
     });
-    expect(drawer).not.toHaveStyle("transform: none");;
+    expect(drawer).not.toHaveStyle("transform: none");
   });
 
 

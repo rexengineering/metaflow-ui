@@ -17,7 +17,7 @@ describe("<TalkTrack />", () => {
       <Provider store={getStore({})}>
         <TalkTracks
             isATalkTrackBeingFetched={isATalkTrackBeingFetched}
-            talkTrackWorkflows={talkTrackItems}
+            talkTracks={talkTrackItems}
             activeTalkTrackID={activeTalkTrackID}
         />
       </Provider>

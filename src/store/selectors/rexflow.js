@@ -40,13 +40,6 @@ export const selectIsTaskCompleted = (task) =>
       tasksState[buildTaskIdentifier(task)]?.isTaskCompleted ?? false
   );
 
-export const selectTask = (workflowID) => {
-  return createSelector(selectTasks, (tasks) => {
-    if (!tasks) return {};
-    return tasks[workflowID] ?? {};
-  });
-};
-
 export const selectDeployments = createSelector(
   [rexFlowSelector],
   ({ deployments }) => deployments

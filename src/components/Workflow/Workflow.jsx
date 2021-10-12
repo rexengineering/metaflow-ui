@@ -1,28 +1,38 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { Typography } from "@material-ui/core";
+import { connect } from "react-redux";
 import Task from "../Task";
-import { selectTask } from "../../store/selectors/rexflow";
 
-function Workflow({ workflowID, className }) {
-  const task = useSelector(selectTask(workflowID));
-
+function Workflow({ task, submitButtonText, taskCompletedMessage, onTaskCompleted, className }) {
   return (
     <section>
-      <Typography variant="h6">{workflowID}</Typography>
-      {task && <Task className={className} task={task} />}
+      {task && <Task submitButtonText={submitButtonText} taskCompletedMessage={taskCompletedMessage} onTaskCompleted={onTaskCompleted} className={className} task={task} />}
     </section>
   );
 }
 
-Workflow.defaultProps = {
+Workflow.propTypes = {
   className: "",
-}
+  submitButtonText: undefined,
+  taskCompletedMessage: undefined,
+  onTaskCompleted: () => {},
+};
 
 Workflow.propTypes = {
   className: PropTypes.string,
+  submitButtonText: PropTypes.string,
+  taskCompletedMessage: PropTypes.string,
   workflowID: PropTypes.string.isRequired,
+  onTaskCompleted: PropTypes.func,
 };
 
-export default Workflow;
+const mapStateToProps = ( state, { workflowID }) => {
+  const { tasks } = state?.rexFlow ?? {};
+  return {
+    task: !!tasks
+        ? tasks[workflowID] ?? {}
+        : {}
+  };
+};
+
+export default connect(mapStateToProps)(Workflow);

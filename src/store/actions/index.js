@@ -11,6 +11,7 @@ export const rexFlowActionTypes = {
   SAVE_TASK_DATA_EXCEPTION: "SAVE_TASK_DATA_EXCEPTION",
   IS_TASK_COMPLETED: "IS_TASK_COMPLETED",
   SET_DEPLOYMENT_ID: "SET_DEPLOYMENT_ID",
+  SET_IS_TALK_TRACK_BEING_FETCHED: "SET_IS_TALK_TRACK_BEING_FETCHED",
   SET_IS_FLEX_TASK_ACTIVE: "SET_IS_FLEX_TASK_ACTIVE",
 };
 
@@ -72,4 +73,9 @@ export const setDeploymentId = (deployments) => ({
 export const setIsFlexTaskActive = (isFlexTaskActive) => ({
   type: rexFlowActionTypes.SET_IS_FLEX_TASK_ACTIVE,
   payload: { isFlexTaskActive },
+});
+
+export const setIsTalkTrackBeingFetched = (isTalkTrackBeingFetched) => ({
+  type: rexFlowActionTypes.SET_IS_TALK_TRACK_BEING_FETCHED,
+  payload: { isTalkTrackBeingFetched },
 });

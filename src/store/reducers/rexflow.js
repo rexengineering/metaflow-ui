@@ -3,7 +3,7 @@ import { rexFlowActionTypes } from "../actions";
 const INITIAL_STATE = {
   isWorkflowBeingInitialized: {},
   isLoadingFetchTasks: false,
-  activeWorkflows: [],
+  activeWorkflows: null,
   tasks: null,
   error: null,
   tasksState: {},
@@ -26,6 +26,28 @@ const updateTasksState = (state, taskId, propKey, propValue) => {
   };
 };
 
+const setActiveWorkflows = (activeWorkflows, { workflows }) => {
+
+  if(!Array.isArray(activeWorkflows))
+    return workflows;
+
+  const newWorkflows = workflows?.filter(({iid}) => !activeWorkflows.find(({iid: activeWFIID}) => activeWFIID === iid));
+  const deletedWorkflows = activeWorkflows?.filter(({iid}) => !workflows.find(({iid: activeWFIID}) => activeWFIID === iid));
+
+  if (!newWorkflows?.length && !deletedWorkflows?.length)
+    return activeWorkflows;
+
+  let result = [];
+
+  if (deletedWorkflows?.length)
+    result = activeWorkflows.filter((currentEl) => !deletedWorkflows.find(({iid: activeWFIID}) => activeWFIID === currentEl));
+
+  if(newWorkflows?.length)
+    result = [...result, ...newWorkflows];
+
+  return result;
+}
+
 const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
     case rexFlowActionTypes.INIT_WORKFLOW_IS_LOADING: {
@@ -39,12 +61,10 @@ const rexFlowReducer = (state = INITIAL_STATE, { type, payload }) => {
       };
     }
     case rexFlowActionTypes.INIT_WORKFLOW_SUCCESSFUL: {
-      const { workflows } = payload;
+      const { activeWorkflows } = state;
       return {
         ...state,
-        activeWorkflows: Array.isArray(workflows)
-          ? workflows
-          : [...state.activeWorkflows, workflows],
+        activeWorkflows: setActiveWorkflows(activeWorkflows, payload)
       };
     }
     case rexFlowActionTypes.INIT_WORKFLOW_FAILURE:

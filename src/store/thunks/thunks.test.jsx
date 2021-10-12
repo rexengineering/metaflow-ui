@@ -3,7 +3,7 @@ import {completeTask} from "./thunks";
 import { rexFlowActionTypes } from "../actions";
 import { handleResponse } from "../../utils/testThunks";
 import { completeTaskResponse } from "../mockResponses";
-import {buildTaskIdentifier} from "../selectors";
+import {buildTaskIdentifier} from "../../utils/tasks";
 
 describe("completeTask", () => {
 

@@ -8,33 +8,30 @@ import {
 import { object } from "yup";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
 import TaskField from "../fields/TaskField";
-import {
-  selectExceptionError,
-  selectIsTaskBeingProcessed,
-  selectIsTaskCompleted,
-  selectValidationErrors,
-} from "../../store/selectors/rexflow";
 import { completeTask } from "../../store/thunks/thunks";
 import {
+  buildTaskIdentifier,
   convertTaskFieldsToFormUtils,
   convertValidationErrorsTo,
 } from "../../utils/tasks";
 import useValidateField from "../../utils/useValidateField";
 import { isInfoType, isInputType } from "../../constants/taskTypes";
+import {connect} from "react-redux";
+import {LoadingButtonState} from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    display: "flex",
-    flexDirection: "column",
     padding: theme.spacing(1),
   },
   submitButton: {
-    margin: theme.spacing(2, 0),
+    margin: theme.spacing(8, 0, 2),
+    display: "block",
+    clear: "both",
+    color: theme.palette.primary.contrastText,
   },
   field: {
-    display: "inline-grid",
+    display: "block",
     marginTop: theme.spacing(2),
   },
   inProgressContainer: {
@@ -45,25 +42,27 @@ const useStyles = makeStyles((theme) => ({
   inProgressMessage: {
     marginLeft: theme.spacing(1),
   },
+  infoField: {
+    marginTop: theme.spacing(1),
+  },
+  circularProgress: {
+    marginRight: theme.spacing(1),
+  },
 }));
 
-function Task({ className, task }) {
-  const { data } = task;
-  const dispatch = useDispatch();
+function Task({ className, task, submitButtonText, taskCompletedMessage, isProcessing, isCompleted, errors, exceptionError, completeTask, isLoading, onTaskCompleted }) {
+  const { data, iid, tid } = task;
   const { formikInitialValues, validationSchema } =
     convertTaskFieldsToFormUtils(data);
   const [initialValues, setInitialValues] = useState(formikInitialValues ?? {});
+  const [completedTask, setCompletedTask] = useState(null);
   const formValidationSchema = object().shape(validationSchema);
-  const isProcessing = useSelector(selectIsTaskBeingProcessed(task));
-  const isCompleted = useSelector(selectIsTaskCompleted(task));
-  const exceptionError = useSelector(selectExceptionError(task));
   const onSubmit = useCallback(
-    (fields) => dispatch(completeTask(fields, task)),
-    [dispatch, task]
+    (fields) => completeTask(fields, task),
+    [completeTask, task]
   );
   const validateField = useValidateField(formValidationSchema);
   const classes = useStyles();
-  const errors = useSelector(selectValidationErrors(task));
   const { initialErrors, initialTouched } = convertValidationErrorsTo(
     errors ?? []
   );
@@ -73,15 +72,16 @@ function Task({ className, task }) {
     setInitialValues(formUtils.formikInitialValues ?? {});
   }, [data]);
 
-  if (isCompleted) return <Typography>Form completed!</Typography>;
+  if (isCompleted && completedTask !== tid) {
+    onTaskCompleted({tid, iid});
+    setCompletedTask(tid);
+    return <Typography> { taskCompletedMessage } </Typography>
+  }
 
   if (isProcessing || !data?.length || !initialValues) {
     return (
       <section className={classes.inProgressContainer}>
         <CircularProgress size={25} />
-        <Typography className={classes.inProgressMessage} variant="body2">
-          Workflow in progress
-        </Typography>
       </section>
     );
   }
@@ -116,23 +116,30 @@ function Task({ className, task }) {
                 );
               }
               if (isInfoType(field?.type)) {
-                const { data: fieldData, type, variant } = field;
+                const { data: fieldData, type, variant, dataId, label } = field;
                 return (
-                  <div key={data}>
-                    <TaskField type={type} data={fieldData} variant={variant} />
+                  <div className={classes.infoField} key={fieldData}>
+                    <TaskField id={dataId} type={type} label={label} data={fieldData} variant={variant} />
                   </div>
                 );
               }
               return <></>;
             })}
+
           <Button
-            className={classes.submitButton}
-            type="submit"
-            variant="contained"
-            color="secondary"
+              className={classes.submitButton}
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={isLoading}
           >
-            Submit
+            {
+              isLoading
+                  ? ( <CircularProgress className={classes.circularProgress} size={15} /> )
+                  : submitButtonText
+            }
           </Button>
+
           {exceptionError && (
             <Typography variant="body2" color="error">
               {exceptionError}
@@ -146,11 +153,16 @@ function Task({ className, task }) {
 
 Task.defaultProps = {
   className: "",
+  submitButtonText: "Submit",
+  taskCompletedMessage: "Task completed",
   task: {},
+  onTaskCompleted: () => {},
 };
 
 Task.propTypes = {
   className: PropTypes.string,
+  submitButtonText: PropTypes.string,
+  taskCompletedMessage: PropTypes.string,
   task: PropTypes.shape({
     data: PropTypes.arrayOf(
       PropTypes.shape({
@@ -172,6 +184,31 @@ Task.propTypes = {
     status: PropTypes.string,
     tid: PropTypes.string,
   }),
+  onTaskCompleted: PropTypes.func,
 };
 
-export default Task;
+const mapStateToProps = (state, { task }) => {
+  const { tasksState, buttons } = state.rexFlow ?? {};
+  const taskIdentifier = buildTaskIdentifier(task);
+  const taskState = taskIdentifier && tasksState
+      ? tasksState[taskIdentifier]
+      : {};
+  const { isLoading, isTaskCompleted, errors: validationErrors, exceptionError: exceptions } = taskState  ?? {};
+  const isProcessing = isLoading ?? false;
+  const isCompleted = isTaskCompleted ?? false;
+  const errors = validationErrors ?? null;
+  const exceptionError = exceptions ?? null;
+  return {
+    isProcessing,
+    isCompleted,
+    errors,
+    exceptionError,
+    isLoading: buttons?.[taskIdentifier] === LoadingButtonState,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  completeTask: (formFields, task) => completeTask(dispatch, formFields, task)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Task);

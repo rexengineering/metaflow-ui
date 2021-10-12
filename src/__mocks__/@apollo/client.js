@@ -1,5 +1,7 @@
 const query = jest.fn();
-const mutate = jest.fn();
+const mutate = jest.fn().mockImplementation(() => ({
+  data: {}
+}));
 const gql = jest.fn();
 
 module.exports = {

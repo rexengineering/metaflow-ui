@@ -87,7 +87,7 @@ function TalkTracks({ talkTracks, headerAction, activeTalkTrackID, isATalkTrackB
                                           index={`${value}`}
                                           value={workflowID}
                                       >
-                                          <Workflow onTaskCompleted={onTaskCompleted} submitButtonText="continue" workflowID={workflowID} />
+                                          <Workflow taskCompletedMessage="Talk track completed" onTaskCompleted={onTaskCompleted} submitButtonText="continue" workflowID={workflowID} />
                                       </TabPanel>
                                   ))
                           }

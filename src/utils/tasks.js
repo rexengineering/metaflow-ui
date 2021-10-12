@@ -1,4 +1,4 @@
-import { validationSchemaMapping } from "../constants/taskTypes";
+import {validationSchemaMapping} from "../constants/taskTypes";
 
 const mapBooleanToString = (booleanValue) => (booleanValue ? "True" : "False");
 
@@ -58,3 +58,20 @@ export const calculateWorkFlowNameFromDeploymentID = (dID) => {
   const words = dID.split("-");
   return words?.[0] ?? null;
 };
+
+export const buildTaskIdentifier = ({iid, tid}) => {
+  if (!iid || !tid) {
+    return "";
+  }
+  return `${iid}-${tid}`;
+};
+
+export const formatRawWorkflows = (workflows) => {
+  return workflows.map(({ iid, metadata }) => {
+    const isTalkTrack = metadata.find( ({key, value}) => key === "type" && value === "talktrack");
+    return {
+      iid,
+      isTalkTrack: !!isTalkTrack
+    }
+  });
+}

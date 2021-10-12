@@ -25,10 +25,4 @@ describe("<Workflow />", () => {
     expect(initialRender).toMatchSnapshot();
   });
 
-  it("should render a title for the workflow", () => {
-    render(renderWorkflow());
-    const element = screen.getByText("456456");
-
-    expect(element).toBeInTheDocument();
-  });
 });

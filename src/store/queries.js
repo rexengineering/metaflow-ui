@@ -97,3 +97,18 @@ export const finishTask = gql`
     }
   }
 `;
+
+export const initWorkflowByName = (workflowName) => gql`
+  mutation StartByName {
+    workflow {
+      startByName (input: {name: "${workflowName}" }) {
+        status
+        did
+        workflow {
+          iid
+          name
+        }
+      }
+    }
+  }
+`;
